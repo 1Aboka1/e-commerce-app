@@ -1,0 +1,65 @@
+.navbar{
+    height: 50px;
+    border-bottom: 0.5px solid rgb(231, 231, 231);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    .wrapper{
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .search{
+            display: flex;
+            align-items: center;
+            border: 0.5px solid lightgray;
+            padding: 3px;
+
+            &::placeholder{
+                font-size: 12px;
+            }
+            input{
+                border: none;
+                outline: none;
+                background: transparent;
+            }
+        }
+
+        .items{
+            display: flex;
+            align-items: center;
+            .item{
+                display: flex;
+                align-items: center;
+                margin-right: 20px;
+                position: relative;
+                .icon{
+                    font-size: 22px;
+                }
+                .avatar{
+                    width: 40px;
+                    border-radius: 100%;
+                }
+                .counter{
+                    width: 12px;
+                    height: 12px;
+                    background-color: red;
+                    border-radius: 50%;
+                    color: white;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: 3px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    position: absolute;
+                    top: -4px;
+                    right: -3px;
+                }
+            }
+        }
+    }
+}
