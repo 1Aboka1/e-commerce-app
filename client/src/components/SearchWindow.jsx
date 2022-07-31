@@ -2,20 +2,19 @@ import React, { Component } from 'react'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
-
-
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Filter } from './Filter';
 
 export class SearchWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listView: true,
-            expanded: false,
         }
-    }
-
-    handleExpandHandle = (panel) => (event, isExpanded) => {
-        this.setState({expanded: isExpanded ? panel : false})
     }
 
     handleListClick = () => {
@@ -27,10 +26,11 @@ export class SearchWindow extends Component {
     }
 
     //TODO: #2 Create SearchBar with AutoComplete from MUI
+    //TODO: #3 Create multiple instances of item component for items from db
 
     render() {
         return (
-            <div>
+            <div className='h-screen'>
                 <div className='mx-auto max-w-[1100px] pt-4'>
                     <div className='flex justify-between items-center py-4'>
                         <p className='font-light text-gray-900'>4380 товаров</p>
@@ -51,7 +51,7 @@ export class SearchWindow extends Component {
                             </div>
                         </div>
                     </div>
-
+                    <Filter/>
                 </div>
             </div>        
         )
