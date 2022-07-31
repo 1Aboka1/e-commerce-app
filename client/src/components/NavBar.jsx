@@ -10,6 +10,8 @@ export class NavBar extends React.Component {
     }
   }
 
+  //TODO: #1 Add login/register buttons as ToolTips from MUI
+  
   render () {
     return (
       <div className='bg-slate-800'>

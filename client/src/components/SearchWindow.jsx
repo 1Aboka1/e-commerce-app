@@ -3,12 +3,19 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 
+
+
 export class SearchWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listView: true,
+            expanded: false,
         }
+    }
+
+    handleExpandHandle = (panel) => (event, isExpanded) => {
+        this.setState({expanded: isExpanded ? panel : false})
     }
 
     handleListClick = () => {
@@ -18,6 +25,8 @@ export class SearchWindow extends Component {
     handleGridClick = () => {
         this.setState({listView: false});
     }
+
+    //TODO: #2 Create SearchBar with AutoComplete from MUI
 
     render() {
         return (
@@ -42,6 +51,7 @@ export class SearchWindow extends Component {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>        
         )
