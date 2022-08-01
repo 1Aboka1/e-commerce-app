@@ -11,7 +11,7 @@ export class Filter extends Component {
         super(props);
         this.state = {
             checked: [0],
-            filtersList: ['Модель', 'Тип'], //TODO: #5 Fetch filtersList from API
+            filtersList: ['Модель', 'Тип', 'Фильтр', 'Еще один фильтр'], //TODO: #5 Fetch filtersList from API
         }
     }
 
@@ -59,12 +59,12 @@ export class Filter extends Component {
     
     createAccordion = (title) => { 
         return (
-            <Accordion>
+            <Accordion elevation={0} disableGutters={true}>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
-                className='h-12 rounded ring-1 ring-gray-300 bg-white hover:bg-gray-100 transition duration-200 ease-in-out group'
+                className='h-12 rounded-lg ring-1 ring-gray-300 bg-white hover:bg-gray-100 transition duration-200 ease-in-out group'
                 >
                 <Typography><h1 className='font-bold text-[16px]'>{title}</h1></Typography>
                 </AccordionSummary>
@@ -77,7 +77,7 @@ export class Filter extends Component {
 
     render() {
         return (
-            <div className='w-96 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
+            <div className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
                 {this.state.filtersList.map((value) => {return this.createAccordion(value)})}
             </div>
         )

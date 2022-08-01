@@ -49,7 +49,7 @@ export class SearchWindow extends Component {
                     </div>
                     <div className='flex space-x-5 items-start'>
                         <Filter/>
-                        <Products/>
+                        <Products listView={this.state.listView}/>
                     </div>
                 </div>
             </div>        
