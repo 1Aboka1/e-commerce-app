@@ -77,7 +77,7 @@ export class Filter extends Component {
 
     render() {
         return (
-            <div className='basis-60 shadow-md ring-1 ring-gray-300 rounded sticky top-5'>
+            <div className='w-96 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
                 {this.state.filtersList.map((value) => {return this.createAccordion(value)})}
             </div>
         )
