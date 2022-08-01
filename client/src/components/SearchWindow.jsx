@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Filter } from './Filter';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
+import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
+import { Filter } from './SearchComponents/Filter'
+import { Products } from './SearchComponents/Products'
 
 export class SearchWindow extends Component {
     constructor(props) {
@@ -51,7 +47,10 @@ export class SearchWindow extends Component {
                             </div>
                         </div>
                     </div>
-                    <Filter/>
+                    <div className='flex space-x-5 items-start'>
+                        <Filter/>
+                        <Products/>
+                    </div>
                 </div>
             </div>        
         )

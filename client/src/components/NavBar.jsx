@@ -28,7 +28,7 @@ export class NavBar extends React.Component {
               <button className="p-2 rounded-md hover:text-gray-300 transition ease-in-out duration-700">Регистрация</button>
             </div>
           </div>
-          <form className='w-[350px] bg-slate-600 rounded-2xl outline-none p-2 pr-3 flex items-center border focus-within:border-green-200 transition duration-200'>
+          <form className='w-[350px] bg-slate-600 rounded-lg outline-none p-2 pr-3 flex items-center ring-1 ring-gray-200 focus-within:ring-green-200 transition duration-200'>
             <input type='search' placeholder='Поиск товаров...' required
               className='w-80 bg-slate-600 placeholder:text-slate-200 placeholder:text-[14px] pl-4 focus:outline-none text-md'
             />
