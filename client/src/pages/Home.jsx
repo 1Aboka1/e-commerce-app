@@ -14,6 +14,7 @@ export const Home = () => {
           <Widget image_path='8714780-1.jpg' title='Пылесосы'/>
           <Widget image_path='img_0_8_613_0.jpg' title='Стиральные машины' height={64}/>
           <Widget image_path='medium14.jpg' title='Холодильники' height={64}/>
+          <Widget image_path='786265_u01_b.jpg' title='Плиты и духовки' height={64}/>
         </div>
       </div>
       <SearchWindow/>
