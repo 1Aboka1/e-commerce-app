@@ -47,7 +47,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name']
 
     def __str__(self):
-        return self.user_name
+        return self.first_name
 
 class UserAddress(models.Model):
     address = models.CharField(max_length=150, blank=True)
@@ -86,7 +86,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.IntegerField(default=-1)
     quantity = models.IntegerField(default=-1)
-    image = models.ImageField()
+    image = models.ImageField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
