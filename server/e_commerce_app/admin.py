@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import CustomUser
-from .models import UserAddress, ProductCategory, Discount, Product, ShoppingSession, CartItem, OrderDetail, OrderItem
+from .models import UserAddress, Discount, Product, ShoppingSession, CartItem, OrderDetail, OrderItem
 from django.contrib.auth.admin import UserAdmin
 from django.forms import TextInput, Textarea
 
@@ -25,7 +25,6 @@ class UserAdminConfig(UserAdmin):
 
 admin.site.register(CustomUser, UserAdminConfig)
 admin.site.register(UserAddress)
-admin.site.register(ProductCategory)
 admin.site.register(Discount)
 admin.site.register(Product)
 admin.site.register(ShoppingSession)

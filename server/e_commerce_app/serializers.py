@@ -3,10 +3,9 @@ from .models import Product
 
 BASE_URL = 'http://localhost:8000/'
 class ProductSerializer(serializers.ModelSerializer):    
-
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'quantity', 'price', 'category', 'image')
+        fields = ('id', 'name', 'description', 'quantity', 'price', 'image')
 
     def to_representation(self, instance):
         res = super().to_representation(instance)

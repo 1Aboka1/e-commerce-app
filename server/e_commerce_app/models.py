@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from mptt.models import TreeForeignKey, MPTTModel
 
 class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, first_name, password, **other_fields):
@@ -61,15 +62,6 @@ class UserAddress(models.Model):
     def __str__(self):
         return self.user
 
-class ProductCategory(models.Model):
-    name = models.CharField(max_length=150, blank=True)
-    description = models.TextField(blank=True)
-    created_at = models.DateTimeField(default=timezone.now)
-    modified_at = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return self.name
-
 class Discount(models.Model):
     name = models.CharField(max_length=150, blank=True)
     description = models.TextField(blank=True)
@@ -90,14 +82,23 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
-    discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)
+    discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)    
 
     class Meta:
         ordering = ('-created_at',)
 
     def __str__(self):
         return self.name
+
+class ProductCategory(MPTTModel):
+    name = models.CharField(max_length=150, unique=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    
+    created_at = models.DateTimeField(default=timezone.now)
+    modified_at = models.DateTimeField(default=timezone.now)
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 class ShoppingSession(models.Model):
     total = models.IntegerField(default=0)

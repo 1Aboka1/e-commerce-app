@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'e_commerce_app',
     'rest_framework',
+    'mptt',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ecomm_db', 
-        'USER': 'abulkhair', 
+        'USER': 'aboka', 
         'PASSWORD': 'Aboka_877767',
         'HOST': '127.0.0.1', 
         'PORT': '5432',
