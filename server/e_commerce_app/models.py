@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from mptt.models import TreeForeignKey, MPTTModel
+import math
 
 class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, first_name, password, **other_fields):
