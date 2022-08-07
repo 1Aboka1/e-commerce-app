@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import CustomUser
-from .models import UserAddress, Discount, Product, ShoppingSession, CartItem, OrderDetail, OrderItem
+from .models import UserAddress, Discount, Product, ShoppingSession, CartItem, OrderDetail, OrderItem, ProductCategory
 from django.contrib.auth.admin import UserAdmin
-from django.forms import TextInput, Textarea
+from django.contrib.admin import ModelAdmin
+from mptt.admin import MPTTModelAdmin
 
 class UserAdminConfig(UserAdmin):
     model = CustomUser
@@ -22,7 +23,19 @@ class UserAdminConfig(UserAdmin):
          ),
     )
 
+class ProductCategoryConfig(MPTTModelAdmin):
+    model = ProductCategory
 
+    def get_queryset(self, request):
+        qs = self.model.objects.viewable()
+
+        ordering = self.ordering or ()
+        if ordering:
+            qs = qs.order_by(*ordering)
+        return qs
+    
+
+admin.site.register(ProductCategory, ProductCategoryConfig)
 admin.site.register(CustomUser, UserAdminConfig)
 admin.site.register(UserAddress)
 admin.site.register(Discount)

@@ -5,14 +5,26 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Checkbox from '@mui/material/Checkbox'
+import axios from 'axios'
 
 export class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
             checked: [0],
-            filtersList: ['Модель', 'Тип', 'Фильтр', 'Еще один фильтр'], //TODO: #5 Fetch filtersList from API
+            filters: [], //TODO: #5 Fetch filtersList from API
         }
+    }
+
+    componentDidMount() {
+        axios
+            .get('/api/product_categories')
+            .then((response) => {
+                this.setState({
+                    filters: response.data,
+                })
+            })
+            .catch((error) => { console.log(error) })
     }
 
     handleToggle = (value) => () => {
@@ -78,7 +90,7 @@ export class Filter extends Component {
     render() {
         return (
             <div className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
-                {this.state.filtersList.map((value) => {return this.createAccordion(value)})}
+                {this.state.filtersList.map((filter) => {return this.createAccordion(filter)})}
             </div>
         )
     }
