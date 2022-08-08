@@ -47,6 +47,21 @@ class Discount(models.Model):
     def __str__(self):
         return self.name
 
+class ProductCategory(MPTTModel):
+    name = models.CharField(max_length=150, unique=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    is_greatest = models.BooleanField(default=False)
+    
+    created_at = models.DateTimeField(default=timezone.now)
+    modified_at = models.DateTimeField(default=timezone.now)
+
+    objects = CategoryManager()
+    class MPTTMeta:
+        order_insertion_by = ['name']
+    
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     name = models.CharField(max_length=150, blank=True)
     description = models.TextField(blank=True)
@@ -56,25 +71,12 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT, default=None)
     discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)    
 
     class Meta:
         ordering = ('-created_at',)
 
-    def __str__(self):
-        return self.name
-
-class ProductCategory(MPTTModel):
-    name = models.CharField(max_length=150, unique=True)
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    
-    created_at = models.DateTimeField(default=timezone.now)
-    modified_at = models.DateTimeField(default=timezone.now)
-
-    objects = CategoryManager()
-    class MPTTMeta:
-        order_insertion_by = ['name']
-    
     def __str__(self):
         return self.name
 

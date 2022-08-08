@@ -3,7 +3,8 @@ from .models import CustomUser
 from .models import UserAddress, Discount, Product, ShoppingSession, CartItem, OrderDetail, OrderItem, ProductCategory
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import ModelAdmin
-from mptt.admin import MPTTModelAdmin
+from mptt.admin import DraggableMPTTAdmin
+from .forms import CategoryChoiceField
 
 class UserAdminConfig(UserAdmin):
     model = CustomUser
@@ -23,23 +24,28 @@ class UserAdminConfig(UserAdmin):
          ),
     )
 
-class ProductCategoryConfig(MPTTModelAdmin):
-    model = ProductCategory
+class ProductCategoryConfig(DraggableMPTTAdmin):
+    mptt_level_indent = 35
+    fields = (
+        'name',
+        'parent',
+        'is_greatest',
+    )
 
-    def get_queryset(self, request):
-        qs = self.model.objects.viewable()
-
-        ordering = self.ordering or ()
-        if ordering:
-            qs = qs.order_by(*ordering)
-        return qs
+class ProductConfig(ModelAdmin):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'product_category':
+            return CategoryChoiceField(queryset=ProductCategory.objects.filter(is_greatest=True))
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    
     
 
 admin.site.register(ProductCategory, ProductCategoryConfig)
 admin.site.register(CustomUser, UserAdminConfig)
 admin.site.register(UserAddress)
 admin.site.register(Discount)
-admin.site.register(Product)
+admin.site.register(Product, ProductConfig)
 admin.site.register(ShoppingSession)
 admin.site.register(CartItem)
 admin.site.register(OrderDetail)
