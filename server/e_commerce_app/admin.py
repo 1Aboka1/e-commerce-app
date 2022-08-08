@@ -5,6 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import ModelAdmin
 from mptt.admin import DraggableMPTTAdmin
 from .forms import CategoryChoiceField
+from mptt.forms import TreeNodeChoiceField, TreeNodeMultipleChoiceField
 
 class UserAdminConfig(UserAdmin):
     model = CustomUser
@@ -29,14 +30,17 @@ class ProductCategoryConfig(DraggableMPTTAdmin):
     fields = (
         'name',
         'parent',
-        'is_greatest',
     )
 
 class ProductConfig(ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'product_category':
-            return CategoryChoiceField(queryset=ProductCategory.objects.filter(is_greatest=True))
+            obj = ProductCategory.objects.get(pk=1)
+            return TreeNodeMultipleChoiceField(queryset=ProductCategory.objects.all())
+#            return TreeNodeChoiceField(queryset=obj.get_descendants(), start_level=obj.level)
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    #create multiple instances of fieldsets for each node of root_node
     
     
     

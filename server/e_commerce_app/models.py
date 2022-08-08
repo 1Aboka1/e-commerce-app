@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from mptt.models import TreeForeignKey, MPTTModel, TreeManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from mptt.models import TreeForeignKey, MPTTModel
 from .managers import CustomUserManager, CategoryManager
+from mptt.fields import TreeForeignKey as ForeignKey
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -50,7 +51,6 @@ class Discount(models.Model):
 class ProductCategory(MPTTModel):
     name = models.CharField(max_length=150, unique=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    is_greatest = models.BooleanField(default=False)
     
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
@@ -62,6 +62,8 @@ class ProductCategory(MPTTModel):
     def __str__(self):
         return self.name
 
+
+
 class Product(models.Model):
     name = models.CharField(max_length=150, blank=True)
     description = models.TextField(blank=True)
@@ -71,7 +73,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT, default=None)
+    product_category = ForeignKey(ProductCategory, on_delete=models.PROTECT, default=None)
     discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)    
 
     class Meta:
