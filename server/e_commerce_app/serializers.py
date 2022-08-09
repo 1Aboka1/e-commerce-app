@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Product, ProductCategory
+from .models import Product, ProductCategory, DeviceTypeCategory
 
-BASE_URL = 'http://localhost:8000/'
+BASE_URLS = ['http://localhost:8000/', 'http://127.0.0.1:8000/']
 class ProductSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Product
@@ -9,7 +9,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         res = super().to_representation(instance)
-        res['image'] = res['image'].replace(BASE_URL, '')
+        for BASE_URL in BASE_URLS:
+            res['image'] = res['image'].replace(BASE_URL, '')
         return res
 
 class ProductCategorySerializer(serializers.ModelSerializer):
@@ -20,3 +21,13 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
         fields = ('name', 'device_types', 'device_brands', 'part_types')
+
+    def to_representation(self, instance):
+        res = super().to_representation(instance).copy()
+        for i in list(res.keys()):
+            if len(res[i]) == 0:
+                res.pop(i)
+        for i in list(res.keys()):
+            if i != 'name':
+                res['children'] = res.pop(i)
+        return res

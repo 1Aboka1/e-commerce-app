@@ -1,3 +1,4 @@
+from time import pthread_getcpuclockid
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -56,22 +57,31 @@ class ProductCategory(models.Model):
     
 class DeviceTypeCategory(models.Model):
     name = models.CharField(max_length=150, unique=True)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_types", default=-1)
-
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_types")
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = _("Тип устройства")
+        verbose_name_plural = _("Типы устройства")
+        
+
 class DeviceBrandCategory(models.Model):
     name = models.CharField(max_length=150, unique=True)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_brands", default=-1)
-
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_brands")
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = _("Марка устройства")
+        verbose_name_plural = _("Марки устройства")
+
 class PartTypeCategory(models.Model):
     name = models.CharField(max_length=150, unique=True)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="part_types", default=-1)
-
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="part_types")
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = _("Тип запчасти")
+        verbose_name_plural = _("Типы запчасти")
 
 class Product(models.Model):
     name = models.CharField(max_length=150, blank=True)

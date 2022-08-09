@@ -25,7 +25,6 @@ export class Filter extends Component {
                 })
             })
             .catch((error) => { console.log(error) })
-        console.log(this.state.filterList)
     }
 
     handleToggle = (value) => () => {
@@ -46,19 +45,19 @@ export class Filter extends Component {
         return (
             <div>
                 {filters.map((filter) => {
-                    const labelId = `checkbox-list-label-${filter.name}`
+                    const labelId = `checkbox-list-label-${filter}`
 
                     return (
-                        <div className='first:pt-1 last:pb-1 px-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition ease-in-out duration-200' onClick={this.handleToggle(filter.name)}>
+                        <div className='first:pt-1 last:pb-1 px-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition ease-in-out duration-200' onClick={this.handleToggle(filter)}>
                             <div className='flex items-center'>
                                 <Checkbox
                                     edge="start"
-                                    checked={this.state.checked.indexOf(filter.name) !== -1}
+                                    checked={this.state.checked.indexOf(filter) !== -1}
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{ 'aria-labelledby': labelId }}
                                 />
-                                <span>{filter.name}</span>
+                                <span>{filter}</span>
                             </div>
                             <span className=''>{34}</span>
                         </div>
@@ -69,7 +68,7 @@ export class Filter extends Component {
     }
     
     createAccordion = (filter) => { 
-        console.log(filter)
+        console.log(this.state.checked)
         return (
             <Accordion elevation={0} disableGutters={true}>
                 <AccordionSummary
