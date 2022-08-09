@@ -34,14 +34,14 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
     'e_commerce_app',
     'rest_framework',
-    'mptt',
+    'polymorphic',
+    'django.contrib.contenttypes',
 ]
 
 MIDDLEWARE = [

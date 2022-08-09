@@ -8,6 +8,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
 class ProductCategoryViewSet(viewsets.ModelViewSet):
-    queryset = ProductCategory.objects.viewable()
+    queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
     

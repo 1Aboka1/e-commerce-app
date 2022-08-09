@@ -2,10 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from mptt.models import TreeForeignKey, MPTTModel
-from .managers import CustomUserManager, CategoryManager
-from mptt.fields import TreeForeignKey as ForeignKey
-
+from .managers import CustomUserManager
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -48,21 +45,33 @@ class Discount(models.Model):
     def __str__(self):
         return self.name
 
-class ProductCategory(MPTTModel):
+class ProductCategory(models.Model):
     name = models.CharField(max_length=150, unique=True)
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
-
-    objects = CategoryManager()
-    class MPTTMeta:
-        order_insertion_by = ['name']
     
     def __str__(self):
         return self.name
+    
+class DeviceTypeCategory(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_types", default=-1)
 
+    def __str__(self):
+        return self.name
+class DeviceBrandCategory(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_brands", default=-1)
 
+    def __str__(self):
+        return self.name
+class PartTypeCategory(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="part_types", default=-1)
+
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     name = models.CharField(max_length=150, blank=True)
@@ -73,7 +82,10 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    product_category = ForeignKey(ProductCategory, on_delete=models.PROTECT, default=None)
+    device_type_category = models.ForeignKey(DeviceTypeCategory, on_delete=models.PROTECT, default=None)
+    device_brand_category = models.ForeignKey(DeviceBrandCategory, on_delete=models.PROTECT, default=None)
+    part_type_category = models.ForeignKey(PartTypeCategory, on_delete=models.PROTECT, default=None)
+
     discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)    
 
     class Meta:
