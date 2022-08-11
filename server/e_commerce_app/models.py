@@ -92,9 +92,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    device_type_category = models.ForeignKey(DeviceTypeCategory, on_delete=models.PROTECT, default=None)
-    device_brand_category = models.ForeignKey(DeviceBrandCategory, on_delete=models.PROTECT, default=None)
-    part_type_category = models.ForeignKey(PartTypeCategory, on_delete=models.PROTECT, default=None)
+    device_type_category = models.ForeignKey(DeviceTypeCategory, on_delete=models.PROTECT, default=None, related_name='products')
+    device_brand_category = models.ForeignKey(DeviceBrandCategory, on_delete=models.PROTECT, default=None, related_name='products')
+    part_type_category = models.ForeignKey(PartTypeCategory, on_delete=models.PROTECT, default=None, related_name='products')
 
     discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)    
 

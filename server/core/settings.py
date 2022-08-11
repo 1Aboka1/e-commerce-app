@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'e_commerce_app',
+    'drf_multiple_model',
     'rest_framework',
     'polymorphic',
     'django.contrib.contenttypes',
+    'e_commerce_app',
 ]
 
 MIDDLEWARE = [

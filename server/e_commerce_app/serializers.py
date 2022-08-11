@@ -3,6 +3,7 @@ from .models import Product, ProductCategory, DeviceTypeCategory
 
 BASE_URLS = ['http://localhost:8000/', 'http://127.0.0.1:8000/']
 class ProductSerializer(serializers.ModelSerializer):    
+    
     class Meta:
         model = Product
         fields = ('id', 'name', 'description', 'quantity', 'price', 'image', 'device_type_category', 'device_brand_category', 'part_type_category')
@@ -31,3 +32,7 @@ class ProductCategorySerializer(serializers.ModelSerializer):
             if i != 'name':
                 res['children'] = res.pop(i)
         return res
+
+class ProductCategoryCountSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    products_count = serializers.IntegerField()

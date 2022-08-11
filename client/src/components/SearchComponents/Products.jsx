@@ -20,7 +20,6 @@ export class Products extends Component {
     }
 
     createProductList = (product) => {    
-        console.log(product.image)  
         return(
             <div className='flex justify-between py-4 first:pt-5 cursor-pointer transition ease-in-out duration-200 group'>
                 <div className='flex'>
