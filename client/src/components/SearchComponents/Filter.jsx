@@ -39,7 +39,6 @@ export class Filter extends Component {
             .then((response) => {
                 this.setState({
                     filterCountList: response.data,
-
                 })
             })
             .catch((error) => { console.log(error) })
@@ -52,6 +51,9 @@ export class Filter extends Component {
                 { params: JSON.stringify(this.state.checked) },
                 { headers: { 'Content-Type': 'application/json', } },
             )
+            .then((response) => {
+                let filteredProducts = React.createContext(response.data)
+            })
     }
 
     handleToggle = (value, type) => () => {

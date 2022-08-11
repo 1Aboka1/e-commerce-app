@@ -3,7 +3,6 @@ from .models import Product, ProductCategory, DeviceTypeCategory
 
 BASE_URLS = ['http://localhost:8000/', 'http://127.0.0.1:8000/']
 class ProductSerializer(serializers.ModelSerializer):    
-    
     class Meta:
         model = Product
         fields = ('id', 'name', 'description', 'quantity', 'price', 'image', 'device_type_category', 'device_brand_category', 'part_type_category')
