@@ -17,11 +17,47 @@ class FilteredProductView(generics.ListAPIView):
 
     def get_queryset(self):
         filterRequest = json.loads(self.request.query_params['0'])
-        return Product.objects.all().filter(
-                Q(device_type_category__name__in = filterRequest[DeviceTypeCategory._meta.verbose_name]) |
-                Q(device_brand_category__name__in = filterRequest[DeviceBrandCategory._meta.verbose_name]) |
-                Q(part_type_category__name__in = filterRequest[PartTypeCategory._meta.verbose_name])
+        device_type = filterRequest[str(DeviceTypeCategory._meta.verbose_name)]
+        device_brand = filterRequest[str(DeviceBrandCategory._meta.verbose_name)]
+        part_type = filterRequest[str(PartTypeCategory._meta.verbose_name)]
+        
+        if len(device_type) == 1 and len(device_brand) > 1 and len(part_type) > 1:
+            return Product.objects.all().filter(
+                Q(device_brand_category__name__in = device_brand) &
+                Q(part_type_category__name__in = part_type)
             )
+        elif len(device_type) > 1 and len(device_brand) == 1 and len(part_type) > 1:
+            return Product.objects.all().filter(
+                Q(device_type_category__name__in = device_type) &
+                Q(part_type_category__name__in = part_type)
+            )
+        elif len(device_type) > 1 and len(device_brand) > 1 and len(part_type) == 1:
+            return Product.objects.all().filter(
+                Q(device_type_category__name__in = device_type) &
+                Q(device_brand_category__name__in = device_brand)
+            )
+        elif len(device_type) == 1 and len(device_brand) == 1 and len(part_type) > 1:
+            return Product.objects.all().filter(
+                Q(part_type_category__name__in = part_type)
+            )
+        elif len(device_type) == 1 and len(device_brand) > 1 and len(part_type) == 1:
+            return Product.objects.all().filter(
+                Q(device_brand_category__name__in = device_brand)
+            )
+        elif len(device_type) > 1 and len(device_brand) == 1 and len(part_type) == 1:
+            return Product.objects.all().filter(
+                Q(device_type_category__name__in = device_type)
+            )
+        else:
+            qs = Product.objects.all().filter(
+                Q(device_type_category__name__in = device_type) &
+                Q(device_brand_category__name__in = device_brand) &
+                Q(part_type_category__name__in = part_type)
+            )
+            if qs.count() == 0:
+                return Product.objects.all()
+            else:
+                return qs
 
 class ProductCategoryView(generics.ListAPIView):
     serializer_class = ProductCategorySerializer
