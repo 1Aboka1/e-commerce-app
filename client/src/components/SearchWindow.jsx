@@ -93,9 +93,6 @@ export class SearchWindow extends Component {
         previousState.checked[type] = newChecked
         this.setState( previousState )
         this.setState({ didSenttoAPI: false })
-        // let previousState = this.state.checked
-        // previousState[type] = newChecked
-        // this.setState({ checked: previousState[type] })
     }
 
     createList = (filters) => {

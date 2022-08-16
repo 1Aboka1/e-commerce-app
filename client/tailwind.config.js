@@ -3,7 +3,7 @@ module.exports = {
   mode: 'jit',
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  darkMode: false,
+  // darkMode: false,
   important: "#root",
   theme: {
     extend: {},
