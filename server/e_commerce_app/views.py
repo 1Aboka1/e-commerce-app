@@ -7,6 +7,7 @@ from rest_framework import viewsets, generics, mixins
 from rest_framework.response import Response
 from drf_multiple_model.views import FlatMultipleModelAPIView
 import json
+from django.contrib.postgres.search import TrigramSimilarity
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -74,3 +75,10 @@ class ProductCategoryCountView(FlatMultipleModelAPIView):
         {'queryset': DeviceTypeCategory.objects.all().annotate(products_count=Count('products')), 'serializer_class': ProductCategoryCountSerializer},
         {'queryset': PartTypeCategory.objects.all().annotate(products_count=Count('products')), 'serializer_class': ProductCategoryCountSerializer},
     ]
+
+class SearchResultsView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        print(self.request.query_params['keywords'])
+        return Product.objects.annotate(similarity=TrigramSimilarity('name', self.request.query_params['keywords'])).filter(similarity__gt=0.09).order_by('-similarity')

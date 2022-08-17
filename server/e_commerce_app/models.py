@@ -130,6 +130,7 @@ class OrderDetail(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
     status = models.BooleanField(default=False)
+    expected_date = models.DateTimeField(default=timezone.now)
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 

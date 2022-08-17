@@ -72,7 +72,6 @@ export class SearchWindow extends Component {
                 )
                 .then((response) => {
                     this.setState({ filteredQuerySet: response.data, didSenttoAPI: true })
-                    console.log(this.state.filteredQuerySet )
                 })
                 .catch((error) => { console.log(error) })
         }
