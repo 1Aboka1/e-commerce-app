@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.db.models import Q
 from .models import Product, ProductCategory, DeviceBrandCategory, DeviceTypeCategory, PartTypeCategory
 from .serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer
-from rest_framework import viewsets, generics, mixins
+from rest_framework import viewsets, generics
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from drf_multiple_model.views import FlatMultipleModelAPIView
 import json
@@ -82,3 +83,8 @@ class SearchResultsView(generics.ListAPIView):
     def get_queryset(self):
         print(self.request.query_params['keywords'])
         return Product.objects.annotate(similarity=TrigramSimilarity('name', self.request.query_params['keywords'])).filter(similarity__gt=0.09).order_by('-similarity')
+
+class ProductsCountView(APIView):
+    def get(self, request, format=None):
+        products_count = Product.objects.all().count()
+        return Response(products_count)

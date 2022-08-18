@@ -11,4 +11,5 @@ urlpatterns = [
     path('product_category_count', views.ProductCategoryCountView.as_view(), name='productCategoryCount'),
     path('get_filtered_products', views.FilteredProductView.as_view(), name='filteredProducts'),
     path('get_search_results', views.SearchResultsView.as_view(), name='searchResults'),
+    path('get_products_count', views.ProductsCountView.as_view(), name='productsCount'),
 ]
