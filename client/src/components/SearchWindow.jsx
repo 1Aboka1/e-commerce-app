@@ -12,7 +12,7 @@ import Checkbox from '@mui/material/Checkbox'
 import axios from 'axios'
 
 
-export const SearchWindowFunc = () => {
+export const SearchWindow = React.forwardRef((props, ref) => {
     const [listView, setListView] = useState(true)
     const [checked, setchecked] = useState([])
     const [filterList, setfilterList] = useState([])
@@ -23,13 +23,14 @@ export const SearchWindowFunc = () => {
     const [componentDidMount, setcomponentDidMount] = useState(false)   
 
     const handleListClick = () => {
-        this.setState({listView: true})
+        setListView(true)
     }
 
     const handleGridClick = () => {
-        this.setState({listView: false})
+        setListView(false)
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         if(componentDidMount === false) {
             setcomponentDidMount(true)
@@ -62,7 +63,7 @@ export const SearchWindowFunc = () => {
     useEffect(() => {
         if(componentDidMount === true && didSentToAPI === false) {
             axios
-            .get(
+                .get(
                     'http://localhost:8000/api/get_filtered_products',
                     { params: JSON.stringify(checked) },
                     { headers: { 'Content-Type': 'application/json', } },
@@ -163,7 +164,7 @@ export const SearchWindowFunc = () => {
                     </div>
                 </div>
                 <div className='flex space-x-5 items-start'>
-                    <div className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
+                    <div ref={ref} className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
                         {filterList.map((filter) => {return createAccordion(filter)})}
                     </div>
                     <Products listView={listView} filteredQuerySet={filteredQuerySet}/>
@@ -171,4 +172,4 @@ export const SearchWindowFunc = () => {
             </div>
         </div>
     )
-}
+})

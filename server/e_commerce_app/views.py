@@ -19,6 +19,9 @@ class FilteredProductView(generics.ListAPIView):
 
     def get_queryset(self):
         filterRequest = json.loads(self.request.query_params['0'])
+        if isinstance(filterRequest, (list)):
+            return Product.objects.all()
+
         device_type = filterRequest[str(DeviceTypeCategory._meta.verbose_name)]
         device_brand = filterRequest[str(DeviceBrandCategory._meta.verbose_name)]
         part_type = filterRequest[str(PartTypeCategory._meta.verbose_name)]
@@ -88,3 +91,7 @@ class ProductsCountView(APIView):
     def get(self, request, format=None):
         products_count = Product.objects.all().count()
         return Response(products_count)
+    
+class SingleProductView(generics.RetrieveAPIView):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
