@@ -95,8 +95,6 @@ class SingleProductView(generics.RetrieveAPIView):
 class SingleProductCategoriesView(FlatMultipleModelAPIView):
     def get_querylist(self):
         request_params = json.loads(self.request.query_params['0'])
-        print(request_params)
-        print('\n\n\n\n\n\n')
         if bool(dict):
             querylist = [
                 {'queryset': DeviceTypeCategory.objects.filter(id=request_params["device_type_category"]), 'serializer_class': SingleCategorySerializer},

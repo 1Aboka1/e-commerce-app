@@ -1,6 +1,7 @@
 import React from 'react';
 import LogoDevIcon from '@mui/icons-material/LogoDev'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
+import { Link } from 'react-router-dom'
 
 export class NavBar extends React.Component {
   constructor(props) {
@@ -17,11 +18,15 @@ export class NavBar extends React.Component {
       <div className='bg-black'>
         <div className='text-gray-100 flex items-center max-w-[1240px] w-screen mx-auto h-[70px] justify-between'>
           <div className='flex items-center space-x-4'>
-            <LogoDevIcon fontSize='large' className='ml-5 text-green-400 hover: cursor-pointer'/>
+            <Link to={`/`}>
+              <LogoDevIcon fontSize='large' className='ml-5 text-green-400 hover: cursor-pointer'/>
+            </Link>
             <p className='font-bold text-lg'>8-705-434-3434</p>
           </div>
           <div className='text-md mr-7 space-x-3 flex items-center absolute left-1/2 -translate-x-1/2'>
-            <button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Главная</button>
+            <Link to={`/`}>
+              <button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Главная</button>
+            </Link>
             <button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Каталог</button>
             <div className="py-3 rounded-md ">
               <button className="bg-slate-600 p-2 rounded-md hover:bg-slate-700 hover:rounded-xl transition duration-400 ease-in-out">Вход</button>
