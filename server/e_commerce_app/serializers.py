@@ -36,3 +36,6 @@ class ProductCategorySerializer(serializers.ModelSerializer):
 class ProductCategoryCountSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=100)
     products_count = serializers.IntegerField()
+
+class SingleCategorySerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)

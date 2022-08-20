@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.shortcuts import render
 from django.db.models import Q
 from .models import Product, ProductCategory, DeviceBrandCategory, DeviceTypeCategory, PartTypeCategory
-from .serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer
+from .serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer, SingleCategorySerializer
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -69,10 +69,6 @@ class ProductCategoryView(generics.ListAPIView):
     queryset = ProductCategory.objects.all()
     paginatation_class = None
 
-    def get_queryset(self):
-        qs = self.queryset.all()
-        return qs
-
 class ProductCategoryCountView(FlatMultipleModelAPIView):
     querylist = [
         {'queryset': DeviceBrandCategory.objects.all().annotate(products_count=Count('products')), 'serializer_class': ProductCategoryCountSerializer},
@@ -95,3 +91,17 @@ class ProductsCountView(APIView):
 class SingleProductView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+
+class SingleProductCategoriesView(FlatMultipleModelAPIView):
+    def get_querylist(self):
+        request_params = json.loads(self.request.query_params['0'])
+        print(request_params)
+        print('\n\n\n\n\n\n')
+        if bool(dict):
+            querylist = [
+                {'queryset': DeviceTypeCategory.objects.filter(id=request_params["device_type_category"]), 'serializer_class': SingleCategorySerializer},
+                {'queryset': DeviceBrandCategory.objects.filter(id=request_params["device_brand_category"]), 'serializer_class': SingleCategorySerializer},
+                {'queryset': PartTypeCategory.objects.filter(id=request_params["part_type_category"]), 'serializer_class': SingleCategorySerializer},
+            ]
+            return querylist
+        return None
