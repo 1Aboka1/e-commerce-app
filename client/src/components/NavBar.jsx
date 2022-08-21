@@ -29,11 +29,11 @@ export class NavBar extends React.Component {
             </Link>
             <button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Каталог</button>
             <div className="py-3 rounded-md ">
-              <button className="bg-slate-600 p-2 rounded-md hover:bg-slate-700 hover:rounded-xl transition duration-400 ease-in-out">Вход</button>
+              <button className="bg-slate-600 p-2 px-3 rounded-md hover:bg-slate-700 hover:scale-105 transition duration-200 ease-in-out">Вход</button>
               <button className="p-2 rounded-md hover:text-gray-300 transition ease-in-out duration-700">Регистрация</button>
             </div>
           </div>
-          <form className='w-[350px] bg-slate-600 rounded-lg outline-none p-2 pr-3 flex items-center ring-1 ring-gray-200 focus-within:ring-green-200 transition duration-200'>
+          <form className='w-[350px] bg-slate-600 rounded-lg outline-none p-2 pr-3 flex items-center ring-1 ring-gray-200 focus-within:ring-green-200 hover:scale-105 focus-within:scale-105 transition duration-200'>
             <input type='search' placeholder='Поиск товаров...' required
               className='w-80 bg-slate-600 placeholder:text-slate-200 placeholder:text-[14px] pl-4 focus:outline-none text-md'
             />

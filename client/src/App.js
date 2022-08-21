@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { SingleProduct } from './pages/SingleProduct'
+import { Search } from './pages/Search'
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
 				<Route path="product_item">
 					<Route path=":productID" element={<SingleProduct/>}/>
 				</Route>
+				<Route path="search" element={<Search/>}/>
 			</Routes>
 		</BrowserRouter>
     )

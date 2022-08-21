@@ -1,8 +1,7 @@
 import React, { useRef } from 'react'
 import { NavBar } from '../components/NavBar'
 import { WelcomeSection } from '../components/WelcomeSection'
-import { CategoryPopUp } from '../components/CategoryPopUp'
-import { SearchWindow } from '../components/SearchWindow'
+import { CategoryWindow } from '../components/CategoryWindow'
 
 export const Home = () => {
 	const searchWindowFocusRef = useRef(null)
@@ -15,8 +14,7 @@ export const Home = () => {
 				<NavBar/>
 				<WelcomeSection handleSearchClick={handleSearchClick.bind(this)}/>
 			</div>
-			<SearchWindow ref={searchWindowFocusRef}/>
-			<CategoryPopUp/>
+			<CategoryWindow/>
 		</div>
 	)
 }
