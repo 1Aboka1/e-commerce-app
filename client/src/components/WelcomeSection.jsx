@@ -59,9 +59,9 @@ export class WelcomeSection extends Component {
     
     render() {
         return (
-            <div className={'h-screen bg-gray-400 bg-center bg-no-repeat bg-cover bg-blend-multiply'} style={{backgroundImage: `url("http://localhost:8000/static/6424672.jpg")`}}>
+            <div className={'h-screen bg-gray-500 bg-center bg-no-repeat bg-cover bg-blend-multiply'} style={{backgroundImage: `url("http://localhost:8000/static/6424672.jpg")`}}>
                 <div className='flex flex-col items-center gap-6 justify-center h-[75vh] '>
-                    <h1 className='text-4xl text-center font-extrabold text-white'>Запчасти для бытовой техники с доставкой на дом <br/>в Усть-Каменогорске</h1>
+                    <h1 className='text-3xl text-center font-medium text-white'>Запчасти для бытовой техники с доставкой на дом <br/>в Усть-Каменогорске</h1>
                     <form className='relative w-[80vh] h-12 bg-white rounded-lg justify-between outline-none p-2 pr-3 flex items-center ring-1 ring-gray-400 focus-within:ring-green-300 hover:scale-105 focus-within:scale-105 transition ease-in-out duration-200'>
                         <input onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} type='search' placeholder='Поиск товаров...' required
                             className='placeholder:text-gray-900 placeholder:text-lg pl-4 w-full focus:outline-none text-lg'
