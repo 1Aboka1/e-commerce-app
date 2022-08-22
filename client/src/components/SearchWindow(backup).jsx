@@ -14,7 +14,7 @@ import axios from 'axios'
 
 export const SearchWindow = React.forwardRef((props, ref) => {
     const [listView, setListView] = useState(true)
-    const [checked, setchecked] = useState({})
+    const [checked, setchecked] = useState([])
     const [filterList, setfilterList] = useState([])
     const [filterCountList, setfilterCountList] = useState([])
     const [filteredQuerySet, setfilteredQuerySet] = useState([])
@@ -22,6 +22,7 @@ export const SearchWindow = React.forwardRef((props, ref) => {
     const [productCount, setproductCount] = useState(0) 
     const [componentDidMount, setcomponentDidMount] = useState(false)   
     const [inputText, setinputText] = useState('')
+    const [searchResult, setSearchResult] = useState([])
 
     const handleListClick = () => {
         setListView(true)
@@ -63,24 +64,20 @@ export const SearchWindow = React.forwardRef((props, ref) => {
 
     useEffect(() => {
         if(componentDidMount === true && didSentToAPI === false) {
-            if(!(checked && Object.keys(checked).length === 0 && Object.getPrototypeOf(checked) === Object.prototype && inputText.length === 0)) {
-                axios
-                    .get(
-                        'http://localhost:8000/api/get_filtered_products',
-                        { params: {
-                            filters: JSON.stringify(checked),
-                            keywords: inputText,
-                        } },
-                        { headers: { 'Content-Type': 'application/json', } },
-                    )
-                    .then((response) => {
-                        setfilteredQuerySet(response.data)
-                        setdidSentToAPI(true)
-                    })
-                    .catch((error) => { console.log(error) })
-            }
+            axios
+                .get(
+                    'http://localhost:8000/api/get_filtered_products',
+                    { params: JSON.stringify(checked) },
+                    { headers: { 'Content-Type': 'application/json', } },
+                )
+                .then((response) => {
+                    setfilteredQuerySet(response.data)
+                    setdidSentToAPI(true)
+                })
+                .catch((error) => { console.log(error) })
         }
     })
+
 
     const handleToggle = (value, type) => () => {
         const currentIndex = checked[type].indexOf(value)
@@ -146,9 +143,22 @@ export const SearchWindow = React.forwardRef((props, ref) => {
         )
     }
 
+    const fetchSearchResult = (inputText) => {
+        axios
+            .get(
+                `http://localhost:8000/api/get_search_results`,
+                { params: { keywords: inputText } },
+                { headers: { 'Content-Type': 'application/json' } }
+            )
+            .then((response) => {
+                setSearchResult(response.data)
+            })
+            .catch((error) => { console.log(error) })
+    }
+
     const handleChange = (e) => {
-        setdidSentToAPI(false)
         setinputText(e.target.value.toLowerCase())
+        fetchSearchResult(inputText)
     }
     
     return (

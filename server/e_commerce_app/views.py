@@ -17,14 +17,10 @@ class ProductViewSet(viewsets.ModelViewSet):
 class FilteredProductView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
-    def get_queryset(self):
-        filterRequest = json.loads(self.request.query_params['0'])
-        if isinstance(filterRequest, (list)):
-            return Product.objects.all()
-
-        device_type = filterRequest[str(DeviceTypeCategory._meta.verbose_name)]
-        device_brand = filterRequest[str(DeviceBrandCategory._meta.verbose_name)]
-        part_type = filterRequest[str(PartTypeCategory._meta.verbose_name)]
+    def FilterRequest(self, filters):
+        device_type = filters[str(DeviceTypeCategory._meta.verbose_name)]
+        device_brand = filters[str(DeviceBrandCategory._meta.verbose_name)]
+        part_type = filters[str(PartTypeCategory._meta.verbose_name)]
         
         if len(device_type) == 1 and len(device_brand) > 1 and len(part_type) > 1:
             return Product.objects.all().filter(
@@ -64,6 +60,20 @@ class FilteredProductView(generics.ListAPIView):
             else:
                 return qs
 
+    def get_queryset(self):
+        if self.request.query_params.__contains__('filters'):
+            filters = json.loads(self.request.query_params['filters'])
+            keywords = self.request.query_params['keywords']
+            if len(filters) == 0 and len(keywords) == 0:
+                return Product.objects.all()
+            elif len(filters) != 0 and len(keywords) == 0:
+                return self.FilterRequest(filters)
+            elif len(filters) == 0 and len(keywords) != 0:
+                return Product.objects.annotate(similarity=TrigramSimilarity('name', self.request.query_params['keywords'])).filter(similarity__gt=0.09).order_by('-similarity')
+            else:
+                return self.FilterRequest(filters).annotate(similarity=TrigramSimilarity('name', self.request.query_params['keywords'])).filter(similarity__gt=0.09).order_by('-similarity')
+                
+
 class ProductCategoryView(generics.ListAPIView):
     serializer_class = ProductCategorySerializer
     queryset = ProductCategory.objects.all()
@@ -75,13 +85,6 @@ class ProductCategoryCountView(FlatMultipleModelAPIView):
         {'queryset': DeviceTypeCategory.objects.all().annotate(products_count=Count('products')), 'serializer_class': ProductCategoryCountSerializer},
         {'queryset': PartTypeCategory.objects.all().annotate(products_count=Count('products')), 'serializer_class': ProductCategoryCountSerializer},
     ]
-
-class SearchResultsView(generics.ListAPIView):
-    serializer_class = ProductSerializer
-
-    def get_queryset(self):
-        print(self.request.query_params['keywords'])
-        return Product.objects.annotate(similarity=TrigramSimilarity('name', self.request.query_params['keywords'])).filter(similarity__gt=0.09).order_by('-similarity')
 
 class ProductsCountView(APIView):
     def get(self, request, format=None):
