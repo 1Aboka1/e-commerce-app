@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h_86=wh^f^m4^=i-5dn_c-9xlnwtv&45+%&v(&@%s+=pdbf^2)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'fastbuy.kz', 'localhost', '0.0.0.0']
 
 
 # Application definition
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'ecomm_db', 
         'USER': 'aboka', 
         'PASSWORD': 'Aboka_877767',
-        'HOST': '127.0.0.1', 
+        'HOST': 'postgres', 
         'PORT': '5432',
     }
 }
@@ -138,6 +138,8 @@ AUTH_USER_MODEL = 'e_commerce_app.CustomUser'
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "http://127.0.0.1",
+    "http://localhost",
 ]
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
