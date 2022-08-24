@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h_86=wh^f^m4^=i-5dn_c-9xlnwtv&45+%&v(&@%s+=pdbf^2)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'fastbuy.kz', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -140,6 +140,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1",
     "http://localhost",
+    "http://172.20.0.1",
 ]
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]

@@ -36,7 +36,7 @@ export const SearchWindow = React.forwardRef((props, ref) => {
         if(componentDidMount === false) {
             setcomponentDidMount(true)
             axios
-                .get(`http://172.20.0.1:8000/api/product_categories`)
+                .get('/api/product_categories')
                 .then((response) => {
                     setfilterList(response.data)
                     const tempList = response.data.map((item) => { return item.name })
@@ -47,13 +47,13 @@ export const SearchWindow = React.forwardRef((props, ref) => {
                 .catch((error) => { console.log(error) })
             
             axios
-                .get(`http://172.20.0.1:8000/api/product_category_count`)
+                .get('/api/product_category_count')
                 .then((response) => {
                     setfilterCountList(response.data)
                 })
                 .catch((error) => { console.log(error) })
             axios
-                .get(`http://172.20.0.1:8000/api/get_products_count`)
+                .get('/api/get_products_count')
                 .then((response) => {
                     setproductCount(response.data)
                 })
@@ -66,7 +66,7 @@ export const SearchWindow = React.forwardRef((props, ref) => {
             if(!(checked && Object.keys(checked).length === 0 && Object.getPrototypeOf(checked) === Object.prototype && inputText.length === 0)) {
                 axios
                     .get(
-                        'http://172.20.0.1:8000/api/get_filtered_products',
+                        '/api/get_filtered_products',
                         { params: {
                             filters: JSON.stringify(checked),
                             keywords: inputText,

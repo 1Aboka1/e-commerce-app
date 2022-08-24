@@ -18,7 +18,7 @@ export const SingleProductGeneral = () => {
             window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
             axios
                 .get(
-                    'http://localhost:8000/api/get_single_product/' + productURLParams.productID,
+                    '/api/get_single_product/' + productURLParams.productID,
                 )
                 .then((response) => {
                     setproductDetails(response.data)
@@ -39,7 +39,7 @@ export const SingleProductGeneral = () => {
             if(!(temp_object && Object.keys(temp_object).length === 0 && Object.getPrototypeOf(temp_object) === Object.prototype)){
                 axios
                     .get(
-                        'http://localhost:8000/api/get_single_products_categories',
+                        '/api/get_single_products_categories',
                         { params: JSON.stringify(temp_object) },
                         { headers: { 'Content-Type': 'application/json' } }
                     )

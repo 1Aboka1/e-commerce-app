@@ -11,7 +11,7 @@ export class Products extends Component {
 
     componentDidMount() {
         axios
-            .get(`http://172.20.0.1:8000/api/products`)
+            .get('/api/products')
             .then((response) => {
                 this.setState({
                     fetchedData: response.data,

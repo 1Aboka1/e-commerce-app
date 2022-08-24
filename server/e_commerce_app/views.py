@@ -10,7 +10,7 @@ from drf_multiple_model.views import FlatMultipleModelAPIView
 import json
 from django.contrib.postgres.search import TrigramSimilarity
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     
