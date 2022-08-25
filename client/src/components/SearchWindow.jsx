@@ -101,6 +101,7 @@ export const SearchWindow = React.forwardRef((props, ref) => {
         return (
             <div>
                 {filters.map((filter) => {
+		if(filterCountList !== undefined) {
                     const labelId = `checkbox-list-label-${filter}`
                     const filterData = filterCountList.find((item) => item.name === filter)
                     const productsCount = filterData.products_count
@@ -122,7 +123,10 @@ export const SearchWindow = React.forwardRef((props, ref) => {
                             </div>
                             <span className=''>{productsCount}</span>
                         </div>
-                    )
+                    )}
+		else{
+			return (null)
+		}
                 })}
             </div>
         )
