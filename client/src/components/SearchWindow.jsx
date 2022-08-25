@@ -11,8 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Checkbox from '@mui/material/Checkbox'
 import axios from 'axios'
 
-
-export const SearchWindow = React.forwardRef((props, ref) => {
+export const SearchWindow = () => {
     const [listView, setListView] = useState(true)
     const [checked, setchecked] = useState({})
     const [filterList, setfilterList] = useState([])
@@ -101,32 +100,33 @@ export const SearchWindow = React.forwardRef((props, ref) => {
         return (
             <div>
                 {filters.map((filter) => {
-		if(filterCountList !== undefined) {
-                    const labelId = `checkbox-list-label-${filter}`
-                    const filterData = filterCountList.find((item) => item.name === filter)
-                    const productsCount = filterData.products_count
-                    const type = filterData.type
-                    return (
-                        <div 
-                            className='first:pt-1 last:pb-1 px-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition ease-in-out duration-200' 
-                            onClick={handleToggle(filter, type)}
-                        >
-                            <div className='flex items-center'>
-                                <Checkbox
-                                    edge="start"
-                                    checked={checked[type].indexOf(filter) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                                <span>{filter}</span>
+		            if(filterCountList !== undefined) {
+                        const labelId = `checkbox-list-label-${filter}`
+                        const filterData = filterCountList.find((item) => item.name === filter)
+                        const productsCount = filterData.products_count
+                        const type = filterData.type
+                        return (
+                            <div 
+                                className='first:pt-1 last:pb-1 px-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition ease-in-out duration-200' 
+                                onClick={handleToggle(filter, type)}
+                            >
+                                <div className='flex items-center'>
+                                    <Checkbox
+                                        edge="start"
+                                        checked={checked[type].indexOf(filter) !== -1}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                    <span>{filter}</span>
+                                </div>
+                                <span className=''>{productsCount}</span>
                             </div>
-                            <span className=''>{productsCount}</span>
-                        </div>
-                    )}
-		else{
-			return (null)
-		}
+                        )
+                    }
+                    else{
+                        return (null)
+                    }
                 })}
             </div>
         )
@@ -178,7 +178,7 @@ export const SearchWindow = React.forwardRef((props, ref) => {
                     </div>
                 </div>
                 <div className='flex space-x-5 items-start'>
-                    <div ref={ref} className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
+                    <div className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
                         {filterList.map((filter) => {return renderAccordion(filter)})}
                     </div>
                     <Products listView={listView} filteredQuerySet={filteredQuerySet}/>
@@ -186,4 +186,4 @@ export const SearchWindow = React.forwardRef((props, ref) => {
             </div>
         </div>
     )
-})
+}
