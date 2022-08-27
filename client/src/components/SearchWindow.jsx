@@ -11,7 +11,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Checkbox from '@mui/material/Checkbox'
 import axios from 'axios'
 
-
 export const SearchWindow = () => {
     const [listView, setListView] = useState(true)
     const [checked, setchecked] = useState({})
@@ -106,7 +105,6 @@ export const SearchWindow = () => {
                         const filterData = filterCountList.find((item) => item.name === filter)
                         const productsCount = filterData.products_count
                         const type = filterData.type
-                        console.log(type)
                         return (
                             <div 
                                 className='first:pt-1 last:pb-1 px-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition ease-in-out duration-200' 

@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'ecomm_db', 
         'USER': 'aboka', 
         'PASSWORD': 'Aboka_877767',
-        'HOST': 'postgres', 
+        'HOST': '127.0.0.1', 
         'PORT': '5432',
     }
 }
