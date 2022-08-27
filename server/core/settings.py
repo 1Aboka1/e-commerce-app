@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-h_86=wh^f^m4^=i-5dn_c-9xlnwtv&45+%&v(&@%s+=pdbf^2)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -144,3 +144,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+
+MEDIA_ROOT  = os.path.join(BASE_DIR, 'assets')
+MEDIA_URL = '/assets/'

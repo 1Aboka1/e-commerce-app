@@ -54,7 +54,7 @@ export class WelcomeSection extends Component {
     
     render() {
         return (
-            <div className={'h-screen bg-gray-500 bg-center bg-no-repeat bg-cover bg-blend-multiply'} style={{backgroundImage: `url("/backend_static/6424672.jpg")`}}>
+            <div className={'h-screen bg-gray-500 bg-center bg-no-repeat bg-cover bg-blend-multiply'} style={{backgroundImage: `url("/assets/6424672.jpg")`}}>
                 <div className='flex flex-col items-center gap-6 justify-center h-[75vh] '>
                     <h1 className='text-3xl text-center font-medium text-white'>Запчасти для бытовой техники с доставкой на дом <br/>в Усть-Каменогорске</h1>
                     <form className='relative w-[80vh] h-12 bg-white rounded-2xl justify-between outline-none p-2 pr-3 flex items-center ring-1 ring-gray-400 focus-within:ring-green-300 hover:scale-105 focus-within:scale-105 transition ease-in-out duration-200'>
@@ -66,7 +66,7 @@ export class WelcomeSection extends Component {
                     </form>
                     <div className='flex space-x-3 w-full justify-center'>
                         <Link to={'search'}>
-                            <button onClick={this.props.handleSearchClick} className='rounded-lg px-4 py-3 ring-0 ring-gray-200 bg-green-500 text-white font-bold hover:bg-green-600 hover:scale-110 hover:ring-1 hover:ring-black transition ease-in-out duration-300'>Поиск</button>
+                            <button className='rounded-lg px-4 py-3 ring-0 ring-gray-200 bg-green-500 text-white font-bold hover:bg-green-600 hover:scale-110 hover:ring-1 hover:ring-black transition ease-in-out duration-300'>Поиск</button>
                         </Link>
                         <button className='rounded-lg px-4 py-3 ring-0 ring-gray-300 bg-white font-bold hover:bg-gray-200 hover:ring-1 hover:ring-black hover:scale-110 transition ease-in-out duration-200'>Категории</button>
                     </div>
