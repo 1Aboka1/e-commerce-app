@@ -8,13 +8,5 @@ module.exports = {
 	theme: {
 		extend: {},
 	},
-	variants: {
-		textFillColor: ['responsive'],
-		textStrokeColor: ['responsive'],
-		textStrokeWidth: ['responsive'],
-		paintOrder: ['responsive'],
-	},
-	plugins: [
-		require('tailwindcss-text-fill-stroke')(),
-	],
+	plugins: [],
 }
