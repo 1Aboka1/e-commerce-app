@@ -54,7 +54,7 @@ export class WelcomeSection extends Component {
     
     render() {
         return (
-            <div className={'h-screen bg-gray-500 bg-center bg-no-repeat bg-cover bg-blend-multiply'} style={{backgroundImage: `url("/backend_static/6424672.jpg")`}}>
+            <div className={'h-screen bg-gray-500 bg-center bg-no-repeat bg-cover bg-blend-multiply'} style={{backgroundImage: `url("/assets/6424672.jpg")`}}>
                 <div className='flex flex-col items-center gap-6 justify-center h-[75vh] '>
                     <h1 className='text-3xl text-center font-medium text-white'>Запчасти для бытовой техники с доставкой на дом <br/>в Усть-Каменогорске</h1>
                     <form className='relative w-[80vh] h-12 bg-white rounded-2xl justify-between outline-none p-2 pr-3 flex items-center ring-1 ring-gray-400 focus-within:ring-green-300 hover:scale-105 focus-within:scale-105 transition ease-in-out duration-200'>

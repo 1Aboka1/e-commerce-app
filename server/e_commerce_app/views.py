@@ -3,12 +3,36 @@ from django.shortcuts import render
 from django.db.models import Q
 from .models import Product, ProductCategory, DeviceBrandCategory, DeviceTypeCategory, PartTypeCategory
 from .serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer, SingleCategorySerializer
-from rest_framework import viewsets, generics
+from rest_framework import generics
+from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from drf_multiple_model.views import FlatMultipleModelAPIView
+from drf_multiple_model.mixins import FlatMultipleModelMixin
 import json
 from django.contrib.postgres.search import TrigramSimilarity
+
+
+#Overriding FlatMultipleModelMixin
+class FlatMultipleModelMixinPatched(FlatMultipleModelMixin):
+    def get_label(self, queryset, query_data):
+        """
+        Gets option label for each datum. Can be used for type identification
+        of individual serialized objects
+        """
+        if query_data.get('label', False):
+            return query_data['label']
+        elif self.add_model_type:
+            try:
+                return queryset.model._meta.verbose_name
+            except AttributeError:
+                return query_data['queryset'].model._meta.verbose_name
+
+class FlatMultipleModelAPIView(FlatMultipleModelMixinPatched, GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return None
 
 class ProductView(generics.ListAPIView):
     queryset = Product.objects.all()

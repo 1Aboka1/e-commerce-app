@@ -33,7 +33,6 @@ export const SearchWindow = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         if(componentDidMount === false) {
-            setcomponentDidMount(true)
             axios
                 .get('/api/product_categories')
                 .then((response) => {
@@ -49,6 +48,7 @@ export const SearchWindow = () => {
                 .get('/api/product_category_count')
                 .then((response) => {
                     setfilterCountList(response.data)
+                    setcomponentDidMount(true)
                 })
                 .catch((error) => { console.log(error) })
             axios
@@ -97,10 +97,10 @@ export const SearchWindow = () => {
     }
 
     const renderList = (filters) => {
-        return (
-            <div>
-                {filters.map((filter) => {
-		            if(filterCountList !== undefined) {
+        if(componentDidMount === true) {
+            return (
+                <div>
+                    {filters.map((filter) => {
                         const labelId = `checkbox-list-label-${filter}`
                         const filterData = filterCountList.find((item) => item.name === filter)
                         const productsCount = filterData.products_count
@@ -123,13 +123,13 @@ export const SearchWindow = () => {
                                 <span className=''>{productsCount}</span>
                             </div>
                         )
-                    }
-                    else{
-                        return (null)
-                    }
-                })}
-            </div>
-        )
+                    })}
+                </div>
+            )
+        }
+        else {
+            return (null)
+        }
     }
     
     const renderAccordion = (filter) => { 
