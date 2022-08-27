@@ -102,9 +102,6 @@ export const SearchWindow = () => {
             return (
                 <div>
                     {filters.map((filter) => {
-                        console.log(filterCountList)
-                        console.log(checked)
-                        console.log(productCount)
                         const labelId = `checkbox-list-label-${filter}`
                         const filterData = filterCountList.find((item) => item.name === filter)
                         const productsCount = filterData.products_count
