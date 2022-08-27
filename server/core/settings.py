@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-h_86=wh^f^m4^=i-5dn_c-9xlnwtv&45+%&v(&@%s+=pdbf^2)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'ecomm_db', 
         'USER': 'aboka', 
         'PASSWORD': 'Aboka_877767',
-        'HOST': 'postgres', 
+        'HOST': '127.0.0.1', 
         'PORT': '5432',
     }
 }
