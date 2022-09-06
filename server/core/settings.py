@@ -143,7 +143,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://172.20.0.1",
 ]
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+STATIC_URL = '/backend_static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/backend_static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'backend_static')
 
-MEDIA_ROOT  = os.path.join(BASE_DIR, 'assets')
+MEDIA_ROOT  = os.path.join(BASE_DIR, '/assets/')
 MEDIA_URL = '/assets/'
+
