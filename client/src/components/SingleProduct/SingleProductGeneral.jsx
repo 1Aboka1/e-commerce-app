@@ -86,7 +86,7 @@ export const SingleProductGeneral = () => {
             <div className='max-w-[1020px] mx-auto h-screen'>
                 <div className='flex justify-center mx-auto space-x-6 mt-6 p-4'>
                     <div className='flex items-center justify-between'>
-                        <img className='w-[300px]' src={'/backend_static/' + productDetails.image} alt={productDetails.name}/>
+                        <img className='w-[300px]' src={'/mediafiles/' + productDetails.image} alt={productDetails.name}/>
                     </div>
                     <div className='w-[500px] bg-gray-100 rounded-lg p-6 px-8 ring-1 ring-green-200 hover:ring-2 hover:ring-green-400 transition ease-in-out duration-300'>
                         <h1 className='font-[600] text-2xl'>{productDetails.name}</h1>

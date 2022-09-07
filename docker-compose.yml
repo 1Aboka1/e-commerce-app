@@ -31,6 +31,9 @@ services:
     command: sh -c "python3 manage.py collectstatic --noinput && gunicorn core.wsgi --bind 0.0.0.0:8000"
     ports:
       - "8000:8000"
+    volumes:
+      - backend_static:/server/backend_static
+      - mediafiles:/server/assets
     expose:
       - 8000
     env_file:
@@ -51,10 +54,14 @@ services:
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf:ro
       - react_build:/var/www/client
+      - backend_static:/var/www/static
+      - mediafiles:/var/www/mediafiles
     depends_on:
       - backend
       - frontend
 
 volumes:
   react_build:
+  backend_static:
   postgres_data:
+  mediafiles:
