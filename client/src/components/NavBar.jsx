@@ -25,7 +25,7 @@ export class NavBar extends React.Component {
               <button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Главная</button>
             </Link>
             <button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Каталог</button>
-            <p className='font-bold text-md'>8-705-434-3434</p>
+            <p className='font-bold text-md'>8 707 137 6006</p>
           </div>
           <form className='w-[350px] bg-gray-800 rounded-2xl outline-none p-2 pr-3 flex items-center hover:scale-105 focus-within:scale-105 transition duration-200'>
             <input type='search' placeholder='Поиск товаров...' required
