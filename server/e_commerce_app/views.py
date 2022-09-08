@@ -35,8 +35,14 @@ class FlatMultipleModelAPIView(FlatMultipleModelMixinPatched, GenericAPIView):
         return None
 
 class ProductView(generics.ListAPIView):
-    queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        qs = Product.objects.all()
+        for i in range(len(qs)):
+            qs[i].image = qs[i].image.name
+        return qs
+    
     
 class FilteredProductView(generics.ListAPIView):
     serializer_class = ProductSerializer
