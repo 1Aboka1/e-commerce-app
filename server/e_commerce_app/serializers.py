@@ -2,15 +2,10 @@ from rest_framework import serializers
 from .models import Product, ProductCategory
 
 class ProductSerializer(serializers.ModelSerializer):    
-    id = serializers.ReadOnlyField()
-    name = serializers.CharField(max_length=150)
-    description = serializers.CharField(max_length=150)
-    price = serializers.IntegerField()
-    quantity = serializers.IntegerField()
-    image = serializers.CharField(max_length=300)
-    device_type_category = serializers.StringRelatedField(many=True)
-    device_brand_category = serializers.StringRelatedField(many=True)
-    part_type_category = serializers.StringRelatedField(many=True)
+    image = serializers.CharField()
+    class Meta:
+        model = Product
+        fields = ('id', 'name', 'description', 'quantity', 'price', 'image', 'device_type_category', 'device_brand_category', 'part_type_category')
 
 class ProductCategorySerializer(serializers.ModelSerializer):
     device_types = serializers.StringRelatedField(many=True)
