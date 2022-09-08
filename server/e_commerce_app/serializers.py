@@ -1,18 +1,11 @@
-from itertools import product
 from rest_framework import serializers
-from .models import Product, ProductCategory, DeviceTypeCategory
+from .models import Product, ProductCategory
 
-BASE_URLS = ['http://localhost:8000/', 'http://127.0.0.1:8000/']
 class ProductSerializer(serializers.ModelSerializer):    
+    image = serializers.CharField()
     class Meta:
         model = Product
         fields = ('id', 'name', 'description', 'quantity', 'price', 'image', 'device_type_category', 'device_brand_category', 'part_type_category')
-
-    def to_representation(self, instance):
-        res = super().to_representation(instance)
-        for BASE_URL in BASE_URLS:
-            res['image'] = res['image'].replace(BASE_URL, '')
-        return res
 
 class ProductCategorySerializer(serializers.ModelSerializer):
     device_types = serializers.StringRelatedField(many=True)

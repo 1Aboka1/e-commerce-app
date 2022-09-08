@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h_86=wh^f^m4^=i-5dn_c-9xlnwtv&45+%&v(&@%s+=pdbf^2)'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = ['*']
 
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'ecomm_db', 
         'USER': 'aboka', 
         'PASSWORD': 'Aboka_877767',
-        'HOST': '127.0.0.1', 
+        'HOST': 'postgres', 
         'PORT': '5432',
     }
 }
@@ -126,8 +126,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'backend_static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -143,7 +141,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://172.20.0.1",
 ]
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
+STATIC_URL = '/backend_static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/backend_static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'backend_static')
 
-MEDIA_ROOT  = os.path.join(BASE_DIR, 'assets')
+MEDIA_ROOT  = os.path.join(BASE_DIR, '/assets/')
 MEDIA_URL = '/assets/'
+
