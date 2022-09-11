@@ -6,9 +6,18 @@ import {
 import { Home } from './pages/Home'
 import { SingleProduct } from './pages/SingleProduct'
 import { Search } from './pages/Search'
-import { SignInUp } from './pages/SignInUp'
+import { SignInUp } from './components/SignInUp'
+import { useState } from 'react'
 
 function App() {
+	const [signWindowShown, setSignWindowShown] = useState(false)
+	const [signType, setSignType] = useState('')
+	
+	const handleSignClick = (type) => () => {
+		setSignType(type)
+		setSignWindowShown(!signWindowShown)
+	}
+	
     return (
 		<BrowserRouter>
 			<Routes>
@@ -19,7 +28,6 @@ function App() {
 					<Route path=":productID" element={<SingleProduct/>}/>
 				</Route>
 				<Route path="search" element={<Search/>}/>
-				<Route path="singInUp" element={<SignInUp/>}/>
 			</Routes>
 		</BrowserRouter>
     )

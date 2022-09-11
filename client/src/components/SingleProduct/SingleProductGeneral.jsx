@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { NavBar } from '../NavBar'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined'
 
@@ -82,9 +81,8 @@ export const SingleProductGeneral = () => {
 
     return (
         <div className='bg-white'>
-            <NavBar/>
             <div className='max-w-[1020px] mx-auto h-screen'>
-                <div className='flex justify-center mx-auto space-x-6 mt-6 p-4'>
+                <div className='flex justify-center mx-auto space-x-6 p-4 pt-10'>
                     <div className='flex items-center justify-between'>
                         <img className='w-[300px]' src={'/mediafiles/' + productDetails.image} alt={productDetails.name}/>
                     </div>
