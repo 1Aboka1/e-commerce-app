@@ -6,7 +6,7 @@ import { Footer } from '../components/Footer'
 
 export const SingleProduct = () => {
     const [signWindowShown, setSignWindowShown] = useState(false)
-	const [signType, setSignType] = useState('');
+	const [signType, setSignType] = useState('')
 	
 	const handleSignClick = (type) => () => {
 		setSignType(type)
@@ -18,7 +18,7 @@ export const SingleProduct = () => {
             <div className=''>
                 {signWindowShown ? <SignInUp type={signType}/> : (null)}
             </div>
-            <div>
+            <div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.8] pointer-events-none' : '')}>
                 <NavBar handleSignClick={handleSignClick}/>
                 <SingleProductGeneral/>
                 <Footer/>

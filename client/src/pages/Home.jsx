@@ -1,17 +1,15 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { NavBar } from '../components/NavBar'
 import { WelcomeSection } from '../components/WelcomeSection'
 import { Footer } from '../components/Footer'
 import { SignInUp } from '../components/SignInUp'
-import { signWindowShownContext, signTypeContext } from '../SignInUpWindowContext'
 
 export const Home = () => {
-	const [signWindowShown, setSignWindowShown] = useContext(signWindowShownContext)
-	const [signType, setSignType] = useContext(signTypeContext)
-	const [bgDimmed, setBgDimmed] = useState(false)
+	const [signWindowShown, setSignWindowShown] = useState(false)
+	const [signType, setSignType] = useState('')
 	
 	const handleSignClick = (type) => () => {
-		console.log(typeof(setSignType(type)))
+		setSignType(type)
 		setSignWindowShown(!signWindowShown)
 	}
 
@@ -20,7 +18,7 @@ export const Home = () => {
 			<div className=''>
 				{signWindowShown ? <SignInUp type={signType}/> : (null)}
 			</div>
-			<div className='flex flex-col'>
+			<div className={'flex flex-col transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.8] pointer-events-none' : '')}>
 				<NavBar handleSignClick={handleSignClick}/>
 				<WelcomeSection/>
 				<Footer/>

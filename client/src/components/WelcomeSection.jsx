@@ -66,10 +66,10 @@ export class WelcomeSection extends Component {
                     </form>
                     <div className='flex space-x-3 w-full justify-center'>
                         <Link to={'search'}>
-                            <button className='rounded-lg px-4 py-3 ring-0 ring-gray-200 bg-green-500 text-white font-bold hover:bg-green-600 hover:scale-110 hover:ring-1 hover:ring-black transition ease-in-out duration-300'>Поиск</button>
+                            <button className='rounded-xl px-4 py-3 ring-0 ring-gray-200 bg-green-500 text-white font-bold hover:bg-green-600 hover:scale-110 hover:ring-1 hover:ring-black transition ease-in-out duration-300'>Поиск</button>
                         </Link>
                         <Link to={'search'}>
-                            <button className='rounded-lg px-4 py-3 ring-0 ring-gray-300 bg-white font-bold hover:bg-gray-200 hover:ring-1 hover:ring-black hover:scale-110 transition ease-in-out duration-200'>Категории</button>
+                            <button className='rounded-xl px-4 py-3 ring-0 ring-gray-300 bg-white font-bold hover:bg-gray-200 hover:ring-1 hover:ring-black hover:scale-110 transition ease-in-out duration-200'>Каталог</button>
                         </Link>
                     </div>
                 </div>                
