@@ -1,10 +1,10 @@
 import { createContext } from 'react'
 
 
-export const signWindowShown = createContext(false)
-export const signType = createContext('')
+export const signWindowShownContext = createContext(false)
+export const signTypeContext = createContext('')
 
-const handleSignClick = (type) => () => {
-    setSignType(type)
-    setSignWindowShown(!signWindowShown)
-}
+// const handleSignClick = (type) => () => {
+//     setSignType(type)
+//     setSignWindowShown(!signWindowShown)
+// }

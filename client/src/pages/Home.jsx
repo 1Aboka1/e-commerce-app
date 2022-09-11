@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { NavBar } from '../components/NavBar'
 import { WelcomeSection } from '../components/WelcomeSection'
 import { Footer } from '../components/Footer'
 import { SignInUp } from '../components/SignInUp'
+import { signWindowShownContext, signTypeContext } from '../SignInUpWindowContext'
 
 export const Home = () => {
-	const [signWindowShown, setSignWindowShown] = useState(false)
-	const [signType, setSignType] = useState('')
+	const [signWindowShown, setSignWindowShown] = useContext(signWindowShownContext)
+	const [signType, setSignType] = useContext(signTypeContext)
 	const [bgDimmed, setBgDimmed] = useState(false)
 	
 	const handleSignClick = (type) => () => {
-		setSignType(type)
+		console.log(typeof(setSignType(type)))
 		setSignWindowShown(!signWindowShown)
 	}
 

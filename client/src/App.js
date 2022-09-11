@@ -6,30 +6,29 @@ import {
 import { Home } from './pages/Home'
 import { SingleProduct } from './pages/SingleProduct'
 import { Search } from './pages/Search'
-import { SignInUp } from './components/SignInUp'
+import { signWindowShownContext, signTypeContext } from './SignInUpWindowContext'
 import { useState } from 'react'
 
-function App() {
-	const [signWindowShown, setSignWindowShown] = useState(false)
-	const [signType, setSignType] = useState('')
-	
-	const handleSignClick = (type) => () => {
-		setSignType(type)
-		setSignWindowShown(!signWindowShown)
-	}
+function App() {	
+	const [signWindowShownState, setSignWindowShownState] = useState(false)
+	const [signTypeState, setSignTypeState] = useState('')
 	
     return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Home/>}>
-					<Route index element={<Home/>}/>
-				</Route>
-				<Route path="product_item">
-					<Route path=":productID" element={<SingleProduct/>}/>
-				</Route>
-				<Route path="search" element={<Search/>}/>
-			</Routes>
-		</BrowserRouter>
+		<signWindowShownContext.Provider value={[ signWindowShownState, setSignWindowShownState ]}>
+		<signTypeContext.Provider value={[ signTypeState, setSignTypeState ]}>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Home/>}>
+						<Route index element={<Home/>}/>
+					</Route>
+					<Route path="product_item">
+						<Route path=":productID" element={<SingleProduct/>}/>
+					</Route>
+					<Route path="search" element={<Search/>}/>
+				</Routes>
+			</BrowserRouter>
+		</signTypeContext.Provider>
+		</signWindowShownContext.Provider>
     )
 }
 
