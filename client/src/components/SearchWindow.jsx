@@ -156,29 +156,29 @@ export const SearchWindow = () => {
     }
     
     return (
-        <div className='h-screen'>
+        <div className='h-screen bg-[#F5F5F5]'>
             <div className='mx-auto max-w-[1100px] pt-4'>
                 <div className='flex justify-between items-center py-4'>
                     <p className='font-light text-gray-900'>{ filteredQuerySet !== undefined && filteredQuerySet.length > 0 ? filteredQuerySet.length : productCount } товаров</p>
                     <div className='flex space-x-4 h-10'>
-                        <form className='ring-1 ring-gray-300 bg-gray-100 rounded-md outline-none p-3 space-x-2 pr-2 flex items-center border focus-within:border-green-500 hover:scale-105 focus-within:scale-105 transition duration-200'>
+                        <form className='ring-1 ring-gray-300 bg-gray-100 rounded-xl outline-none p-3 space-x-2 pr-2 flex items-center border focus-within:border-green-500 hover:scale-105 focus-within:scale-105 transition duration-200'>
                             <input onChange={handleChange} type='search' placeholder='Поиск товаров...' required
-                                className='w-80 bg-gray-100 placeholder:text-gray-700 placeholder:text-[15px] pl-3 focus:outline-none text-lg'
+                                className='w-80 bg-gray-100 placeholder:text-gray-700 placeholder:text-[15px] pl-3 focus:outline-none text-xl'
                             />
                             <SearchOutlinedIcon className='hover: cursor-pointer' fontSize='medium'/>
                         </form>
-                        <div className='flex rounded-md ring-1 ring-gray-300'>
-                            <button className={(listView ? 'bg-gray-300 ' : '') + 'flex items-center px-[10px] ring-1 ring-gray-300 rounded-l-md focus:ring-green-300 focus:ring-2 transition ease-in-out duration-400 hover:bg-gray-200'} onClick={handleListClick}>
+                        <div className='flex rounded-xl ring-1 ring-gray-300'>
+                            <button className={(listView ? 'bg-gray-300 ' : '') + 'flex items-center px-[10px] ring-1 ring-gray-300 rounded-l-xl focus:ring-green-300 focus:ring-2 transition ease-in-out duration-400 hover:bg-gray-200'} onClick={handleListClick}>
                                 <MenuOutlinedIcon fontSize='small'/>
                             </button>
-                            <button className={(listView ? '' : 'bg-gray-300 ') + 'flex items-center px-[10px] ring-1 ring-gray-300 rounded-r-md focus:ring-green-300 focus:ring-2 transition ease-in-out duration-400 hover:bg-gray-200'} onClick={handleGridClick}>
+                            <button className={(listView ? '' : 'bg-gray-300 ') + 'flex items-center px-[10px] ring-1 ring-gray-300 rounded-r-xl focus:ring-green-300 focus:ring-2 transition ease-in-out duration-400 hover:bg-gray-200'} onClick={handleGridClick}>
                                 <GridViewOutlinedIcon  fontSize='small'/>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div className='flex space-x-5 items-start'>
-                    <div className='basis-1/4 shadow-lg ring-1 ring-gray-300 rounded-lg sticky top-5'>
+                    <div className='basis-1/4 shadow-xl ring-1 ring-gray-300 rounded-xl sticky top-5'>
                         {filterList.map((filter) => {return renderAccordion(filter)})}
                     </div>
                     <Products listView={listView} filteredQuerySet={filteredQuerySet}/>

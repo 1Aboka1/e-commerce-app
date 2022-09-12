@@ -6,9 +6,8 @@ import {
 import { Home } from './pages/Home'
 import { SingleProduct } from './pages/SingleProduct'
 import { Search } from './pages/Search'
-import { SignInUp } from './pages/SignInUp'
 
-function App() {
+function App() {	
     return (
 		<BrowserRouter>
 			<Routes>
@@ -19,7 +18,6 @@ function App() {
 					<Route path=":productID" element={<SingleProduct/>}/>
 				</Route>
 				<Route path="search" element={<Search/>}/>
-				<Route path="singInUp" element={<SignInUp/>}/>
 			</Routes>
 		</BrowserRouter>
     )
