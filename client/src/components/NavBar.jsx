@@ -17,7 +17,7 @@ export const NavBar = (props) => {
 					<Link to={`/`}>
 						<button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Главная</button>
 					</Link>
-					<Link to={'search'}>
+					<Link to={'/search'}>
 						<button className="p-1 hover:text-gray-300 transition ease-in-out duration-200">Каталог</button>
 					</Link>
 					<p className='font-bold text-md'>8-705-434-3434</p>

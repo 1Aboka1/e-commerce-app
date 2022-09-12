@@ -43,7 +43,7 @@ export const SignInUp = (props) => {
     }
 
     return (
-        <div className='fixed z-10 w-screen mx-auto'>
+        <div className='fixed z-10 w-screen mx-auto animate-in fade-in zoom-in duration-300'>
             <div className='flex justify-center items-center h-[95vh]'>
                 {props.type === loginAlias ? renderSignInWindow() : (null)}
                 {props.type === registerAlias ? renderSignUpWindow() : (null)}
