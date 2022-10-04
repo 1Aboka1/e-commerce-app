@@ -18,7 +18,7 @@ export const Search = () => {
 			<div className=''>
 					{signWindowShown ? <SignInUp type={signType} handleSignClick={handleSignClick}/> : (null)}
 			</div>
-			<div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.8] pointer-events-none' : '')}>
+			<div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
 				<NavBar handleSignClick={handleSignClick}/>
 				<SearchWindow/>
 				<Footer/>

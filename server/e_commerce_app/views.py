@@ -11,7 +11,6 @@ from drf_multiple_model.mixins import FlatMultipleModelMixin
 import json
 from django.contrib.postgres.search import TrigramSimilarity
 
-
 #Overriding FlatMultipleModelMixin
 class FlatMultipleModelMixinPatched(FlatMultipleModelMixin):
     def get_label(self, queryset, query_data):
