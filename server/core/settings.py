@@ -150,3 +150,11 @@ MEDIA_ROOT  = os.path.join(BASE_DIR, 'mediafiles')
 #MEDIA_ROOT  = os.path.join(BASE_DIR, '/assets/')
 MEDIA_URL = '/mediafiles/'
 
+REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
+            ),
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+            )
+}
