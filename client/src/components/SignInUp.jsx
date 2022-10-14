@@ -1,23 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import qs from 'qs'
 
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-// import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+
+
+const loginAlias = 'login'
+const registerAlias = 'register'
+const emailAlias = 'email'
+const firstNameAlias = 'first_name'
+const lastNameAlias = 'last_name'
+const phoneAlias = 'phone'
+const passwordAlias = 'password'
+const cpasswordAlias = 'cpassword'
+const passwordsMatchAlias = 'passwordsMatch'
 
 export const SignInUp = (props) => {
-    const loginAlias = 'login'
-    const registerAlias = 'register'
-    const emailAlias = 'email'
-    const firstNameAlias = 'first_name'
-    const lastNameAlias = 'last_name'
-    const phoneAlias = 'phone'
-    const passwordAlias = 'password'
-    const cpasswordAlias = 'cpassword'
-
     const [windowType, setWindowType] = useState(props.type)
     const [checked, setChecked] = useState(false)
     const [registrationInfo, setRegistrationInfo] = useState({
@@ -29,16 +33,44 @@ export const SignInUp = (props) => {
 	'phone': '',
     })
 
+    useEffect(() => {
+        setInterval(() => {
+ 
+    	}, 1000)
+    }, [])
+
     let warningObject = {}
     for(let key in registrationInfo) { warningObject[key] = false }
+    warningObject[passwordsMatchAlias] = false
     const [warnings, setWarnings] = useState(warningObject)
 
     const [registrationStatus, setRegistrationStatus] = useState(false)
+
+    const setNewWarnings = () => {
+	let warningsObject = {}
+	for(let key in warnings) {
+	    try {
+	    	warningsObject[key] = registrationInfo[key].length === 0
+	    } catch(error) {}
+	}
+	setWarnings(prevState => ({
+	    ...prevState,
+	    ...warningsObject
+	}))
+    }
 
     const handleRegistrationInputChange = (inputType) => (event) => {
 	let tempRegistrationInfo = Object.assign({}, registrationInfo)
 	tempRegistrationInfo[inputType] = event.target.value
 	setRegistrationInfo(tempRegistrationInfo)
+	if(inputType === cpasswordAlias || inputType === passwordAlias) {
+	    if(registrationInfo[passwordAlias] !== registrationInfo[cpasswordAlias]) {
+		setWarnings({ ...warnings, "passwordsMatch": true })
+	    } else {
+	    	setWarnings({ ...warnings, "passwordsMatch": false })
+	    }
+	}
+	setNewWarnings()
     }
 
     const handleWindowChange = () => {
@@ -51,11 +83,7 @@ export const SignInUp = (props) => {
 
     const handleRegister = async (event) => {
     	event.preventDefault()
-	let warningsObject = {}
-	for(let key in warnings) {
-	    warningsObject[key] = registrationInfo[key].length === 0
-	}
-	setWarnings(warningsObject)
+	setNewWarnings()
 
 	let shouldSendForm = true
 	for(const key in warnings) {
@@ -63,11 +91,12 @@ export const SignInUp = (props) => {
 	}
 	
 	if(shouldSendForm === false) { return (null) }
+	let tempRegistrationInfo = registrationInfo
 	axios
-	    .get(
-		'/api/user_manage/register',
-		{ params: registrationInfo },
-		{ headers: { 'Content-Type': 'application/json', } },
+	    .post(
+		'/api/auth/register/',
+		qs.stringify(registrationInfo),
+		{ headers: { "content-type": "application/x-www-form-urlencoded" } }
 	    )
 	    .then((response) => {
 	    	setRegistrationStatus(response.data.status)
@@ -92,9 +121,7 @@ export const SignInUp = (props) => {
                             <VisibilityOutlinedIcon className='mx-3 cursor-pointer'/>
                         </div>
                         <p className='text-green-500 hover:text-green-600 transition ease-in-out duration-300' href="">Забыли пароль?</p>
-                        <input type="submit" value="Submit Registration">
-                            <button className='w-full h-12 font-extrabold text-white bg-green-500 rounded-2xl hover:bg-green-600 transition ease-in-out duration-300'>Войти</button>
-                        </input>
+			<input type="submit" value="Войти" className='w-full h-12 font-extrabold text-white bg-green-500 cursor-pointer rounded-2xl hover:bg-green-600 transition ease-in-out duration-300'/>
                     </form>
                 </div>
                 <div className='flex flex-row justify-center border-t border-gray-300 py-7'>
@@ -115,28 +142,19 @@ export const SignInUp = (props) => {
                 </div>
                 <div className='my-3'>
                     <form onSubmit={handleRegister} className='flex flex-col items-center px-10 space-y-3'>
-                        <input type="text" value={registrationInfo[emailAlias]} onChange={handleRegistrationInputChange(emailAlias)} className='w-full h-12 p-4 outline-none rounded-xl ring-1 ring-gray-400 focus-within:ring-1 focus-within:ring-green-400 transition ease-in-out duration-300' placeholder='E-mail' />
-			{ warnings[emailAlias] ? <p className='text-red-500'>*Введите e-mail</p> : (null) }
-                        <input type="text" value={registrationInfo[firstNameAlias]} onChange={handleRegistrationInputChange(firstNameAlias)} className='w-full h-12 p-4 outline-none rounded-xl ring-1 ring-gray-400 focus-within:ring-1 focus-within:ring-green-400 transition ease-in-out duration-300' placeholder='Имя' />
-			{ warnings[firstNameAlias] ? <p className='text-red-500'>*Введите имя</p> : (null) }
-                        <input type="text" value={registrationInfo[lastNameAlias]} onChange={handleRegistrationInputChange(lastNameAlias)} className='w-full h-12 p-4 outline-none rounded-xl ring-1 ring-gray-400 focus-within:ring-1 focus-within:ring-green-400 transition ease-in-out duration-300' placeholder='Фамилия' />
-			{ warnings[lastNameAlias] ? <p className='text-red-500'>*Введите фамилию</p> : (null) }
-                        <input type="text" value={registrationInfo[phoneAlias]} onChange={handleRegistrationInputChange(phoneAlias)} className='w-full h-12 p-4 outline-none rounded-xl ring-1 ring-gray-400 focus-within:ring-1 focus-within:ring-green-400 transition ease-in-out duration-300' placeholder='Мобильный номер' />
-			{ warnings[phoneAlias] ? <p className='text-red-500'>*Введите номер</p> : (null) }
-                        <div className='flex flex-row items-center justify-between w-full bg-white rounded-xl ring-1 ring-gray-400 focus-within:ring-1 focus-within:ring-green-400 transition ease-in-out duration-300'>
-                            <input value={registrationInfo[passwordAlias]} onChange={handleRegistrationInputChange(passwordAlias)} className='w-full h-12 p-4 outline-none rounded-xl' type="password" placeholder='Пароль' />
-                            <VisibilityOutlinedIcon className='mx-3 cursor-pointer'/>
-                        </div>
-			{ warnings[passwordAlias] ? <p className='text-red-500'>*Введите пароль</p> : (null) }
-                        <input value={registrationInfo[cpasswordAlias]} onChange={handleRegistrationInputChange(cpasswordAlias)} className='w-full h-12 p-4 outline-none rounded-xl ring-1 ring-gray-400 focus-within:ring-1 focus-within:ring-green-400 transition ease-in-out duration-300' type="password" placeholder='Повторите пароль' />
-			{ warnings[cpasswordAlias] ? <p className='text-red-500'>*Введите пароль повторно</p> : (null) }
+			<TextField className='w-full' color="success" error={warnings[emailAlias]} id="standard-basic" defaultValue={registrationInfo[emailAlias]}  label="Email" variant="standard" onChange={handleRegistrationInputChange(emailAlias)} />
+			<TextField className='w-full' color="success" error={warnings[firstNameAlias]} id="standard-basic" defaultValue={registrationInfo[firstNameAlias]}  label="Имя" variant="standard" onChange={handleRegistrationInputChange(firstNameAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[lastNameAlias]} id="standard-basic" defaultValue={registrationInfo[lastNameAlias]}  label="Фамилия" variant="standard" onChange={handleRegistrationInputChange(lastNameAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[phoneAlias]} id="standard-basic" defaultValue={registrationInfo[phoneAlias]}  label="Номер" variant="standard" onChange={handleRegistrationInputChange(phoneAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[passwordAlias]} id="standard-basic" defaultValue={registrationInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleRegistrationInputChange(passwordAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[passwordsMatchAlias]} {...(!warnings[passwordsMatchAlias] ? {helperText: 'Пароли не совпадают'} : {})}id="standard-basic" defaultValue={registrationInfo[cpasswordAlias]}  label="Повторите пароль" variant="standard" onChange={handleRegistrationInputChange(cpasswordAlias)}/>
 			<div>
 			    <FormGroup>
 				<FormControlLabel className='text-gray-600 text-sm' control={<Checkbox checked={checked} onChange={handleCheckboxChange} color="success"/>} label="Я согласен с условиями пользования" />
 			    </FormGroup>
 			    { warnings['agreementChecked'] ? <p className='text-red-500'>*Вы должны согласиться с условиями пользования</p> : (null) }
                         </div>
-			<input type="submit" value="Зарегистрироваться" className='w-full h-12 font-extrabold text-white bg-green-500 cursor-pointer rounded-2xl hover:bg-green-600 transition ease-in-out duration-300'/>
+			<Button className='bg-green-600 w-full rounded-xl' type='submit' variant='contained' color='success'>Зарегистрироваться</Button>
                     </form>
                 </div>
                 <div className='flex flex-row justify-center border-t border-gray-300 py-3'>
