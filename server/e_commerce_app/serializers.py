@@ -44,7 +44,7 @@ class SingleCategorySerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'is_active', 'created', 'updated']
+        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'is_active', 'created_at', 'modified_at']
         read_only_field = ['is_active', 'created_at', 'modified_at']
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -63,7 +63,7 @@ class LoginSerializer(TokenObtainPairSerializer):
 
 class RegistrationSerializer(UserSerializer):
     password = serializers.CharField(max_length=200, write_only=True, required=True)
-    email = serializers.EmailField(required=True, write_only=True, max_length=200)
+    email = serializers.EmailField(required=True, max_length=200)
 
     class Meta:
         model = CustomUser

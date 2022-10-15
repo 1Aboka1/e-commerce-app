@@ -143,7 +143,7 @@ class SingleProductCategoriesView(FlatMultipleModelAPIView):
 class UserViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['modified_at']
     ordering = ['modified_at']
@@ -164,7 +164,9 @@ class LoginViewSet(viewsets.ModelViewSet, TokenObtainPairView):
    http_method_names = ['post']
 
    def create(self, request, *args, **kwargs):
-       serializer = self.get_serializer(data=request.data)
+       request_body = QueryDict('', mutable=True)
+       request_body.update(self.request.data)
+       serializer = self.get_serializer(data=request_body)
 
        try:
            serializer.is_valid(raise_exception=True)
@@ -185,6 +187,7 @@ class RegistrationViewSet(viewsets.ModelViewSet, TokenObtainPairView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
+
         res = {
                 "refresh": str(refresh),
                 "access": str(refresh.access_token),
