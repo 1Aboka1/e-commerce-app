@@ -15,6 +15,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.http import QueryDict
 
 #Overriding FlatMultipleModelMixin
 class FlatMultipleModelMixinPatched(FlatMultipleModelMixin):
@@ -177,7 +178,9 @@ class RegistrationViewSet(viewsets.ModelViewSet, TokenObtainPairView):
     http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.query_params)
+        request_body = QueryDict('', mutable=True)
+        request_body.update(self.request.data)
+        serializer = self.get_serializer(data=request_body)
 
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -198,7 +201,6 @@ class RefreshViewSet(viewsets.ModelViewSet, TokenRefreshView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        print(request.data)
 
         try:
             serializer.is_valid(raise_exception=True)

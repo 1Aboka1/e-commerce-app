@@ -34,7 +34,7 @@ export const SignInUp = (props) => {
     })
 
     useEffect(() => {
-        setInterval(() => {
+        let s = setInterval(() => {
  
     	}, 1000)
     }, [])
@@ -81,7 +81,7 @@ export const SignInUp = (props) => {
     	setChecked(!checked)
     }
 
-    const handleRegister = async (event) => {
+    const handleRegister = (event) => {
     	event.preventDefault()
 	setNewWarnings()
 
@@ -92,11 +92,12 @@ export const SignInUp = (props) => {
 	
 	if(shouldSendForm === false) { return (null) }
 	let tempRegistrationInfo = registrationInfo
+	delete tempRegistrationInfo[cpasswordAlias]
 	axios
 	    .post(
 		'/api/auth/register/',
-		qs.stringify(registrationInfo),
-		{ headers: { "content-type": "application/x-www-form-urlencoded" } }
+		tempRegistrationInfo,
+		{ headers: { "Content-Type": "application/json" } }
 	    )
 	    .then((response) => {
 	    	setRegistrationStatus(response.data.status)
@@ -147,7 +148,7 @@ export const SignInUp = (props) => {
 			<TextField className='w-full' color="success" error={warnings[lastNameAlias]} id="standard-basic" defaultValue={registrationInfo[lastNameAlias]}  label="Фамилия" variant="standard" onChange={handleRegistrationInputChange(lastNameAlias)}/>
 			<TextField className='w-full' color="success" error={warnings[phoneAlias]} id="standard-basic" defaultValue={registrationInfo[phoneAlias]}  label="Номер" variant="standard" onChange={handleRegistrationInputChange(phoneAlias)}/>
 			<TextField className='w-full' color="success" error={warnings[passwordAlias]} id="standard-basic" defaultValue={registrationInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleRegistrationInputChange(passwordAlias)}/>
-			<TextField className='w-full' color="success" error={warnings[passwordsMatchAlias]} {...(!warnings[passwordsMatchAlias] ? {helperText: 'Пароли не совпадают'} : {})}id="standard-basic" defaultValue={registrationInfo[cpasswordAlias]}  label="Повторите пароль" variant="standard" onChange={handleRegistrationInputChange(cpasswordAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[passwordsMatchAlias]} {...(warnings[passwordsMatchAlias] ? {helperText: 'Пароли не совпадают'} : {})}id="standard-basic" defaultValue={registrationInfo[cpasswordAlias]}  label="Повторите пароль" variant="standard" onChange={handleRegistrationInputChange(cpasswordAlias)}/>
 			<div>
 			    <FormGroup>
 				<FormControlLabel className='text-gray-600 text-sm' control={<Checkbox checked={checked} onChange={handleCheckboxChange} color="success"/>} label="Я согласен с условиями пользования" />
