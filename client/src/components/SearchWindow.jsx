@@ -195,7 +195,7 @@ export const SearchWindow = () => {
                     </div>
                 </div>
                 <div className='flex space-x-5 items-start'>
-                    <div className='basis-1/4 rounded-xl sticky top-5'>
+                    <div className='basis-1/4 rounded-xl sticky top-24'>
                         {filterList.map((filter) => {return renderAccordion(filter)})}
                     </div>
                     <Products listView={listView} filteredQuerySet={filteredQuerySet}/>

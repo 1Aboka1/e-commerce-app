@@ -12,8 +12,8 @@ export const NavBar = (props: any) => {
     	const user = useSelector((state: RootState) => state.auth.account)
 	
 	return (
-		<div className='bg-black shadow-2xl'>
-			<div className='text-white text-xl flex items-center max-w-[1240px] w-screen mx-auto h-[70px] justify-between text-[15px] font-medium'>
+		<div className='bg-black shadow-lg shadow-gray-400 sticky top-0 z-50'>
+			<div className='text-white flex items-center max-w-[1240px] w-screen mx-auto h-[70px] justify-between font-medium'>
 				<div className='flex items-center space-x-4'>
 					<Link to={`/`}>
 						{/* <LogoDevIcon fontSize='large' className='ml-5 text-green-400 hover: cursor-pointer'/> */}
