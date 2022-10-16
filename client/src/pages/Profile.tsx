@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router'
+import { useNavigate, useLocation, useParams } from 'react-router'
 import authSlice from '../store/slices/auth'
 import useSWR from 'swr'
 import { fetcher } from '../utils/axios'
@@ -13,18 +13,23 @@ import { NavBar } from "../components/NavBar"
 import { Footer } from '../components/Footer'
 import { Orders } from '../components/Profile/Orders'
 import { Favorites } from '../components/Profile/Favorites'
+import { Cart } from '../components/Profile/Cart'
 import Button from '@mui/material/Button'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 
 const leftTabItems = {
-    'Заказы': { comp: <Orders/>, icon: <ShoppingCartOutlinedIcon/> },
-    'Избранное': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon/> },
+    'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon/>, name: 'Корзина' },
+    'orders': { comp: <Orders/>, icon: <LocalShippingOutlinedIcon/>, name: 'Заказы' },
+    'favorites': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon/>, name: 'Избранное' },
 }
 
 export const Profile = () => {
-    const [windowType, setWindowType] = useState('Заказы')
+    const URLParam = useParams()
+    const urlControl = useNavigate()
+    const [windowType, setWindowType] = useState(URLParam.windowType)
     const [signWindowShown, setSignWindowShown] = useState(false)
     const [signType, setSignType] = useState('')
 	
@@ -54,7 +59,7 @@ export const Profile = () => {
 			{keys.map((key) => {
 			    return (
 				<div className={key === windowType ? 'border-l-2 border-green-300' : 'border-l-2 border-white'}>
-				    <Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => setWindowType(key)}>{key}</Button>
+				    <a href={'/profile/' + key}><Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
 				</div>	
 			    )	    
 			})}
@@ -73,7 +78,9 @@ export const Profile = () => {
 		<div className='h-screen'>
 		    <NavBar handleSignClick={handleSignClick}/>
 		    <div className='mx-auto max-w-[1100px] py-5'>
-			<h1 className='font-bold text-3xl mb-4 pl-3'>{windowType}</h1>
+			<h1 className='font-bold text-3xl mb-4 pl-3'>{
+			    // @ts-ignore
+			    leftTabItems[windowType]['name']}</h1>
 			<div className='flex flex-row'>
 			    <div className='flex flex-col py-3 w-[250px] rounded-xl bg-white'>
 				{renderList()}		    

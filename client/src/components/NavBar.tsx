@@ -12,7 +12,7 @@ export const NavBar = (props: any) => {
     	const user = useSelector((state: RootState) => state.auth.account)
 	
 	return (
-		<div className='bg-black'>
+		<div className='bg-black shadow-2xl'>
 			<div className='text-white text-xl flex items-center max-w-[1240px] w-screen mx-auto h-[70px] justify-between text-[15px] font-medium'>
 				<div className='flex items-center space-x-4'>
 					<Link to={`/`}>
@@ -36,9 +36,9 @@ export const NavBar = (props: any) => {
 				    {user ?
 				    (
 					<div className='flex flex-row items-center space-x-3'>
-					    <Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<ShoppingCartOutlinedIcon/>}>Корзина</Button>
+					    <Link to={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<ShoppingCartOutlinedIcon/>}>Корзина</Button></Link>
 
-					    <Link to={'/profile'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></Link>
+					    <Link to={'/profile/cart'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></Link>
 				    	</div>
 				    )
 				    :
