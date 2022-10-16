@@ -158,7 +158,8 @@ export const SearchWindow = () => {
     return (
         <div className='h-screen bg-[#F5F5F5]'>
             <div className='mx-auto max-w-[1100px] pt-4'>
-                <div className='flex justify-between items-center py-4'>
+		<h1 className='font-bold text-3xl mb-1'>Поиск</h1>
+                <div className='flex justify-between items-center pb-4'>
                     <p className='font-light text-gray-900'>{ filteredQuerySet !== undefined && filteredQuerySet.length > 0 ? filteredQuerySet.length : productCount } товаров</p>
                     <div className='flex space-x-4 h-10'>
                         <form className='ring-1 ring-gray-300 bg-gray-100 rounded-xl outline-none p-3 space-x-2 pr-2 flex items-center border focus-within:border-green-500 hover:scale-105 focus-within:scale-105 transition duration-200'>

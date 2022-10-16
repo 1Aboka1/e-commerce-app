@@ -103,7 +103,7 @@ export const SignInUp = (props) => {
                 <div className='flex flex-row items-center justify-between px-6 py-4'>
                     <h1 className='text-xl font-semibold'>Регистрация</h1>
                     <div className='p-1 bg-gray-300 border rounded-full'>
-                        <CloseOutlinedIcon className='cursor-pointer' onClick={props.handleSignClick('')}/>
+                        <CloseOutlinedIcon id='closeButton' className='cursor-pointer' onClick={props.handleSignClick('')}/>
                     </div>
                 </div>
                 <div className='my-3'>
@@ -188,7 +188,7 @@ export const SignInUp = (props) => {
 		    })
 		)
 		dispatch(authSlice.actions.setAccount(response.data.user))
-		history.push('/')
+		window.location.reload()
 	    })
 	    .catch((error) => { console.log(error) })
     }

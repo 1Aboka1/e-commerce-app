@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router'
-import authSlice from '../store/slices/auth'
+import authSlice from '../../store/slices/auth'
 import useSWR from 'swr'
-import { fetcher } from '../utils/axios'
-import { AccountResponse } from '../types'
-import { RootState } from '../store'
+import { fetcher } from '../../utils/axios'
+import { AccountResponse } from '../../types'
+import { RootState } from '../../store'
 
 interface LocationState {
     userID: string,
 }
 
-export const ProfileMain = () => {
+export const Orders = () => {
     // @ts-ignore
     const account = useSelector((state: RootState) => state.auth.account)
     const dispatch = useDispatch()
@@ -22,13 +22,12 @@ export const ProfileMain = () => {
 
     const handleLogout = () => {
 	dispatch(authSlice.actions.setLogout())
-	history('/login')
+	history('/')
     }
 
     return (
 	<div>
-	    <button onClick={handleLogout}>Log out</button>    
-	    <div>{
+	    {/*<div>{
 		user.data ?
 		<div className="w-full h-full text-center items-center">
 		    <p className="self-center my-auto">{user.data.email}</p>
@@ -36,7 +35,8 @@ export const ProfileMain = () => {
 		:
 		<p className="text-center items-center">Loading ...</p>
 	    }
-	    </div>
+	</div>*/}
+	Orders
 	</div>
     )
 }

@@ -11,4 +11,5 @@ export interface AccountResponse {
     };
     access: string;
     refresh: string;
+    [key: string]: any;
 }
