@@ -173,7 +173,6 @@ export const SignInUp = (props) => {
 	}
 	
 	if(shouldSendForm === false) { return (null) }
-	console.log(loginInfo)
 	let tempLoginInfo = loginInfo 
 	await axios
 	    .post(

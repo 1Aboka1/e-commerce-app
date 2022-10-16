@@ -25,7 +25,9 @@ function App() {
 			    <Route path=":productID" element={<SingleProduct/>}/>
 			</Route>
 			<Route path="search" element={<Search/>}/>
-			<Route path='/profile' element={<ProtectedRoute exact path='/' component={Profile}/>}></Route>
+			<Route exact path='profile' element={<ProtectedRoute/>}>
+			    <Route exact index element={<Profile/>}/>
+			</Route>
 		    </Routes>
 		</BrowserRouter>
 	    </PersistGate>

@@ -155,8 +155,10 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_object(self):
         lookup_field_value = self.kwargs[self.lookup_field]
 
-        obj = CustomUser.objects.get(lookup_field_value)
+        obj = CustomUser.objects.get(id=lookup_field_value)
         self.check_object_permissions(self.request, obj)
+
+        return obj
 
 class LoginViewSet(viewsets.ModelViewSet, TokenObtainPairView):
    serializer_class = LoginSerializer
@@ -209,3 +211,4 @@ class RefreshViewSet(viewsets.ModelViewSet, TokenRefreshView):
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
             raise InvalidToken(e.args[0])
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)

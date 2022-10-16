@@ -1,5 +1,4 @@
-import React from 'react'
-import { Navigate, Route, RouteProps } from 'react-router'
+import { Navigate, Route, Outlet, RouteProps } from 'react-router'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store'
 
@@ -7,13 +6,10 @@ const ProtectedRoute = (props: RouteProps) => {
     const auth = useSelector((state: RootState) => state.auth)
 
     if(auth.account) {
-	if(props.path === '/') {
-	    return <Navigate to={'/Profile'}/>
-	}
-	return <Route {...props} />
+	return <Outlet/>
     } 
     else if(!auth.account) {
-	return <Navigate to={'/'}/>
+	return <Navigate to={'login'}/>
     }
     else {
 	return <div>Not found</div>

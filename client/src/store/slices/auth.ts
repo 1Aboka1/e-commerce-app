@@ -23,7 +23,7 @@ const authSlice = createSlice({
 	setAccount(state: State, action: PayloadAction<AccountResponse>) {
 	    state.account = action.payload
 	},
-	logout(state: State) {
+	setLogout(state: State) {
 	    state.account = null
 	    state.refreshToken = null
 	    state.token = null
