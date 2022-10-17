@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from .models import Product, ProductCategory, CustomUser
+from .models import Product, ProductCategory, CustomUser, CartItem, ShoppingSession
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -75,3 +75,15 @@ class RegistrationSerializer(UserSerializer):
         except ObjectDoesNotExist:
             user = CustomUser.objects.create_user(**validated_data)
             return user
+
+class ShoppingSessionSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = ShoppingSession
+        fields = ['id', 'total', 'user']
+
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ['session', 'product', 'quantity']

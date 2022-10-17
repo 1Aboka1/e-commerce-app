@@ -26,7 +26,9 @@ function App() {
 			</Route>
 			<Route path="search" element={<Search/>}/>
 			<Route exact path='profile' element={<ProtectedRoute/>}>
-			    <Route path=':windowType' element={<Profile/>}/>
+			    <Route path=':windowType' element={<Profile/>}>
+				<Route path=':genericParam' element={<Profile/>}/>
+			    </Route>
 			</Route>
 		    </Routes>
 		</BrowserRouter>

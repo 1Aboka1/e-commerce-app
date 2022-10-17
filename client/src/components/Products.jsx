@@ -58,7 +58,7 @@ export class Products extends Component {
 
     render() {
         return (
-            <div className='bg-white basis-3/4 rounded-xl'>
+            <div className='bg-white shadow-xl shadow-gray-300 basis-3/4 rounded-xl'>
                 {/* { this.props.filteredQuerySet.length === 0 ? this.state.fetchedData.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) : this.props.filteredQuerySet.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) } */}
                 { this.props.filteredQuerySet.length === 0 ? this.createEmptyQS() : this.props.filteredQuerySet.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) }
                 {/* { this.props.filteredQuerySet.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) } */}

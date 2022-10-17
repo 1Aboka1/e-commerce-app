@@ -109,13 +109,13 @@ class ShoppingSession(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    user = models.OneToOneField(CustomUser, primary_key=False, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, primary_key=False, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.user
 
 class CartItem(models.Model):
-    quantify = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 

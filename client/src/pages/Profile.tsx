@@ -28,7 +28,6 @@ const leftTabItems = {
 
 export const Profile = () => {
     const URLParam = useParams()
-    const urlControl = useNavigate()
     const [windowType, setWindowType] = useState(URLParam.windowType)
     const [signWindowShown, setSignWindowShown] = useState(false)
     const [signType, setSignType] = useState('')
@@ -82,7 +81,7 @@ export const Profile = () => {
 			    // @ts-ignore
 			    leftTabItems[windowType]['name']}</h1>
 			<div className='flex flex-row'>
-			    <div className='flex flex-col py-3 w-[250px] rounded-xl bg-white'>
+			    <div className='flex flex-col py-3 w-[250px] shadow-xl shadow-gray-300 rounded-xl bg-white sticky top-24'>
 				{renderList()}		    
 				<Button className='justify-start text-black border-l-2 border-white pl-7 py-2' onClick={handleLogout} startIcon={<LogoutOutlinedIcon/>}>Выйти</Button>
 

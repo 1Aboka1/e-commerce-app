@@ -92,7 +92,18 @@ export const SignInUp = (props) => {
 		{ headers: { "Content-Type": "application/json" } }
 	    )
 	    .then((response) => {
-			
+		let shopping_session_obj = {}
+		shopping_session_obj.user = response.data.user.id
+		axios
+		    .post(
+			'/api/shopping_session/create',
+			shopping_session_obj,
+			{ headers: { "Content-Type": "application/json" } }
+		    )
+		    .then((response) => {
+			console.log(response.status)
+		    })
+		    .catch((error) => { console.log(error) })
 	    })
 	    .catch((error) => { console.log(error) })
     }
