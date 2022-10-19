@@ -12,9 +12,11 @@ import {
 } from "redux-persist"
 import storage from "redux-persist/lib/storage"
 import authSlice from "./slices/auth"
+import shoppingSessionSlice from './slices/shopsession'
 
 const rootReducer = combineReducers({
     auth: authSlice.reducer,
+    shopping_session: shoppingSessionSlice.reducer,
 })
 
 const persistedReducer = persistReducer(

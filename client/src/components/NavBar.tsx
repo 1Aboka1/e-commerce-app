@@ -12,7 +12,7 @@ export const NavBar = (props: any) => {
     	const user = useSelector((state: RootState) => state.auth.account)
 	
 	return (
-		<div className='bg-black shadow-lg shadow-gray-400 sticky top-0 z-50'>
+		<div className='bg-black shadow-md shadow-gray-700 sticky top-0 z-50'>
 			<div className='text-white flex items-center max-w-[1240px] w-screen mx-auto h-[70px] justify-between font-medium'>
 				<div className='flex items-center space-x-4'>
 					<Link to={`/`}>

@@ -7,11 +7,11 @@ import { useParams } from 'react-router-dom'
 export const Cart = () => {
     const URLParams = useParams()
     const shoppingSessionID = URLParams.genericParam
-    const shoppingSession = useSWR<AccountResponse["user"]>(`/cart/shopping_session/${shoppingSessionID}/`, fetcher)
+	const shoppingSession =  useSWR<AccountResponse["user"]>(shoppingSessionID !== undefined ? `/cart/shopping_session/${shoppingSessionID}/` : null, fetcher)
 
     return (
-	<div>
-	    {shoppingSessionID}
+	<div className='flex flex-col py-3 shadow-xl shadow-gray-300 rounded-xl bg-white grow'>
+	  sdfs  
 	</div>
     )
 }

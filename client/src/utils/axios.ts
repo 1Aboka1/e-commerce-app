@@ -74,4 +74,8 @@ export function fetcher<T = any>(url: string) {
     return axiosService.get<T>(url).then((response) => response.data)
 }
 
+export function sender<T = any>(url: string, args: object) {
+    return axiosService.post<T>(url, args).then((response) => response.data)
+}
+
 export default axiosService

@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import { fetcher } from '../utils/axios'
 import { AccountResponse } from '../types'
 import { RootState } from '../store'
+import refreshShoppingSession from '../utils/refreshShoppingSession'
 
 import { SignInUp } from '../components/SignInUp'
 // @ts-ignore
@@ -36,6 +37,8 @@ export const Profile = () => {
 	setSignType(type)
 	setSignWindowShown(!signWindowShown)
     }
+
+    refreshShoppingSession()
 
     const account = useSelector((state: RootState) => state.auth.account)
     const dispatch = useDispatch()
@@ -80,7 +83,7 @@ export const Profile = () => {
 			<h1 className='font-bold text-3xl mb-4 pl-3'>{
 			    // @ts-ignore
 			    leftTabItems[windowType]['name']}</h1>
-			<div className='flex flex-row'>
+			<div className='flex flex-row space-x-4'>
 			    <div className='flex flex-col py-3 w-[250px] shadow-xl shadow-gray-300 rounded-xl bg-white sticky top-24'>
 				{renderList()}		    
 				<Button className='justify-start text-black border-l-2 border-white pl-7 py-2' onClick={handleLogout} startIcon={<LogoutOutlinedIcon/>}>Выйти</Button>
