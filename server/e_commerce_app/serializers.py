@@ -76,14 +76,17 @@ class RegistrationSerializer(UserSerializer):
             user = CustomUser.objects.create_user(**validated_data)
             return user
 
+class CartItemSerializer(serializers.ModelSerializer):
+    product_id = serializers.PrimaryKeyRelatedField(read_only=True, source='product')
+
+    class Meta:
+        model = CartItem
+        fields = ['product_id', 'quantity', 'id']
+
 class ShoppingSessionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    items = CartItemSerializer(many=True)
 
     class Meta:
         model = ShoppingSession
-        fields = ['id', 'total', 'user']
-
-class CartItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ['session', 'product', 'quantity']
+        fields = ['id', 'total', 'user', 'items']

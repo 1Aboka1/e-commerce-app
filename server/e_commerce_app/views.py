@@ -214,11 +214,12 @@ class RefreshViewSet(viewsets.ModelViewSet, TokenRefreshView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class ShoppingSessionViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     http_method_names = ['get', 'post']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['modified_at']
     ordering = ['modified_at']
+    serializer_class = ShoppingSessionSerializer
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -227,7 +228,7 @@ class ShoppingSessionViewSet(viewsets.ModelViewSet):
     def get_object(self):
         lookup_field_value = self.kwargs[self.lookup_field]
 
-        obj = ShoppingSession.objects.get(id=lookup_field_value)
+        obj = ShoppingSession.objects.get(user__id=lookup_field_value)
         self.check_object_permissions(self.request, obj)
 
         return obj

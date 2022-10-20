@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import { fetcher } from '../utils/axios'
 import { AccountResponse } from '../types'
 import { RootState } from '../store'
-import refreshShoppingSession from '../utils/refreshShoppingSession'
+import RefreshShoppingSession from '../utils/refreshShoppingSession'
 
 import { SignInUp } from '../components/SignInUp'
 // @ts-ignore
@@ -38,7 +38,7 @@ export const Profile = () => {
 	setSignWindowShown(!signWindowShown)
     }
 
-    refreshShoppingSession()
+    RefreshShoppingSession()
 
     const account = useSelector((state: RootState) => state.auth.account)
     const dispatch = useDispatch()

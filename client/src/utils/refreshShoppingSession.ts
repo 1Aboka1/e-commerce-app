@@ -5,16 +5,14 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../store'
 
 const RefreshShoppingSession = () => {
-    let userID = useSelector((state: RootState) => state.shopping_session.id)
-    const paramForGETRequest: { user_id: string | null } = { user_id: null }
-    paramForGETRequest.user_id = userID
+    const user = useSelector((state: RootState) => state.auth.account)
 
     axios
 	.get(
-	    '/api/shopping_session',
-	    { data: paramForGETRequest },
+	    '/api/cart/shopping_session/' + user?.id,
 	)
 	.then((response) => {
+	    console.log(response.data)
 	    store.dispatch(
 		shoppingSessionSlice.actions.refreshCart({ id: response.data.id, total: response.data.total, items: response.data.items })
 	    )

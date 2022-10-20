@@ -112,18 +112,18 @@ class ShoppingSession(models.Model):
     user = models.OneToOneField(CustomUser, primary_key=False, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 class CartItem(models.Model):
     quantity = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    session = models.ForeignKey(ShoppingSession, on_delete=models.CASCADE)
+    session = models.ForeignKey(ShoppingSession, on_delete=models.CASCADE, related_name='items')
     product = models.OneToOneField(Product, primary_key=False, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.product
+        return str(self.product)
 
 class OrderDetail(models.Model):
     total = models.IntegerField(default=0)
