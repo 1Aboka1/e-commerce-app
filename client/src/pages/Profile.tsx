@@ -7,7 +7,6 @@ import { fetcher } from '../utils/axios'
 import { AccountResponse } from '../types'
 import { RootState } from '../store'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
-import UpdateShoppingSession from '../utils/shoppingSessionBiDirectCommunication'
 
 import { SignInUp } from '../components/SignInUp'
 // @ts-ignore
@@ -42,7 +41,6 @@ export const Profile = () => {
 
     useEffect(() => {
 	if(componentDidMount === false) {
-	    UpdateShoppingSession()
 	    RefreshShoppingSession()
 	}
 	setComponentDidMount(true)

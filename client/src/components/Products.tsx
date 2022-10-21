@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import store, {RootState} from '../store'
+import {RootState} from '../store'
 import { useDispatch, useSelector } from 'react-redux'
 import shoppingSessionSlice from '../store/slices/shopsession'
-
+import UpdateShoppingSession from '../utils/updateShoppingSession'
 
 export const Products = (props: any) => {
     const [fetchedData, setFetchedData] = useState([])
@@ -27,7 +27,13 @@ export const Products = (props: any) => {
     const handleAddToCart = (productID: string) => (event: React.SyntheticEvent) => {
 	event.preventDefault()
 	dispatch(shoppingSessionSlice.actions.addCartItem({ item: { id: null, quantity: 1, product_id: productID } }))
+	UpdateShoppingSession(productID)
     }
+
+    const getPresenceOfItem = (productID: string) => (event: React.SyntheticEvent) => {
+	event.preventDefault()
+	// contains item with product_id = productID???
+    } 
     
     const createProductList = (product: any) => {           
         return(

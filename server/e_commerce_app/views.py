@@ -216,8 +216,8 @@ class RefreshViewSet(viewsets.ModelViewSet, TokenRefreshView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class ShoppingSessionViewSet(viewsets.ModelViewSet):
-    permission_classes = (AllowAny,)
-    http_method_names = ['get', 'put']
+    permission_classes = (IsAuthenticated,)
+    http_method_names = ['get']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['modified_at']
     ordering = ['modified_at']
@@ -249,7 +249,7 @@ class ShoppingSessionViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_206_PARTIAL_CONTENT)
 
 class CartItemViewSet(viewsets.ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     http_method_names = ['post']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at']

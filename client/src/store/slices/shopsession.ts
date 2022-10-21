@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import axios from 'axios'
 
 type CartItem = {
     id: string | null,
