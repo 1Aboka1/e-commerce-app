@@ -16,6 +16,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.http import QueryDict
+from rest_framework.decorators import action
 
 #Overriding FlatMultipleModelMixin
 class FlatMultipleModelMixinPatched(FlatMultipleModelMixin):
@@ -189,6 +190,7 @@ class RegistrationViewSet(viewsets.ModelViewSet, TokenObtainPairView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
+        shopping_session = ShoppingSession.objects.create(total=0, user=user)
 
         res = {
                 "refresh": str(refresh),
@@ -215,7 +217,7 @@ class RefreshViewSet(viewsets.ModelViewSet, TokenRefreshView):
 
 class ShoppingSessionViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
-    http_method_names = ['get', 'post']
+    http_method_names = ['get', 'put']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['modified_at']
     ordering = ['modified_at']
@@ -233,8 +235,31 @@ class ShoppingSessionViewSet(viewsets.ModelViewSet):
 
         return obj
 
+#    def create(self, request, *args, **kwargs):
+#        serializer = self.get_serializer(data=request.data)
+#        serializer.is_valid(raise_exception=True)
+#        serializer.save()
+#        print('CREATED')
+#
+#        return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, pk=None, *args, **kwargs):
+        lookup_field_value = self.kwargs[self.lookup_field]
+
+        return Response(status=status.HTTP_206_PARTIAL_CONTENT)
+
+class CartItemViewSet(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    http_method_names = ['post']
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['created_at']
+    serializer_class = CartItemSerializer
+
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        request_body = QueryDict('', mutable=True)
+        request_body.update(self.request.data)
+        serializer = self.get_serializer(data=request_body)
+
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

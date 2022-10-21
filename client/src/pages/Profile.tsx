@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation, useParams } from 'react-router'
 import authSlice from '../store/slices/auth'
@@ -7,6 +7,7 @@ import { fetcher } from '../utils/axios'
 import { AccountResponse } from '../types'
 import { RootState } from '../store'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
+import UpdateShoppingSession from '../utils/shoppingSessionBiDirectCommunication'
 
 import { SignInUp } from '../components/SignInUp'
 // @ts-ignore
@@ -32,13 +33,21 @@ export const Profile = () => {
     const [windowType, setWindowType] = useState(URLParam.windowType)
     const [signWindowShown, setSignWindowShown] = useState(false)
     const [signType, setSignType] = useState('')
+    const [componentDidMount, setComponentDidMount] = useState(false)
 	
     const handleSignClick = (type: string) => () => {
 	setSignType(type)
 	setSignWindowShown(!signWindowShown)
     }
 
-    RefreshShoppingSession()
+    useEffect(() => {
+	if(componentDidMount === false) {
+	    UpdateShoppingSession()
+	    RefreshShoppingSession()
+	}
+	setComponentDidMount(true)
+    }, [componentDidMount])
+
 
     const account = useSelector((state: RootState) => state.auth.account)
     const dispatch = useDispatch()

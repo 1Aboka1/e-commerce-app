@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import store from '../store'
-import { RootState } from '../store'
 
 export class Products extends Component {
     constructor(props) {
         super(props)
-	const shopping_session = useSelector((state: RootState) => state.shopping_session)
         this.state = {
             fetchedData: []
         }
@@ -25,7 +23,7 @@ export class Products extends Component {
     }
 
     handleAddToCart = (productID) => () => {
-	store
+	console.log(this.shopping_session)
     }
 
     createProductList = (product) => {           

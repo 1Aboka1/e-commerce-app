@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from 'axios'
 
 type CartItem = {
-    id: string,
+    id: string | null,
     quantity: number,
     product_id: string,
 }
