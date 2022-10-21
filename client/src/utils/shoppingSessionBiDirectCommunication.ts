@@ -12,7 +12,7 @@ const UpdateShoppingSession = () => {
 	    '/api/cart/cart_item/',
 	    { 
 		session: session.id,
-		product_id: 1,
+		product_id: 2,
 	    }
 	)
 	.then((response) => {

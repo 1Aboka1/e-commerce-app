@@ -120,7 +120,7 @@ class CartItem(models.Model):
     modified_at = models.DateTimeField(default=timezone.now)
 
     session = models.ForeignKey(ShoppingSession, on_delete=models.CASCADE, related_name='items')
-    product = models.OneToOneField(Product, primary_key=False, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, primary_key=False, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.product)
