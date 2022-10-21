@@ -40,15 +40,21 @@ class FlatMultipleModelAPIView(FlatMultipleModelMixinPatched, GenericAPIView):
     def get_queryset(self):
         return None
 
-class ProductView(generics.ListAPIView):
+class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['get']
 
     def get_queryset(self):
-        qs = Product.objects.all()
-        for i in range(len(qs)):
-            qs[i].image = qs[i].image.name
-        return qs
+        if self.request.user.is_superuser:
+            return Product.objects.all()
     
+    def list(self, request):
+        data = json.loads(self.request.query_params['0'])
+        response_data = Product.objects.all().filter(id__in=data)
+        serializer = self.get_serializer(response_data, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class FilteredProductView(generics.ListAPIView):
     serializer_class = ProductSerializer

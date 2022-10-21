@@ -7,22 +7,22 @@ import shoppingSessionSlice from '../store/slices/shopsession'
 import UpdateShoppingSession from '../utils/updateShoppingSession'
 
 export const Products = (props: any) => {
-    const [fetchedData, setFetchedData] = useState([])
-    const [componentDidMount, setComponentDidMount] = useState(false)
+    //const [fetchedData, setFetchedData] = useState([])
+    //const [componentDidMount, setComponentDidMount] = useState(false)
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-	if(componentDidMount === false) {
-	    axios
-		.get('/api/products')
-		.then((response) => {
-		    setFetchedData(response.data)
-		})
-		.catch((error) => {console.log(error)})
-	    setComponentDidMount(true)
-	}
-    }, [componentDidMount])
+    //   useEffect(() => {
+    //       if(componentDidMount === false) {
+    //           axios
+    //       	.get('/api/products')
+    //       	.then((response) => {
+    //       	    setFetchedData(response.data)
+    //       	})
+    //       	.catch((error) => {console.log(error)})
+    //           setComponentDidMount(true)
+    //       }
+    //   }, [componentDidMount])
 
     const handleAddToCart = (productID: string) => (event: React.SyntheticEvent) => {
 	event.preventDefault()
@@ -82,9 +82,7 @@ export const Products = (props: any) => {
 
     return ( 
     <div className='bg-white shadow-xl shadow-gray-300 basis-3/4 rounded-xl'>
-	{/* { this.props.filteredQuerySet.length === 0 ? this.state.fetchedData.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) : this.props.filteredQuerySet.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) } */}
 	{ props.filteredQuerySet.length === 0 ? createEmptyQS() : props.filteredQuerySet.map((product: any) => {return props.listView ? createProductList(product) : createProductGrid(product)}) }
-	{/* { this.props.filteredQuerySet.map((product) => {return this.props.listView ? this.createProductList(product) : this.createProductGrid(product)}) } */}
     </div>
 )
 }
