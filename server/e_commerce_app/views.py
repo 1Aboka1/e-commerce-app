@@ -190,7 +190,7 @@ class RegistrationViewSet(viewsets.ModelViewSet, TokenObtainPairView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
-        shopping_session = ShoppingSession.objects.create(total=0, user=user)
+        ShoppingSession.objects.create(total=0, user=user)
 
         res = {
                 "refresh": str(refresh),

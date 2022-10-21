@@ -30,12 +30,12 @@ export const Products = (props: any) => {
 	UpdateShoppingSession(productID)
     }
 
-    const getPresenceOfItem = (productID: string) => (event: React.SyntheticEvent) => {
-	event.preventDefault()
-	// contains item with product_id = productID???
+    const getPresenceOfItem = (productID: string) => {
+	return (shopping_session.items?.some((item) => item.product_id === productID))
     } 
     
     const createProductList = (product: any) => {           
+	const presenceOfProduct = getPresenceOfItem(product.id)
         return(
             <Link to={`/product_item/${product.id}`} key={product.id}>
                 <div className='flex justify-between py-4 cursor-pointer transition ease-in-out duration-200 group'>
@@ -48,7 +48,17 @@ export const Products = (props: any) => {
                     </div>
                     <div className='flex flex-col justify-center space-y-2 px-6'>
                         <h1 className='text-[20px] text-end'>₸{product.price}</h1>
-                        <button onClick={handleAddToCart(product.id)} className='bg-green-500 p-3 font-bold text-white whitespace-nowrap rounded-lg hover:bg-green-600 transition ease-out duration-300'>В корзину</button>
+	    {
+		presenceOfProduct ?
+			<button onClick={handleAddToCart(product.id)} disabled={true} className='bg-white w-32 border border-green-500 py-3 font-bold text-green-500 whitespace-nowrap rounded-lg transition ease-out duration-300'>
+			    В корзинe
+			</button>
+		:
+
+			<button onClick={handleAddToCart(product.id)} className='bg-green-500 py-3 w-32 font-bold text-white whitespace-nowrap rounded-lg hover:bg-green-600 transition ease-out duration-300'>
+			    Купить
+			</button>
+	    }
                         <span className='text-[12px] text-end text-gray-600 whitespace-nowrap'>В наличии: {product.quantity}</span>
                     </div>
                 </div>

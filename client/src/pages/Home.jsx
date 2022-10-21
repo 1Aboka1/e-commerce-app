@@ -3,10 +3,12 @@ import { NavBar } from '../components/NavBar'
 import { WelcomeSection } from '../components/WelcomeSection'
 import { Footer } from '../components/Footer'
 import { SignInUp } from '../components/SignInUp'
+import RefreshShoppingSession from '../utils/refreshShoppingSession'
 
 export const Home = () => {
 	const [signWindowShown, setSignWindowShown] = useState(false)
 	const [signType, setSignType] = useState('')
+    	RefreshShoppingSession()
 	
 	const handleSignClick = (type) => () => {
 		setSignType(type)
