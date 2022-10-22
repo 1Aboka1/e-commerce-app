@@ -47,7 +47,18 @@ const shoppingSessionSlice = createSlice({
 	    action: PayloadAction<{}>
 	) {
 	    state.items = []
-	}
+	},
+	changeQuantity(
+	    state: Session,
+	    action: PayloadAction<{ id: string, new_quantity: number }>
+	){
+	    state.items = state.items?.map((item: CartItem) => {
+		if(item.id === action.payload.id) {
+		    return { ...item, quantity: action.payload.new_quantity }
+		}
+		return item
+	    })!
+	},
     }
 })
 

@@ -22,8 +22,8 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 
 const leftTabItems = {
-    'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon/>, name: 'Корзина' },
     'orders': { comp: <Orders/>, icon: <LocalShippingOutlinedIcon/>, name: 'Заказы' },
+    'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon/>, name: 'Корзина' },
     'favorites': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon/>, name: 'Избранное' },
 }
 
@@ -89,13 +89,15 @@ export const Profile = () => {
 		    <div className='mx-auto max-w-[1100px] py-5'>
 			<h1 className='font-bold text-3xl mb-4 pl-3'>{
 			    // @ts-ignore
-			    leftTabItems[windowType]['name']}</h1>
+				leftTabItems[windowType]['name']
+			}</h1>
 			<div className='flex flex-row space-x-4 items-start'>
-			    <div className='flex flex-col py-3 w-[350px] shadow-xl shadow-gray-300 rounded-xl bg-white sticky top-24'>
+				<div className={/* @ts-ignore */
+					'flex flex-col py-3 w-[250px] shadow-xl shadow-gray-300 rounded-xl bg-white sticky top-24' + (leftTabItems[windowType]['name'] === 'cart' ? ' hidden' : '')}>
 				{renderList()}		    
 				<Button className='justify-start text-black border-l-2 border-white pl-7 py-2' onClick={handleLogout} startIcon={<LogoutOutlinedIcon/>}>Выйти</Button>
 
-			    </div>
+			</div>
 	{/* @ts-ignore*/}
 			    { leftTabItems[windowType]['comp'] }
     			</div>

@@ -38,7 +38,7 @@ export const NavBar = (props: any) => {
 					<div className='flex flex-row items-center space-x-3'>
 					    <Link to={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<ShoppingCartOutlinedIcon/>}>Корзина</Button></Link>
 
-					    <Link to={'/profile/cart'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></Link>
+					    <Link to={'/profile/favorites'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></Link>
 				    	</div>
 				    )
 				    :

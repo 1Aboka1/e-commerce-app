@@ -50,9 +50,11 @@ export const Products = (props: any) => {
                         <h1 className='text-[20px] text-end'>₸{product.price}</h1>
 	    {
 		presenceOfProduct ?
-			<button onClick={handleAddToCart(product.id)} disabled={true} className='bg-white w-32 border border-green-500 py-3 font-bold text-green-500 whitespace-nowrap rounded-lg transition ease-out duration-300'>
-			    В корзинe
-			</button>
+			<Link to={'/profile/cart'}>
+			    <button className='bg-white w-32 border border-green-500 py-3 font-bold text-green-500 whitespace-nowrap rounded-lg transition ease-out duration-300'>
+				В корзинe
+			    </button>
+			</Link>
 		:
 
 			<button onClick={handleAddToCart(product.id)} className='bg-green-500 py-3 w-32 font-bold text-white whitespace-nowrap rounded-lg hover:bg-green-600 transition ease-out duration-300'>

@@ -2,11 +2,20 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import {TextField} from '@mui/material'
+import shoppingSessionSlice from '../../store/slices/shopsession'
+
+ const onlyNumberRE = /^[0-9\b]+$/
 
 export const Cart = () => {
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
     const [componentDidMount, setComponentDidMount] = useState(false)
     const [cartItems, setCartItems] = useState([])
+    const dispatch = useDispatch()
 
     useEffect(() => {
 	if(componentDidMount === false) {
@@ -18,7 +27,6 @@ export const Cart = () => {
 		)
 		.then((response) => {
 		    setCartItems(response.data)
-		    console.log(response.data)
 		})
 		.catch((error) => {
 		    console.log(error)
@@ -27,21 +35,45 @@ export const Cart = () => {
 	setComponentDidMount(true)
     }, [componentDidMount])
 
+    const handleQuantityChange = (itemID: string, direction?: number) => (event: any) => {
+	const currentItem = shopping_session.items?.find((item) => item.id === itemID)
+	if(direction !== undefined && event._reactName === 'onClick') {
+	    if(currentItem?.quantity! === 1 && direction === -1) {
+		return null
+	    }
+	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: currentItem?.quantity! + direction}))	
+	}
+	if(event.currentTarget.value === '') {
+	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 0}))
+	}
+	if(!onlyNumberRE.test(event.currentTarget.value) || +event.currentTarget.value > 999) {
+	    return null
+	}
+	dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: +event.currentTarget.value}))
+    }
+
     const createItemsList = (product: any) => {           
+	const shopping_session_item = shopping_session.items?.find(item => item.product_id === product.id)
         return(
-	    <div className='flex justify-between py-4 cursor-pointer transition ease-in-out duration-200 group'>
+	    <div className='flex justify-between py-4 transition ease-in-out duration-200 group'>
 		<div className='flex'>
 		    <img className='w-[200px] p-5 object-cover' src={'/mediafiles/' + product.image} alt={product.name}/>
-		    <div className='py-3 justify-center flex flex-col'>
+		    <div className='py-3 space-y-3 justify-center flex flex-col'>
 			<h1 className='font-medium text-black text-[20px] group-hover:text-green-600 transition ease-in-out duration-200'>{product.name}</h1>
-			<p className='pt-5 text-[13px] text-gray-700'>{product.description}</p>
+			<p className='text-[13px] text-gray-700'>{product.description}</p>
+			<ButtonGroup className=''>
+			    <Button className='rounded-l-lg py-2 font-bold text-green-500 border-green-400'>В избранное</Button>
+			    <Button className='rounded-r-lg py-2 font-bold text-green-500 border-green-400'>Удалить</Button>
+			</ButtonGroup> 
 		    </div>
 		</div>
 		<div className='flex flex-col justify-center space-y-2 px-6'>
 		    <h1 className='text-[20px] text-end'>₸{product.price}</h1>
-		    <button className='bg-white w-32 border border-green-500 py-3 font-bold text-green-500 whitespace-nowrap rounded-lg transition ease-out duration-300'>
-			В корзинe
-		    </button>
+	    	    <ButtonGroup className='h-10'>
+			<Button onClick={handleQuantityChange(shopping_session_item?.id!, -1)} className='rounded-l-lg font-bold text-green-500 border-green-400'>-</Button>
+			<TextField color='success' value={shopping_session_item?.quantity} onChange={handleQuantityChange(shopping_session_item?.id!)} size='small' className='w-14 text-center rounded-none text-green-500 border-green-400'/>
+			<Button onClick={handleQuantityChange(shopping_session_item?.id!, 1)} className='rounded-r-lg font-bold text-green-500 border-green-400'>+</Button>
+		    </ButtonGroup>
 		    <span className='text-[12px] text-end text-gray-600 whitespace-nowrap'>В наличии: {product.quantity}</span>
 		</div>
 	    </div>
@@ -50,8 +82,9 @@ export const Cart = () => {
 
     const createEmptyQS = () => {
         return (
-            <div className='h-screen'>
+	    <div className='h-screen flex flex-col items-center'>
                 <h1 className='text-center pt-10 font-medium text-lg'>В вашей корзине пусто</h1>
+		<img className='w-[500px] ' src={require('../../assets/carton-container-symbol-vector-i.jpg')} alt='Пустая коробка'/>
             </div>
         )
     }
