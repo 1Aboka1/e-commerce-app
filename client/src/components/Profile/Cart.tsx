@@ -44,12 +44,18 @@ export const Cart = () => {
 	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: currentItem?.quantity! + direction}))	
 	}
 	if(event.currentTarget.value === '') {
-	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 0}))
+	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 1}))
 	}
 	if(!onlyNumberRE.test(event.currentTarget.value) || +event.currentTarget.value > 999) {
 	    return null
 	}
 	dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: +event.currentTarget.value}))
+	// Should send the changed store to API by UpdateShoppingSession
+    }
+
+    const handleRemoveItem = (itemID: string) => (event: any) => {
+	dispatch(shoppingSessionSlice.actions.removeCartItem({itemID}))
+	setComponentDidMount(false)
     }
 
     const createItemsList = (product: any) => {           
@@ -63,7 +69,7 @@ export const Cart = () => {
 			<p className='text-[13px] text-gray-700'>{product.description}</p>
 			<ButtonGroup className=''>
 			    <Button className='rounded-l-lg py-2 font-bold text-green-500 border-green-400'>В избранное</Button>
-			    <Button className='rounded-r-lg py-2 font-bold text-green-500 border-green-400'>Удалить</Button>
+			    <Button onClick={handleRemoveItem(shopping_session_item?.id!)} className='rounded-r-lg py-2 font-bold text-green-500 border-green-400'>Удалить</Button>
 			</ButtonGroup> 
 		    </div>
 		</div>
@@ -83,8 +89,8 @@ export const Cart = () => {
     const createEmptyQS = () => {
         return (
 	    <div className='h-screen flex flex-col items-center'>
-                <h1 className='text-center pt-10 font-medium text-lg'>В вашей корзине пусто</h1>
-		<img className='w-[500px] ' src={require('../../assets/carton-container-symbol-vector-i.jpg')} alt='Пустая коробка'/>
+                <h1 className='text-center pt-5 text-2xl font-bold'>В вашей корзине пусто</h1>
+		<img className='w-[400px] ' src={require('../../assets/carton-container-symbol-vector-i.jpg')} alt='Пустая коробка'/>
             </div>
         )
     }
