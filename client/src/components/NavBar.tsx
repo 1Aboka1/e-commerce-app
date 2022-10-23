@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import Button from '@mui/material/Button'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
+import Badge from '@mui/material/Badge'
 
 const loginAlias = 'login'
 const registerAlias = 'register'
 
 export const NavBar = (props: any) => {
     	const user = useSelector((state: RootState) => state.auth.account)
+    	const shoppingSession = useSelector((state: RootState) => state.shopping_session)
 	
 	return (
 		<div className='bg-black shadow-md shadow-gray-700 sticky top-0 z-50'>
@@ -36,7 +38,7 @@ export const NavBar = (props: any) => {
 				    {user ?
 				    (
 					<div className='flex flex-row items-center space-x-3'>
-					    <Link to={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<ShoppingCartOutlinedIcon/>}>Корзина</Button></Link>
+					    <Link to={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<Badge badgeContent={shoppingSession?.total} color='primary'><ShoppingCartOutlinedIcon/></Badge>}>Корзина</Button></Link>
 
 					    <Link to={'/profile/favorites'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></Link>
 				    	</div>

@@ -115,7 +115,7 @@ class ShoppingSession(models.Model):
         return str(self.user)
 
 class CartItem(models.Model):
-    quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 

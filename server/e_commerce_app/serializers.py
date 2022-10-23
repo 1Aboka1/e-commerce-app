@@ -78,11 +78,11 @@ class RegistrationSerializer(UserSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product_id = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), source='product')
-    session = serializers.PrimaryKeyRelatedField(queryset=ShoppingSession.objects.all(), write_only=True)
+    session_id = serializers.PrimaryKeyRelatedField(queryset=ShoppingSession.objects.all(), source='session')
 
     class Meta:
         model = CartItem
-        fields = ['product_id', 'quantity', 'id', 'session']
+        fields = ['product_id', 'quantity', 'id', 'session_id']
 
 class ShoppingSessionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)

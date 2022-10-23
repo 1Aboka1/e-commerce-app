@@ -5,6 +5,7 @@ import {RootState} from '../store'
 import { useDispatch, useSelector } from 'react-redux'
 import shoppingSessionSlice from '../store/slices/shopsession'
 import UpdateShoppingSession from '../utils/updateShoppingSession'
+import { UpdateType } from '../utils/updateShoppingSession'
 
 export const Products = (props: any) => {
     //const [fetchedData, setFetchedData] = useState([])
@@ -26,8 +27,8 @@ export const Products = (props: any) => {
 
     const handleAddToCart = (productID: string) => (event: React.SyntheticEvent) => {
 	event.preventDefault()
-	dispatch(shoppingSessionSlice.actions.addCartItem({ item: { id: null, quantity: 1, product_id: productID } }))
-	UpdateShoppingSession(productID)
+	dispatch(shoppingSessionSlice.actions.addCartItem({ item: { id: null, quantity: 1, product_id: productID, session_id: shopping_session.id! } }))
+	UpdateShoppingSession(UpdateType.AddItem, productID)
     }
 
     const getPresenceOfItem = (productID: string) => {

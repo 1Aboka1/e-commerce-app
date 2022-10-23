@@ -256,10 +256,11 @@ class ShoppingSessionViewSet(viewsets.ModelViewSet):
 
 class CartItemViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    http_method_names = ['post']
+    http_method_names = ['post', 'delete', 'patch']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at']
     serializer_class = CartItemSerializer
+    queryset = CartItem.objects.all()
 
     def create(self, request, *args, **kwargs):
         request_body = QueryDict('', mutable=True)
@@ -270,3 +271,24 @@ class CartItemViewSet(viewsets.ModelViewSet):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, *args, **kwargs):
+        lookup_field_value = self.kwargs[self.lookup_field]
+        self.get_queryset().get(id=lookup_field_value).delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def patch(self, request, *args, **kwargs):
+        request_body = QueryDict('', mutable=True)
+        request_body.update(self.request.data)
+        serializer = self.get_serializer(data=request_body)
+        serializer.is_valid(raise_exception=True)
+
+        lookup_field_value = self.kwargs[self.lookup_field]
+        obj = self.get_queryset().get(id=lookup_field_value)
+
+        obj.update(quantity=serializer['quantity'])
+        obj.save()
+        
+        return Response(status=status.HTTP_202_ACCEPTED)
+

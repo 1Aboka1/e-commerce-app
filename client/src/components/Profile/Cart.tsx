@@ -8,8 +8,9 @@ import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import {TextField} from '@mui/material'
 import shoppingSessionSlice from '../../store/slices/shopsession'
+import UpdateShoppingSession, { UpdateType } from '../../utils/updateShoppingSession'
 
- const onlyNumberRE = /^[0-9\b]+$/
+const onlyNumberRE = /^[0-9\b]+$/
 
 export const Cart = () => {
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
@@ -38,23 +39,36 @@ export const Cart = () => {
     const handleQuantityChange = (itemID: string, direction?: number) => (event: any) => {
 	const currentItem = shopping_session.items?.find((item) => item.id === itemID)
 	if(direction !== undefined && event._reactName === 'onClick') {
-	    if(currentItem?.quantity! === 1 && direction === -1) {
+	    if(currentItem?.quantity! < 1 && direction === -1) {
 		return null
 	    }
 	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: currentItem?.quantity! + direction}))	
+	    UpdateShoppingSession(UpdateType.ChangeQuantity, undefined, itemID)
+	    return null
 	}
 	if(event.currentTarget.value === '') {
-	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 1}))
+	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 0}))
+	    UpdateShoppingSession(UpdateType.ChangeQuantity, undefined, itemID)
+	    return null
 	}
 	if(!onlyNumberRE.test(event.currentTarget.value) || +event.currentTarget.value > 999) {
 	    return null
 	}
 	dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: +event.currentTarget.value}))
-	// Should send the changed store to API by UpdateShoppingSession
+	UpdateShoppingSession(UpdateType.ChangeQuantity, undefined, itemID)
+    }
+
+    const handleBlur = (itemID: string) => () => {
+	const currentItem = shopping_session.items?.find((item) => item.id === itemID)
+	if(currentItem?.quantity === 0) {
+	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 1}))
+	    UpdateShoppingSession(UpdateType.ChangeQuantity, undefined, itemID)
+	}
     }
 
     const handleRemoveItem = (itemID: string) => (event: any) => {
 	dispatch(shoppingSessionSlice.actions.removeCartItem({itemID}))
+	UpdateShoppingSession(UpdateType.RemoveItem, undefined, itemID)
 	setComponentDidMount(false)
     }
 
@@ -77,7 +91,7 @@ export const Cart = () => {
 		    <h1 className='text-[20px] text-end'>₸{product.price}</h1>
 	    	    <ButtonGroup className='h-10'>
 			<Button onClick={handleQuantityChange(shopping_session_item?.id!, -1)} className='rounded-l-lg font-bold text-green-500 border-green-400'>-</Button>
-			<TextField color='success' value={shopping_session_item?.quantity} onChange={handleQuantityChange(shopping_session_item?.id!)} size='small' className='w-14 text-center rounded-none text-green-500 border-green-400'/>
+			<TextField color='success' value={shopping_session_item?.quantity} onChange={handleQuantityChange(shopping_session_item?.id!)} onBlur={handleBlur(shopping_session_item?.id!)} size='small' className='w-14 text-center rounded-none text-green-500 border-green-400'/>
 			<Button onClick={handleQuantityChange(shopping_session_item?.id!, 1)} className='rounded-r-lg font-bold text-green-500 border-green-400'>+</Button>
 		    </ButtonGroup>
 		    <span className='text-[12px] text-end text-gray-600 whitespace-nowrap'>В наличии: {product.quantity}</span>

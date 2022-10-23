@@ -4,6 +4,7 @@ type CartItem = {
     id: string | null,
     quantity: number,
     product_id: string,
+    session_id: string
 }
 
 type Session = {
