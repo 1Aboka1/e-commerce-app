@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from .managers import CustomUserManager
+from .managers import CustomUserManager, ShoppingSessionManager
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -110,6 +110,8 @@ class ShoppingSession(models.Model):
     modified_at = models.DateTimeField(default=timezone.now)
 
     user = models.OneToOneField(CustomUser, primary_key=False, on_delete=models.PROTECT)
+
+    objects = ShoppingSessionManager()
 
     def __str__(self):
         return str(self.user)

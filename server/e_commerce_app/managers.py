@@ -1,5 +1,6 @@
 from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, first_name, password, **other_fields):
@@ -30,3 +31,8 @@ class CustomUserManager(BaseUserManager):
         user.set_password(password)
         user.save()
         return user
+
+class ShoppingSessionManager(models.Manager):
+    def get_queryset(self):
+        qs = super(ShoppingSessionManager, self).get_queryset().select_related('CartItem').annotate(total=models.Count('CartItem'))
+        return qs

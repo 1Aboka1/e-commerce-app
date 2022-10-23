@@ -36,7 +36,6 @@ class ShoppingSessionViewSet(viewsets.ModelViewSet):
         obj = ShoppingSession.objects.get(user__id=lookup_field_value)
         self.check_object_permissions(self.request, obj)
 
-
         return obj
 
 class CartItemViewSet(viewsets.ModelViewSet):
