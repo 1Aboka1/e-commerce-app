@@ -105,7 +105,6 @@ class Product(models.Model):
         return self.name
 
 class ShoppingSession(models.Model):
-    total = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 

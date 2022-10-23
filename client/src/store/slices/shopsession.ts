@@ -24,6 +24,7 @@ const shoppingSessionSlice = createSlice({
 	    action: PayloadAction<{ item: CartItem }>
 	) {
 	    state.items?.push(action.payload.item)
+	    state.total! += 1
     	},
 	removeCartItem(
 	    state: Session,
@@ -34,6 +35,7 @@ const shoppingSessionSlice = createSlice({
 		    state.items?.splice(index)
 		}
 	    })
+	    state.total! -= 1
 	},
 	refreshCart(
 	    state: Session,
@@ -48,6 +50,7 @@ const shoppingSessionSlice = createSlice({
 	    action: PayloadAction<{}>
 	) {
 	    state.items = []
+	    state.total! = 0
 	},
 	changeQuantity(
 	    state: Session,

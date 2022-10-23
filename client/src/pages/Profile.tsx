@@ -52,7 +52,7 @@ export const Profile = () => {
     const history = useNavigate()
     // @ts-ignore
     const userID = account?.id
-    const user = useSWR<AccountResponse["user"]>(`/user/${userID}/`, fetcher)
+    //const user = useSWR<AccountResponse["user"]>(`/user/${userID}/`, fetcher)
 
     const handleLogout = () => {
 	dispatch(authSlice.actions.setLogout())
@@ -86,18 +86,18 @@ export const Profile = () => {
             <div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
 		<div className=''>
 		    <NavBar handleSignClick={handleSignClick}/>
-		    <div className='mx-auto h-screen max-w-[1100px] py-5'>
+		    <div className='mx-auto max-w-[1100px] py-5'>
 			<h1 className='font-bold text-3xl mb-4 pl-3'>{
 			    // @ts-ignore
 				leftTabItems[windowType]['name']
 			}</h1>
 			<div className='flex flex-row space-x-4 items-start'>
 				<div className={/* @ts-ignore */
-					'flex flex-col py-3 w-[250px] shadow-xl shadow-gray-300 rounded-xl bg-white sticky top-24' + (leftTabItems[windowType]['name'] === 'cart' ? ' hidden' : '')}>
-				{renderList()}		    
-				<Button className='justify-start text-black border-l-2 border-white pl-7 py-2' onClick={handleLogout} startIcon={<LogoutOutlinedIcon/>}>Выйти</Button>
+				    'flex flex-col py-3 w-[250px] shadow-xl shadow-gray-300 rounded-xl bg-white sticky top-24' + (windowType === 'cart' ? ' hidden' : '')}>
+				    {renderList()}		    
+				    <Button className='justify-start text-black border-l-2 border-white pl-7 py-2' onClick={handleLogout} startIcon={<LogoutOutlinedIcon/>}>Выйти</Button>
 
-			</div>
+				</div>
 	{/* @ts-ignore*/}
 			    { leftTabItems[windowType]['comp'] }
     			</div>

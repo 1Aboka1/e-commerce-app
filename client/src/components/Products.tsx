@@ -5,36 +5,32 @@ import {RootState} from '../store'
 import { useDispatch, useSelector } from 'react-redux'
 import shoppingSessionSlice from '../store/slices/shopsession'
 import UpdateShoppingSession from '../utils/updateShoppingSession'
+import RefreshShoppingSession from '../utils/refreshShoppingSession'
 import { UpdateType } from '../utils/updateShoppingSession'
+import { fetcher } from '../utils/axios'
+import store from '../store'
 
 export const Products = (props: any) => {
-    //const [fetchedData, setFetchedData] = useState([])
-    //const [componentDidMount, setComponentDidMount] = useState(false)
+    const [componentDidMount, setComponentDidMount] = useState(false)
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
     const dispatch = useDispatch()
 
-    //   useEffect(() => {
-    //       if(componentDidMount === false) {
-    //           axios
-    //       	.get('/api/products')
-    //       	.then((response) => {
-    //       	    setFetchedData(response.data)
-    //       	})
-    //       	.catch((error) => {console.log(error)})
-    //           setComponentDidMount(true)
-    //       }
-    //   }, [componentDidMount])
+    useEffect(() => {
+	if(componentDidMount === false) {
+	    RefreshShoppingSession()
+	}
+	setComponentDidMount(true)
+    }, [componentDidMount])
 
     const handleAddToCart = (productID: string) => (event: React.SyntheticEvent) => {
 	event.preventDefault()
-	dispatch(shoppingSessionSlice.actions.addCartItem({ item: { id: null, quantity: 1, product_id: productID, session_id: shopping_session.id! } }))
 	UpdateShoppingSession(UpdateType.AddItem, productID)
     }
 
     const getPresenceOfItem = (productID: string) => {
 	return (shopping_session.items?.some((item) => item.product_id === productID))
     } 
-    
+
     const createProductList = (product: any) => {           
 	const presenceOfProduct = getPresenceOfItem(product.id)
         return(

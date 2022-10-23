@@ -34,5 +34,5 @@ class CustomUserManager(BaseUserManager):
 
 class ShoppingSessionManager(models.Manager):
     def get_queryset(self):
-        qs = super(ShoppingSessionManager, self).get_queryset().select_related('CartItem').annotate(total=models.Count('CartItem'))
+        qs = super(ShoppingSessionManager, self).get_queryset().annotate(total=models.Count('items'))
         return qs

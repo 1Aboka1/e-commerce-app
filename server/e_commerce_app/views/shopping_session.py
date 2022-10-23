@@ -20,7 +20,7 @@ from rest_framework.decorators import action
 
 class ShoppingSessionViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    http_method_names = ['get']
+    http_method_names = ['get', 'delete']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['modified_at']
     ordering = ['modified_at']
@@ -37,6 +37,12 @@ class ShoppingSessionViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+    def destroy(self, request, *args, **kwargs):
+        lookup_field_value = self.kwargs[self.lookup_field]
+        CartItem.objects.filter(session__id=lookup_field_value).delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CartItemViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)

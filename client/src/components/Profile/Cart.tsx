@@ -1,48 +1,50 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../store'
+import store, { RootState } from '../../store'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import {TextField} from '@mui/material'
+import Checkbox from '@mui/material/Checkbox'
 import shoppingSessionSlice from '../../store/slices/shopsession'
 import UpdateShoppingSession, { UpdateType } from '../../utils/updateShoppingSession'
+import FormControlLabel from '@mui/material/FormControlLabel'
 
 const onlyNumberRE = /^[0-9\b]+$/
 
 export const Cart = () => {
-    const shopping_session = useSelector((state: RootState) => state.shopping_session)
+    let shopping_session: any = useSelector((state: RootState) => state.shopping_session)
     const [componentDidMount, setComponentDidMount] = useState(false)
+    const [mainChecked, setMainChecked] = useState(true)
     const [cartItems, setCartItems] = useState([])
     const dispatch = useDispatch()
+    const [checkedItems, setCheckedItems] = useState<string[]>(shopping_session.items?.map((item: any) => { return item.id }))
+    let itemsID: any
 
     useEffect(() => {
-	if(componentDidMount === false) {
-	    const itemsID = shopping_session.items?.map((item) => { return item.product_id })
-	    axios
-		.get(
-		    '/api/products/',
-		    { params: JSON.stringify(itemsID) },
-		)
-		.then((response) => {
-		    setCartItems(response.data)
-		})
-		.catch((error) => {
-		    console.log(error)
-		})
-	}
-	setComponentDidMount(true)
-    }, [componentDidMount])
+	itemsID = shopping_session.items?.map((item: any) => { return item.product_id })
+	axios
+	    .get(
+		'/api/products/',
+		{ params: JSON.stringify(itemsID) },
+	    )
+	    .then((response) => {
+		setCartItems(response.data)
+	    })
+	    .catch((error) => {
+		console.log(error)
+	    })
+    }, [])
 
     const handleQuantityChange = (itemID: string, direction?: number) => (event: any) => {
-	const currentItem = shopping_session.items?.find((item) => item.id === itemID)
+	const currentItem = shopping_session.items?.find((item: any) => item.id === itemID)
 	if(direction !== undefined && event._reactName === 'onClick') {
 	    if(currentItem?.quantity! < 1 && direction === -1) {
 		return null
 	    }
-	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: currentItem?.quantity! + direction}))	
+	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: currentItem?.quantity! + direction}))
 	    UpdateShoppingSession(UpdateType.ChangeQuantity, undefined, itemID)
 	    return null
 	}
@@ -59,23 +61,38 @@ export const Cart = () => {
     }
 
     const handleBlur = (itemID: string) => () => {
-	const currentItem = shopping_session.items?.find((item) => item.id === itemID)
+	const currentItem = shopping_session.items?.find((item: any) => item.id === itemID)
 	if(currentItem?.quantity === 0) {
 	    dispatch(shoppingSessionSlice.actions.changeQuantity({id: itemID, new_quantity: 1}))
 	    UpdateShoppingSession(UpdateType.ChangeQuantity, undefined, itemID)
 	}
     }
-
+    
     const handleRemoveItem = (itemID: string) => (event: any) => {
-	dispatch(shoppingSessionSlice.actions.removeCartItem({itemID}))
 	UpdateShoppingSession(UpdateType.RemoveItem, undefined, itemID)
-	setComponentDidMount(false)
+    }
+
+    const handleClearCart = () => {
+	UpdateShoppingSession(UpdateType.ClearCart, undefined, undefined)
+    }
+
+    const handleCheckedItemsChange = (value: string) => () => {
+        const currentIndex = checkedItems.indexOf(value)
+        const newChecked = [...checkedItems]
+        
+        if(currentIndex === -1) {
+            newChecked.push(value)
+        } else {
+            newChecked.splice(currentIndex, 1)
+        }
+	setCheckedItems(newChecked)
     }
 
     const createItemsList = (product: any) => {           
-	const shopping_session_item = shopping_session.items?.find(item => item.product_id === product.id)
+	const shopping_session_item = shopping_session.items?.find((item: any) => item.product_id === product.id)
         return(
-	    <div className='flex justify-between py-4 transition ease-in-out duration-200 group'>
+	    <div className='flex justify-between px-5 py-4 transition ease-in-out duration-200 group'>
+		<Checkbox checked={checkedItems.indexOf(shopping_session_item.id) !== -1} color='success' onChange={handleCheckedItemsChange(shopping_session_item.id)} className='absolute'/>
 		<div className='flex'>
 		    <img className='w-[200px] p-5 object-cover' src={'/mediafiles/' + product.image} alt={product.name}/>
 		    <div className='py-3 space-y-3 justify-center flex flex-col'>
@@ -102,23 +119,41 @@ export const Cart = () => {
 
     const createEmptyQS = () => {
         return (
-	    <div className='h-screen flex flex-col items-center'>
+	    <div className='h-[500px] flex flex-col items-center'>
                 <h1 className='text-center pt-5 text-2xl font-bold'>В вашей корзине пусто</h1>
 		<img className='w-[400px] ' src={require('../../assets/carton-container-symbol-vector-i.jpg')} alt='Пустая коробка'/>
             </div>
         )
     }
 
+    const handleMainChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+	setMainChecked(event.target.checked)
+	if(checkedItems.length !== 0) {
+	    setCheckedItems([])
+	}
+	else {
+	    setCheckedItems(shopping_session.items?.map((item: any) => { return item.id }))
+	}
+    }
+
     return (
-	<div className='flex flex-col py-3 shadow-xl shadow-gray-300 rounded-xl bg-white grow'>
-	    { 
-		cartItems.length === 0 ?
-		createEmptyQS() 
-		: 
-		cartItems.map((item: any) => {
-		    return createItemsList(item)
-		})
-	    }
+	<div className='flex flex-col space-y-4 grow'>
+	    <div className='flex flex-row justify-between px-8 py-3 shadow-xl shadow-gray-300 rounded-xl bg-white'>
+	    	<div>
+		    <FormControlLabel label='Выбрать все' control={<Checkbox color='success' checked={mainChecked} onChange={handleMainChecked}/>}/>
+		</div>
+	        <Button className='text-gray-700' onClick={handleClearCart} size='small'>Очистить корзину</Button>
+	    </div>
+	    <div className='flex flex-col py-3 shadow-xl shadow-gray-300 rounded-xl bg-white'>
+		{ 
+		    cartItems.length === 0 ?
+		    createEmptyQS() 
+		    : 
+		    cartItems.map((item: any) => {
+			return createItemsList(item)
+		    })
+		}
+	    </div>
 	</div>
     )
 }

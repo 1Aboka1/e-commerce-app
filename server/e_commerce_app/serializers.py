@@ -87,6 +87,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 class ShoppingSessionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     items = CartItemSerializer(many=True)
+    total = serializers.IntegerField()
 
     class Meta:
         model = ShoppingSession
