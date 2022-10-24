@@ -14,19 +14,30 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 
 const onlyNumberRE = /^[0-9\b]+$/
 
-const OrderDetails = () => {
+const OrderDetails = (cartItems: any) => {
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
+    let totalPrice: number = 0
+    cartItems['cartItems'].forEach((item: any) => {
+	totalPrice += item.price * shopping_session.items!.find((sItem: any) => sItem.product_id === item.id)?.quantity!
+    })
+
+    const handleCompleteOrder = () => {
+	
+    }
 
     return (
-	<div className='flex flex-col divide-y w-96 shadow-xl px-4 shadow-gray-300 rounded-xl bg-white'>
-	    <h1 className='font-bold text-lg py-4'>Детали заказа</h1>
-	    <div className='flex flex-row justify-between items-center'>
-		<div>
-		    <h1>Итого:</h1>
-		    <p>{shopping_session.items?.length}</p>
-		</div>
-		<p>{shopping_session.total}</p>
-	    </div>	
+	<div className='flex flex-col divide-y space-y-4 w-[450px] sticky top-24 shadow-xl py-4 px-4 shadow-gray-300 rounded-xl bg-white'>
+	    <h1 className='font-bold text-lg'>Детали заказа</h1>
+	    <div className='flex flex-col'>
+		<div className='flex flex-row justify-between items-center'>
+		    <div className='my-4'>
+			<h1 className='text-sm'>Итого:</h1>
+			<p className='font-bold '>{shopping_session.items?.length + ' товара'}</p>
+		    </div>
+		    <p className='font-bold text-lg'>{totalPrice + ' ₸'}</p>
+		</div>	
+	    </div>
+	    <Button variant='contained' disabled={totalPrice === 0} onClick={handleCompleteOrder} className='font-bold rounded-xl py-3 bg-green-500'>Перейти к оформлению</Button>
 	</div>
     )
 }
@@ -130,7 +141,7 @@ export const Cart = () => {
 	    <div className='flex justify-between px-5 py-4 transition ease-in-out duration-200 group'>
 		<Checkbox checked={checkedItems.indexOf(shopping_session_item?.id) !== -1} color='success' onChange={handleCheckedItemsChange(shopping_session_item?.id)} className='absolute'/>
 		<div className='flex'>
-		    <img className='w-[200px] p-5 object-cover' src={'/mediafiles/' + product.image} alt={product.name}/>
+		    <img className='w-[200px] object-contain p-4' src={'/mediafiles/' + product.image} alt={product.name}/>
 		    <div className='py-3 space-y-3 justify-center flex flex-col'>
 			<h1 className='font-medium text-black text-[20px] group-hover:text-green-600 transition ease-in-out duration-200'>{product.name}</h1>
 			<p className='text-[13px] text-gray-700'>{product.description}</p>
@@ -144,7 +155,7 @@ export const Cart = () => {
 		    <h1 className='text-[20px] text-end'>₸{product.price}</h1>
 	    	    <ButtonGroup className='h-10'>
 			<Button onClick={handleQuantityChange(shopping_session_item?.id!, -1)} className='rounded-l-lg font-bold text-green-500 border-green-400'>-</Button>
-			<TextField color='success' value={shopping_session_item?.quantity} onChange={handleQuantityChange(shopping_session_item?.id!)} onBlur={handleBlur(shopping_session_item?.id!)} size='small' className='w-14 text-center rounded-none text-green-500 border-green-400'/>
+			<TextField color='success' inputProps={{min: 0, style: { textAlign: 'center' }}} value={shopping_session_item?.quantity} onChange={handleQuantityChange(shopping_session_item?.id!)} onBlur={handleBlur(shopping_session_item?.id!)} size='small' className='w-14 text-center rounded-none text-green-500 border-green-400'/>
 			<Button onClick={handleQuantityChange(shopping_session_item?.id!, 1)} className='rounded-r-lg font-bold text-green-500 border-green-400'>+</Button>
 		    </ButtonGroup>
 		    <span className='text-[12px] text-end text-gray-600 whitespace-nowrap'>В наличии: {product.quantity}</span>
@@ -172,15 +183,15 @@ export const Cart = () => {
     }
 
     return (
-	<div className='flex flex-row space-x-3 grow'>
-	    <div className='flex flex-col space-y-4'>
-		<div className='flex flex-row justify-between px-8 py-3 shadow-xl shadow-gray-300 rounded-xl bg-white'>
+	<div className='flex flex-row space-x-3 items-start grow'>
+	    <div className='flex flex-col space-y-4 grow'>
+		<div className='flex flex-row justify-between px-8 py-1 shadow-xl shadow-gray-300 rounded-xl bg-white'>
 		    <div>
 			<FormControlLabel label='Выбрать все' control={<Checkbox color='success' checked={mainChecked} onChange={handleMainChecked}/>}/>
 		    </div>
 		    <Button className='text-gray-700' onClick={handleClearCart} size='small'>Удалить выбранные</Button>
 		</div>
-		<div className='flex flex-col py-3 shadow-xl shadow-gray-300 rounded-xl bg-white'>
+		<div className='flex flex-col divide-y py-3 shadow-xl shadow-gray-300 rounded-xl bg-white'>
 		    { 
 			cartItems.length === 0 ?
 			createEmptyQS() 
@@ -191,7 +202,12 @@ export const Cart = () => {
 		    }
 		</div>
 	    </div>
-	    <OrderDetails/>
+	    {
+		cartItems.length === 0 ?
+		<div></div>
+		:
+		<OrderDetails cartItems={cartItems}/>
+	    }
 	</div>
     )
 }
