@@ -7,6 +7,7 @@ import { fetcher } from '../utils/axios'
 import { AccountResponse } from '../types'
 import { RootState } from '../store'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
+// @ts-ignore
 import { FloatingHelpWindow } from '../components/FloatingHelpWindow'
 
 import { SignInUp } from '../components/SignInUp'

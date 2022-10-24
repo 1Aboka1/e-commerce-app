@@ -7,16 +7,16 @@ export const FloatingHelpWindow = () => {
     const [windowOpen, setWindowOpen] = useState(false) 
 
     return (
-	<div className='fixed bottom-8 right-8'>
+	<div className='fixed flex flex-col z-10 space-y-4 bottom-8 right-8'>
 	    <div className='flex flex-row justify-start'>
-		<Grow in={windowOpen} style={{ transformOrigin: '1 1 1' }}>
-		    <div className='w-24 h-24 bg-white rounded-xl'>
-			Sometgin
+		<Grow hidden={!windowOpen} in={windowOpen} style={{ transformOrigin: '1 1 1' }}>
+		    <div className='w-72 h-72 p-4 bg-white rounded-xl shadow-lg shadow-gray-500'>
+		        
 		    </div>
 		</Grow>
 	    </div>
 	    <div className='flex flex-row justify-end'>
-		<Fab>
+		<Fab className='bg-white'>
 		    <CallOutlinedIcon onClick={() => setWindowOpen(!windowOpen)} color='success' fontSize='large'/>
 		</Fab>
 	    </div>
