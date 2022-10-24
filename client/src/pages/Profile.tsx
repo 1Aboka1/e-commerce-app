@@ -7,6 +7,7 @@ import { fetcher } from '../utils/axios'
 import { AccountResponse } from '../types'
 import { RootState } from '../store'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
+import { FloatingHelpWindow } from '../components/FloatingHelpWindow'
 
 import { SignInUp } from '../components/SignInUp'
 // @ts-ignore
@@ -83,6 +84,7 @@ export const Profile = () => {
             <div className=''>
                 {signWindowShown ? <SignInUp type={signType} handleSignClick={handleSignClick}/> : (null)}
             </div>
+	    <FloatingHelpWindow/>
             <div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
 		<div className=''>
 		    <NavBar handleSignClick={handleSignClick}/>

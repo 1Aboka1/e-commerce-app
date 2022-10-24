@@ -3,6 +3,7 @@ import { SingleProductGeneral } from '../components/SingleProduct/SingleProductG
 import { SignInUp } from '../components/SignInUp'
 import { NavBar } from '../components/NavBar'
 import { Footer } from '../components/Footer'
+import { FloatingHelpWindow } from '../components/FloatingHelpWindow'
 
 export const SingleProduct = () => {
     const [signWindowShown, setSignWindowShown] = useState(false)
@@ -19,6 +20,7 @@ export const SingleProduct = () => {
                 {signWindowShown ? <SignInUp type={signType} handleSignClick={handleSignClick}/> : (null)}
             </div>
             <div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
+		<FloatingHelpWindow/>
                 <NavBar handleSignClick={handleSignClick}/>
                 <SingleProductGeneral/>
                 <Footer/>
