@@ -9,9 +9,9 @@ export const FloatingHelpWindow = () => {
     return (
 	<div className='fixed flex flex-col z-10 space-y-4 bottom-8 right-8'>
 	    <div className='flex flex-row justify-start'>
-		<Grow hidden={!windowOpen} in={windowOpen} style={{ transformOrigin: '1 1 1' }}>
+		<Grow hidden={!windowOpen} in={windowOpen} style={{ transformOrigin: '0 0 1 1' }}>
 		    <div className='w-72 h-72 p-4 bg-white rounded-xl shadow-lg shadow-gray-500'>
-		        
+ 
 		    </div>
 		</Grow>
 	    </div>

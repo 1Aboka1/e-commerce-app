@@ -32,7 +32,7 @@ const shoppingSessionSlice = createSlice({
 	) {
 	    state.items?.map((item, index) => {
 		if(item['id'] === action.payload.itemID) {
-		    state.items?.splice(index)
+		    state.items?.splice(index, 1)
 		}
 	    })
 	    state.total! -= 1

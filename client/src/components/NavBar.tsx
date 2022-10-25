@@ -38,9 +38,9 @@ export const NavBar = (props: any) => {
 				    {user ?
 				    (
 					<div className='flex flex-row items-center space-x-3'>
-					    <Link to={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<Badge badgeContent={shoppingSession?.total} color='primary'><ShoppingCartOutlinedIcon/></Badge>}>Корзина</Button></Link>
+					    <a href={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<Badge badgeContent={shoppingSession?.total} color='primary'><ShoppingCartOutlinedIcon/></Badge>}>Корзина</Button></a>
 
-					    <Link to={'/profile/favorites'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></Link>
+					    <a href={'/profile/favorites'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></a>
 				    	</div>
 				    )
 				    :
