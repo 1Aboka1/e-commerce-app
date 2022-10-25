@@ -22,17 +22,13 @@ import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
+const iconStyling = 'mr-5'
 
 const leftTabItems = {
-    'orders': { comp: <Orders/>, icon: <LocalShippingOutlinedIcon/>, name: 'Заказы' },
-    'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon/>, name: 'Корзина' },
-    'favorites': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon/>, name: 'Избранное' },
+    'orders': { comp: <Orders/>, icon: <LocalShippingOutlinedIcon className={iconStyling}/>, name: 'Заказы' },
+    'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon className={iconStyling}/>, name: 'Корзина' },
+    'favorites': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon className={iconStyling}/>, name: 'Избранное' },
 }
 
 const drawerWidth = 240;
@@ -79,7 +75,6 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     flexShrink: 0,
     whiteSpace: 'nowrap',
     justifyContent: 'center',
-      boxSizing:'border-box',
     border: '2',
     borderColor: 'primary.main',
     borderRadius: '16px',
@@ -96,54 +91,29 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const MiniDrawer = (props: any) => {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
-	setOpen(true);
+	props.setOpen(true);
     };
 
     const handleDrawerClose = () => {
-	setOpen(false);
+	props.setOpen(false);
     };
 
     const keys = Object.keys(leftTabItems) as Array<keyof typeof leftTabItems>
 
     return (
-	<Drawer onMouseOver={handleDrawerOpen} onMouseOut={handleDrawerClose} variant="permanent" open={open}>
+	<Drawer onMouseOver={handleDrawerOpen} onMouseOut={handleDrawerClose} variant="permanent" open={props.open}>
 	    <List className=''>
 			{keys.map((key) => {
 			    return (
-				<a href={'/profile/' + key}>
-				    <ListItem key={leftTabItems[key]['name']} disablePadding sx={{ display: 'block' }}>
-					<ListItemButton
-					    sx={{
-						minHeight: 48,
-						    justifyContent: open ? 'initial' : 'center',
-						    px: 2.5,
-					    }}
-					    className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200'
-					>
-					    <ListItemIcon
-						className='text-black font-bold'
-						sx={{
-						    minWidth: 0,
-							mr: open ? 3 : 'auto',
-							justifyContent: 'center',
-						}}
-					    >
-						{leftTabItems[key]['icon']}
-					    </ListItemIcon>
-					    <ListItemText className='font-bold uppercase' primary={leftTabItems[key]['name']} sx={{ opacity: open ? 1 : 0 }} />
-					</ListItemButton>
-				    </ListItem>
-				</a>
+				<div className={key === props.windowType ? 'border-l-2 border-green-300' : 'border-l-2 border-white'}>
+				    <a href={'/profile/' + key}><Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => props.setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
+				</div>	
 			    )	    
 			})}
-				    <Button className='justify-start text-black border-l-2 border-white pl-7 py-2' onClick={props.handleLogout} startIcon={<LogoutOutlinedIcon/>}>Выйти</Button>
+				    <Button className='justify-start w-full text-black border-l-2 border-white pl-7 py-2 hover:text-green-400 transition ease-in-out duration-200' onClick={props.handleLogout} startIcon={<LogoutOutlinedIcon className={iconStyling}/>}>Выйти</Button>
 	</List>
-				{/*<div className={key === props.windowType ? 'border-l-2 border-green-300' : 'border-l-2 border-white'}>
-				    <a href={'/profile/' + key}><Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => props.setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
-				</div>*/}
     </Drawer>
     )
 }
@@ -180,13 +150,34 @@ export const Profile = () => {
 	history('/')
     }
 
+    const renderList = () => {
+	const keys = Object.keys(leftTabItems) as Array<keyof typeof leftTabItems>
+	return (
+	    <div className='w-full'>
+		{
+		    <div className='w-full'>
+			{keys.map((key) => {
+			    return (
+				<div className={key === windowType ? 'border-l-2 border-green-300' : 'border-l-2 border-white'}>
+				    <a href={'/profile/' + key}><Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
+				</div>	
+			    )	    
+			})}
+		    </div>
+		}
+	    </div>
+	)
+    }
+
+    const [open, setOpen] = useState(false);
+
     return (
         <div className='bg-gray-100'>
             <div className=''>
                 {signWindowShown ? <SignInUp type={signType} handleSignClick={handleSignClick}/> : (null)}
             </div>
 	    <FloatingHelpWindow/>
-	    <MiniDrawer windowType={windowType} handleLogout={handleLogout} setWindowType={setWindowType}/>
+	    <MiniDrawer open={open} setOpen={setOpen} handleLogout={handleLogout} windowType={windowType} setWindowType={setWindowType}/>
             <div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
 		<div className=''>
 		    <NavBar handleSignClick={handleSignClick}/>
@@ -195,7 +186,7 @@ export const Profile = () => {
 			    // @ts-ignore
 				leftTabItems[windowType]['name']
 			}</h1>
-			<div className='flex flex-row space-x-4 items-start'>
+			<div className={'flex flex-row space-x-4 items-start transition ease-in-out duration-300' + (false ? ' brightness-[0.77] pointer-events-none' : '')}>
 	{/* @ts-ignore*/}
 			    { leftTabItems[windowType]['comp'] }
     			</div>

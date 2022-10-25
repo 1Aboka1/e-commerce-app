@@ -127,7 +127,6 @@ class CartItem(models.Model):
         return str(self.product)
 
 class OrderDetail(models.Model):
-    total = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
     status = models.BooleanField(default=False)
