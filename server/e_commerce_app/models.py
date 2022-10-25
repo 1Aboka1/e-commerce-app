@@ -132,12 +132,20 @@ class OrderDetail(models.Model):
             ('PICKUP', 'Самовывоз'),
             ]
 
+    PAYMENT_OPTIONS = [
+            ('KASPI', 'Kaspi перевод'),
+            ('CASH', 'Наличные'),
+            ]
+
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
     payment_status = models.BooleanField(default=False)
     completed_status = models.BooleanField(default=False)
     expected_date = models.DateTimeField(default=timezone.now)
-    deliver_type = models.CharField(max_length=30, choices=DELIVERY_TYPES, default='COURIER')
+    delivery_type = models.CharField(max_length=30, choices=DELIVERY_TYPES, default='COURIER')
+    payment_option = models.CharField(max_length=30, choices=PAYMENT_OPTIONS, default='CASH')
+    total = models.IntegerField(default=0)
+    address = models.CharField(max_length=300, default='')
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 

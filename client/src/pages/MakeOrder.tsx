@@ -16,17 +16,17 @@ export const MakeOrder = () => {
 	setSignWindowShown(!signWindowShown)
     }
 
-    enum delivery_types {
+    enum DELIVERY_TYPES {
 	'COURIER',
 	'PICKUP',
     }
 
-    enum payment_options {
+    enum PAYMENT_OPTIONS {
 	'KASPI',
 	'CASH',
     }
 
-    const allData = useState<{
+    const [rootData, setRootData] = useState<{
 	user: {
 	    last_name: string,
 	    first_name: string,
@@ -36,14 +36,14 @@ export const MakeOrder = () => {
 	    shopping_session_id: string,
 	},
 	delivery: {
-	    delivery_type: delivery_types,
+	    delivery_type: DELIVERY_TYPES,
 	    address: string,
 	},
 	payment: {
-	    payment_option: payment_options,
+	    payment_option: PAYMENT_OPTIONS,
 	    total: number,
 	}
-    }>()
+    } | null>(null)
 
     return (
         <div className='bg-gray-100'>
@@ -58,7 +58,7 @@ export const MakeOrder = () => {
 			<h1 className='font-bold text-3xl mb-4 pl-3'>Оформление заказа</h1>
 			<div className={'flex flex-row space-x-4 items-start transition ease-in-out duration-300' + (false ? ' brightness-[0.77] pointer-events-none' : '')}>
 			    <div className='flex flex-col space-y-4 w-full'>
-				<UserInfo/>
+				<UserInfo rootData={rootData} setRootData={setRootData}/>
 			    </div>
     			</div>
 		    </div>
