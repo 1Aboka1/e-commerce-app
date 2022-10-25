@@ -127,10 +127,17 @@ class CartItem(models.Model):
         return str(self.product)
 
 class OrderDetail(models.Model):
+    DELIVERY_TYPES = [
+            ('COURIER', 'Курьер'),
+            ('PICKUP', 'Самовывоз'),
+            ]
+
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
-    status = models.BooleanField(default=False)
+    payment_status = models.BooleanField(default=False)
+    completed_status = models.BooleanField(default=False)
     expected_date = models.DateTimeField(default=timezone.now)
+    deliver_type = models.CharField(max_length=30, choices=DELIVERY_TYPES, default='COURIER')
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 

@@ -11,6 +11,7 @@ import store, { persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
 import { Profile } from './pages/Profile'
+import { MakeOrder } from './pages/MakeOrder'
 
 function App() {	
     return (
@@ -27,9 +28,10 @@ function App() {
 			<Route path="search" element={<Search/>}/>
 			<Route exact path='profile' element={<ProtectedRoute/>}>
 			    <Route path=':windowType' element={<Profile/>}>
-				<Route path=':genericParam' element={<Profile/>}/>
+				<Route path=':genericParam' element={<Profile/>}></Route>
 			    </Route>
 			</Route>
+			<Route path='checkout' element={<MakeOrder/>}></Route>
 		    </Routes>
 		</BrowserRouter>
 	    </PersistGate>

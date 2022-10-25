@@ -16,17 +16,55 @@ export const MakeOrder = () => {
 	setSignWindowShown(!signWindowShown)
     }
 
+    enum delivery_types {
+	'COURIER',
+	'PICKUP',
+    }
+
+    enum payment_options {
+	'KASPI',
+	'CASH',
+    }
+
+    const allData = useState<{
+	user: {
+	    last_name: string,
+	    first_name: string,
+	    phone: string,
+	    email: string,
+	    user_id: string,
+	    shopping_session_id: string,
+	},
+	delivery: {
+	    delivery_type: delivery_types,
+	    address: string,
+	},
+	payment: {
+	    payment_option: payment_options,
+	    total: number,
+	}
+    }>()
+
     return (
-	<div>
-	    <div className=''>
-		{signWindowShown ? <SignInUp type={signType} handleSignClick={handleSignClick}/> : (null)}
-	    </div>
-	    <div className={'flex flex-col transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
-		<FloatingHelpWindow/>
-		<NavBar handleSignClick={handleSignClick}/>
-		<UserInfo/>
-		<Footer/>
-	    </div>
-	</div>
+        <div className='bg-gray-100'>
+            <div className=''>
+                {signWindowShown ? <SignInUp type={signType} handleSignClick={handleSignClick}/> : (null)}
+            </div>
+	    <FloatingHelpWindow/>
+            <div className={'transition ease-in-out duration-300' + (signWindowShown ? ' brightness-[0.77] pointer-events-none' : '')}>
+		<div className=''>
+		    <NavBar handleSignClick={handleSignClick}/>
+		    <div className='mx-auto max-w-[1100px] py-5'>
+			<h1 className='font-bold text-3xl mb-4 pl-3'>Оформление заказа</h1>
+			<div className={'flex flex-row space-x-4 items-start transition ease-in-out duration-300' + (false ? ' brightness-[0.77] pointer-events-none' : '')}>
+			    <div className='flex flex-col space-y-4 w-full'>
+				<UserInfo/>
+			    </div>
+    			</div>
+		    </div>
+	    	</div>
+                <Footer/>
+            </div>
+        </div>
     )
 }

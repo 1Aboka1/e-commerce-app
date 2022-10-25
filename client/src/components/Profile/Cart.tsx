@@ -21,10 +21,6 @@ const OrderDetails = (cartItems: any) => {
 	totalPrice += item.price * shopping_session.items!.find((sItem: any) => sItem.product_id === item.id)?.quantity!
     })
 
-    const handleCompleteOrder = () => {
-	
-    }
-
     return (
 	<div className='flex flex-col divide-y space-y-4 w-[450px] sticky top-24 shadow-xl py-4 px-4 shadow-gray-300 rounded-xl bg-white'>
 	    <h1 className='font-bold text-lg'>Детали заказа</h1>
@@ -37,7 +33,11 @@ const OrderDetails = (cartItems: any) => {
 		    <p className='font-bold text-lg'>{totalPrice + ' ₸'}</p>
 		</div>	
 	    </div>
-	    <Button variant='contained' disabled={totalPrice === 0} onClick={handleCompleteOrder} className='font-bold rounded-xl py-3 bg-green-500'>Перейти к оформлению</Button>
+	    <a href={'/checkout'}>
+		<Button variant='contained' disabled={totalPrice === 0} className='font-bold w-full rounded-xl py-3 bg-green-500'>
+		    Перейти к оформлению
+		</Button>
+	    </a>
 	</div>
     )
 }
