@@ -37,7 +37,7 @@ export const Products = (props: any) => {
             <Link to={`/product_item/${product.id}`} key={product.id}>
                 <div className='flex justify-between py-4 cursor-pointer transition ease-in-out duration-200 group'>
                     <div className='flex'>
-                            <img className='w-[200px] p-5 object-cover' src={'/mediafiles/' + product.image} alt={product.name}/>
+                            <img className='w-[200px] p-4 object-contain' src={'/mediafiles/' + product.image} alt={product.name}/>
                         <div className='py-3 justify-center flex flex-col'>
                             <h1 className='font-medium text-black text-[20px] group-hover:text-green-600 transition ease-in-out duration-200'>{product.name}</h1>
                             <p className='pt-5 text-[13px] text-gray-700'>{product.description}</p>

@@ -150,25 +150,6 @@ export const Profile = () => {
 	history('/')
     }
 
-    const renderList = () => {
-	const keys = Object.keys(leftTabItems) as Array<keyof typeof leftTabItems>
-	return (
-	    <div className='w-full'>
-		{
-		    <div className='w-full'>
-			{keys.map((key) => {
-			    return (
-				<div className={key === windowType ? 'border-l-2 border-green-300' : 'border-l-2 border-white'}>
-				    <a href={'/profile/' + key}><Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
-				</div>	
-			    )	    
-			})}
-		    </div>
-		}
-	    </div>
-	)
-    }
-
     const [open, setOpen] = useState(false);
 
     return (
