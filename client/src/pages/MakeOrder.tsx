@@ -5,6 +5,9 @@ import { SignInUp } from '../components/SignInUp'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
 import { FloatingHelpWindow } from '../components/FloatingHelpWindow'
 import { UserInfo } from '../components/MakeOrder/UserInfo'
+// @ts-ignore
+import { DeliveryInfo } from '../components/MakeOrder/DeliveryInfo'
+import { rootDataType, PAYMENT_OPTIONS, DELIVERY_TYPES } from '../types'
 
 export const MakeOrder = () => {
     const [signWindowShown, setSignWindowShown] = useState(false)
@@ -16,34 +19,24 @@ export const MakeOrder = () => {
 	setSignWindowShown(!signWindowShown)
     }
 
-    enum DELIVERY_TYPES {
-	'COURIER',
-	'PICKUP',
-    }
-
-    enum PAYMENT_OPTIONS {
-	'KASPI',
-	'CASH',
-    }
-
-    const [rootData, setRootData] = useState<{
+    const [rootData, setRootData] = useState<rootDataType>({
 	user: {
-	    last_name: string,
-	    first_name: string,
-	    phone: string,
-	    email: string,
-	    user_id: string,
-	    shopping_session_id: string,
+	    last_name: '',
+	    first_name: '',
+	    phone: '',
+	    email: '',
+	    user_id: '',
+	    shopping_session_id: '',
 	},
 	delivery: {
-	    delivery_type: DELIVERY_TYPES,
-	    address: string,
+	    delivery_type: DELIVERY_TYPES.null,
+	    address: '',
 	},
 	payment: {
-	    payment_option: PAYMENT_OPTIONS,
-	    total: number,
+	    payment_option: PAYMENT_OPTIONS.null,
+	    total: 0,
 	}
-    } | null>(null)
+    })
 
     return (
         <div className='bg-gray-100'>
@@ -57,8 +50,9 @@ export const MakeOrder = () => {
 		    <div className='mx-auto max-w-[1100px] py-5'>
 			<h1 className='font-bold text-3xl mb-4 pl-3'>Оформление заказа</h1>
 			<div className={'flex flex-row space-x-4 items-start transition ease-in-out duration-300' + (false ? ' brightness-[0.77] pointer-events-none' : '')}>
-			    <div className='flex flex-col space-y-4 w-full'>
+			    <div className='flex flex-col w-full shadow-xl shadow-gray-300 rounded-xl bg-white'>
 				<UserInfo rootData={rootData} setRootData={setRootData}/>
+				<DeliveryInfo rootData={rootData} setRootData={setRootData}/>
 			    </div>
     			</div>
 		    </div>
