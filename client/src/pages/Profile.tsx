@@ -144,6 +144,8 @@ export const Profile = () => {
     // @ts-ignore
     const userID = account?.id
     //const user = useSWR<AccountResponse["user"]>(`/user/${userID}/`, fetcher)
+    const aaccount = useSelector((state: RootState) => state.auth)
+    console.log(aaccount)
 
     const handleLogout = () => {
 	dispatch(authSlice.actions.setLogout())

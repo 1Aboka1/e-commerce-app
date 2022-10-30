@@ -14,6 +14,7 @@ import { Profile } from './pages/Profile'
 import { MakeOrder } from './pages/MakeOrder'
 
 function App() {	
+    document.body.style.zoom = "95%"
     return (
 	<Provider store={store}>
 	    <PersistGate persistor={persistor} loading={null}>

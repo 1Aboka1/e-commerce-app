@@ -32,11 +32,12 @@ export const MakeOrder = () => {
 	    shopping_session_id: '',
 	},
 	delivery: {
-	    delivery_type: DELIVERY_TYPES.null,
+	    delivery_type: null,
 	    address: '',
 	},
 	payment: {
-	    payment_option: PAYMENT_OPTIONS.null,
+	    payment_order: null,
+	    payment_option: null,
 	    total: 0,
 	}
     })

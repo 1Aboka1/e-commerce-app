@@ -15,15 +15,18 @@ export interface AccountResponse {
 }
 
 export enum DELIVERY_TYPES {
-    'COURIER',
-	'PICKUP',
-	null,
+    COURIER,
+	PICKUP,
 }
 
 export enum PAYMENT_OPTIONS {
-    'KASPI',
-	'CASH',
-	null,
+    KASPI,
+	CASH,
+}
+
+export enum PAYMENT_ORDER_OPTIONS {
+    AT_PICKUP,
+	ONLINE,
 }
 
 export interface rootDataType {
@@ -36,11 +39,12 @@ export interface rootDataType {
 	    shopping_session_id: string,
     },
 	delivery: {
-	    delivery_type: DELIVERY_TYPES,
-		address: string,
+	    delivery_type: DELIVERY_TYPES | null,
+		address: string | null,
 	},
 	payment: {
-	    payment_option: PAYMENT_OPTIONS,
+	    payment_order: PAYMENT_ORDER_OPTIONS | null,
+	    payment_option: PAYMENT_OPTIONS | null,
 		total: number,
 	}
 }

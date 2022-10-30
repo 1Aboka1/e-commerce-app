@@ -85,6 +85,10 @@ export const SignInUp = (props) => {
 	if(shouldSendForm === false) { return (null) }
 	let tempRegistrationInfo = registrationInfo
 	delete tempRegistrationInfo[cpasswordAlias]
+	const tempLoginInfo = {
+	    'email': tempRegistrationInfo.email,
+	    'password': tempRegistrationInfo.password,
+	}
 	await axios
 	    .post(
 		'/api/auth/register/',
@@ -92,16 +96,21 @@ export const SignInUp = (props) => {
 		{ headers: { "Content-Type": "application/json" } }
 	    )
 	    .then((response) => {
-		let shopping_session_obj = {}
-		shopping_session_obj.user = response.data.user.id
 		axios
 		    .post(
-			'/api/shopping_session/create',
-			shopping_session_obj,
+			'/api/auth/login/',
+			tempLoginInfo,
 			{ headers: { "Content-Type": "application/json" } }
 		    )
 		    .then((response) => {
-			console.log(response.status)
+			dispatch(
+			    authSlice.actions.setAuthTokens({
+				token: response.data.access,
+				refreshToken: response.data.refresh,
+			    })
+			)
+			dispatch(authSlice.actions.setAccount(response.data.user))
+			window.location.reload()
 		    })
 		    .catch((error) => { console.log(error) })
 	    })
