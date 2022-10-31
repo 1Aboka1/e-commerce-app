@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
 import { Profile } from './pages/Profile'
 import { MakeOrder } from './pages/MakeOrder'
+import { InvoiceGenerator } from './utils/InvoiceGenerator.tsx'
 
 function App() {	
     document.body.style.zoom = "95%"
@@ -32,7 +33,10 @@ function App() {
 				<Route path=':genericParam' element={<Profile/>}></Route>
 			    </Route>
 			</Route>
-			<Route path='checkout' element={<MakeOrder/>}></Route>
+			<Route path='checkout'>
+			    <Route index element={<MakeOrder/>}/>
+			    <Route path='pdf' element={<InvoiceGenerator/>}/>
+			</Route>
 		    </Routes>
 		</BrowserRouter>
 	    </PersistGate>

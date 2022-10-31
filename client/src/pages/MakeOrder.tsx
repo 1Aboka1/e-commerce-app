@@ -39,7 +39,10 @@ export const MakeOrder = () => {
 	    payment_order: null,
 	    payment_option: null,
 	    total: 0,
-	}
+	},
+	    items: [
+
+	    ]
     })
 
     return (
