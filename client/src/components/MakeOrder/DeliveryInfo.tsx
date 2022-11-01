@@ -9,17 +9,8 @@ export const DeliveryInfo = (props: any) => {
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
 
     const obj = props.rootData
-    obj['delivery']['delivery_type'] = DELIVERY_TYPES.PICKUP 
-    obj['payment']['payment_option'] = PAYMENT_OPTIONS.CASH
-    obj['payment']['payment_order'] = PAYMENT_ORDER_OPTIONS
+    obj['delivery_type'] = DELIVERY_TYPES.PICKUP 
     props.setRootData(obj)
-
-    const handleTextFieldChange = (event: any) => {
-	const field_name = event.currentTarget.id
-	const obj = props.rootData
-	obj['user'][field_name] = event.currentTarget.value
-	props.setRootData(obj)
-    }
 
     return (
 	<div className='flex flex-row space-x-3 items-start grow'>

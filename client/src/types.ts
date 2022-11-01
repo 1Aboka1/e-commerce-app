@@ -15,36 +15,26 @@ export interface AccountResponse {
 }
 
 export enum DELIVERY_TYPES {
-    COURIER,
-	PICKUP,
+    COURIER = 'COURIER',
+	PICKUP = 'PICKUP',
 }
 
 export enum PAYMENT_OPTIONS {
-    KASPI,
-	CASH,
+    KASPI = 'KASPI',
+	CASH = 'CASH',
 }
 
 export enum PAYMENT_ORDER_OPTIONS {
-    AT_PICKUP,
-	ONLINE,
+    AT_PICKUP = 'AT_PICKUP',
+	ONLINE = 'ONLINE',
 }
 
 export interface rootDataType {
-    user: {
-	last_name: string,
-	    first_name: string,
-	    phone: string,
-	    email: string,
-	    user_id: string,
-	    shopping_session_id: string,
-    },
-	delivery: {
-	    delivery_type: DELIVERY_TYPES | null,
-		address: string | null,
-	},
-	payment: {
-	    payment_order: PAYMENT_ORDER_OPTIONS | null,
-	    payment_option: PAYMENT_OPTIONS | null,
-		total: number,
-	}
+    user: string,
+	shopping_session: string,
+	delivery_type: DELIVERY_TYPES | null,
+	address: string | null,
+	payment_order: PAYMENT_ORDER_OPTIONS | null,
+	payment_option: PAYMENT_OPTIONS | null,
+	total: number,
 }

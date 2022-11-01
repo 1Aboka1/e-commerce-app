@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from .models import Product, ProductCategory, CustomUser, CartItem, ShoppingSession
+from .models import Product, ProductCategory, CustomUser, CartItem, ShoppingSession, OrderDetail, OrderItem
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -92,3 +92,18 @@ class ShoppingSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingSession
         fields = ['id', 'total', 'user', 'items']
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ['quantity', 'created_at', 'modified_at', 'product', 'order']
+
+class OrderSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    shopping_session = serializers.PrimaryKeyRelatedField(queryset=ShoppingSession.objects.all())
+    completed_status = serializers.BooleanField(read_only=True)
+    items = OrderItemSerializer(read_only=True)
+    
+    class Meta:
+        model = OrderDetail
+        fields = ['user', 'address', 'total',  'shopping_session', 'payment_option', 'delivery_type', 'expected_data', 'completed_status', 'payment_status', 'created_at', 'modified_at']

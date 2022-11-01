@@ -2,26 +2,16 @@ import {TextField} from "@mui/material"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
+import { PAYMENT_OPTIONS, PAYMENT_ORDER_OPTIONS } from "../../types"
 
 export const PaymentInfo = (props: any) => {
     const user = useSelector((state: RootState) => state.auth.account)
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
 
     const obj = props.rootData
-    obj['user']['user_id'] = user?.id
-    obj['user']['shopping_session_id'] = shopping_session.id
-    obj['user']['first_name'] = user?.first_name
-    obj['user']['last_name'] = user?.last_name
-    obj['user']['email'] = user?.email
-    obj['user']['phone'] = user?.phone
+    obj['payment_option'] = PAYMENT_OPTIONS.CASH
+    obj['payment_order'] = PAYMENT_ORDER_OPTIONS.AT_PICKUP
     props.setRootData(obj)
-
-    const handleTextFieldChange = (event: any) => {
-	const field_name = event.currentTarget.id
-	const obj = props.rootData
-	obj['user'][field_name] = event.currentTarget.value
-	props.setRootData(obj)
-    }
 
     return (
 	<div className='flex flex-row space-x-3 items-start grow'>

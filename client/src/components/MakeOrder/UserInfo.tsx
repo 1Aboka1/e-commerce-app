@@ -7,12 +7,8 @@ export const UserInfo = (props: any) => {
     const shopping_session = useSelector((state: RootState) => state.shopping_session)
 
     const obj = props.rootData
-    obj['user']['user_id'] = user?.id
-    obj['user']['shopping_session_id'] = shopping_session.id
-    obj['user']['first_name'] = user?.first_name
-    obj['user']['last_name'] = user?.last_name
-    obj['user']['email'] = user?.email
-    obj['user']['phone'] = user?.phone
+    obj['user'] = user?.id
+    obj['shopping_session'] = shopping_session.id
     props.setRootData(obj)
 
     const handleTextFieldChange = (event: any) => {
@@ -33,13 +29,14 @@ export const UserInfo = (props: any) => {
 			<h1 className='font-semibold text-lg'>Данные покупателя</h1>
 		    </div>
 		    <div className='ml-4 pl-8 border-l-2 flex flex-col space-y-4 border-gray-400'>
+			<h1 className='text-orange-600'>* Данные ниже были взяты из предоставленных вами во время регистрации</h1>
 			<div className='flex flex-row space-x-4'>
-			    <TextField color='success' variant='filled' id='last_name' defaultValue={props.rootData.user.last_name} onChange={handleTextFieldChange} label='Фамилия' className=''/>
-			    <TextField color='success' variant='filled' id='first_name' defaultValue={props.rootData.user.first_name} onChange={handleTextFieldChange} label='Имя' className=''/>
+			    <TextField disabled color='success' variant='filled' id='last_name' defaultValue={user?.last_name} onChange={handleTextFieldChange} label='Фамилия' className=''/>
+			    <TextField disabled color='success' variant='filled' id='first_name' defaultValue={user?.first_name} onChange={handleTextFieldChange} label='Имя' className=''/>
 			</div>
 			<div className='flex flex-row space-x-4'>
-			    <TextField color='success' variant='filled' id='phone' defaultValue={props.rootData.user.phone} onChange={handleTextFieldChange} label='Телефон' className=''/>
-			    <TextField color='success' variant='filled' id='email' defaultValue={props.rootData.user.email} onChange={handleTextFieldChange} label='Email' className=''/>
+			    <TextField disabled color='success' variant='filled' id='phone' defaultValue={user?.phone} onChange={handleTextFieldChange} label='Телефон' className=''/>
+			    <TextField disabled color='success' variant='filled' id='email' defaultValue={user?.email} onChange={handleTextFieldChange} label='Email' className=''/>
 			</div>
 		    </div>
 		</div>

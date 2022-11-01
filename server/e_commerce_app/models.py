@@ -137,9 +137,15 @@ class OrderDetail(models.Model):
             ('CASH', 'Наличные'),
             ]
 
+    PAYMENT_ORDER_OPTIONS = [
+            ('AT_PICKUP', 'После получения'),
+            ('ONLINE', 'Через интернет'),
+            ]
+
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
     payment_status = models.BooleanField(default=False)
+    payment_order = models.CharField(max_length=30, choices=PAYMENT_ORDER_OPTIONS, default='AT_PICKUP')
     completed_status = models.BooleanField(default=False)
     expected_date = models.DateTimeField(default=timezone.now)
     delivery_type = models.CharField(max_length=30, choices=DELIVERY_TYPES, default='COURIER')

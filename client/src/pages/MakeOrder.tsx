@@ -4,6 +4,7 @@ import { Footer } from '../components/Footer'
 import { SignInUp } from '../components/SignInUp'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
 import { FloatingHelpWindow } from '../components/FloatingHelpWindow'
+// @ts-ignore
 import { UserInfo } from '../components/MakeOrder/UserInfo'
 // @ts-ignore
 import { PaymentInfo } from '../components/MakeOrder/PaymentInfo'
@@ -11,6 +12,8 @@ import { PaymentInfo } from '../components/MakeOrder/PaymentInfo'
 import { DeliveryInfo } from '../components/MakeOrder/DeliveryInfo'
 import { rootDataType, PAYMENT_OPTIONS, DELIVERY_TYPES } from '../types'
 import {Button} from '@mui/material'
+import axiosService from '../utils/axios'
+import store from '../store'
 
 export const MakeOrder = () => {
     const [signWindowShown, setSignWindowShown] = useState(false)
@@ -23,27 +26,26 @@ export const MakeOrder = () => {
     }
 
     const [rootData, setRootData] = useState<rootDataType>({
-	user: {
-	    last_name: '',
-	    first_name: '',
-	    phone: '',
-	    email: '',
-	    user_id: '',
-	    shopping_session_id: '',
-	},
-	delivery: {
-	    delivery_type: null,
-	    address: '',
-	},
-	payment: {
-	    payment_order: null,
-	    payment_option: null,
-	    total: 0,
-	},
-	    items: [
-
-	    ]
+	user: '',
+	shopping_session: '',
+	delivery_type: null,
+	address: '',
+	payment_order: null,
+	payment_option: null,
+	total: 0,
     })
+
+    const handleSubmitClick = async () => {
+	await axiosService
+	    .post(
+		'/order/order_instance/',
+		rootData,
+		{ headers: { 'Content-Type': 'application/json' } },
+	    )
+	    .catch((error: any) => {
+		console.log(error)
+	    })
+    }
 
     return (
         <div className='bg-gray-100'>
@@ -63,7 +65,7 @@ export const MakeOrder = () => {
 				    <DeliveryInfo rootData={rootData} setRootData={setRootData}/>
 				    <PaymentInfo rootData={rootData} setRootData={setRootData}/> 
 				</div>
-				<Button variant='contained' className='font-semibold bg-green-500 p-4 rounded-xl px-6'>Подтвердить заказ</Button>
+				<Button onClick={handleSubmitClick} variant='contained' className='font-semibold bg-green-500 p-4 rounded-xl px-6'>Подтвердить заказ</Button>
 				<p className='text-gray-700'>• Подтверждая заказ, вы соглашаетесь с нашими условиями пользования и правилами продаж</p>
 			    </div>
     			</div>

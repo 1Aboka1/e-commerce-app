@@ -1,7 +1,6 @@
 import store from '../store'
-import { sender, fetcher } from './axios'
+import { fetcher } from './axios'
 import axiosService from './axios'
-import { useDispatch } from 'react-redux'
 import shoppingSessionSlice from '../store/slices/shopsession'
 
 export const enum UpdateType {
