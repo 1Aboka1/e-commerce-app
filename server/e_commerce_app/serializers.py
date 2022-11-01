@@ -100,10 +100,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
-    shopping_session = serializers.PrimaryKeyRelatedField(queryset=ShoppingSession.objects.all())
     completed_status = serializers.BooleanField(read_only=True)
-    items = OrderItemSerializer(read_only=True)
+    expected_date = serializers.DateTimeField(read_only=True)
+    payment_status = serializers.CharField(read_only=True)
+    items = OrderItemSerializer(many=True, read_only=True)
     
     class Meta:
         model = OrderDetail
-        fields = ['user', 'address', 'total',  'shopping_session', 'payment_option', 'delivery_type', 'expected_data', 'completed_status', 'payment_status', 'created_at', 'modified_at']
+        fields = ['user', 'address', 'total',  'payment_order', 'payment_option', 'delivery_type', 'expected_date', 'completed_status', 'payment_status', 'created_at', 'modified_at', 'items']

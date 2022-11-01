@@ -1,22 +1,9 @@
-from django.db.models import Count
-from django.shortcuts import render
-from django.db.models import Q
-from e_commerce_app.models import Product, ProductCategory, DeviceBrandCategory, DeviceTypeCategory, PartTypeCategory, CustomUser, CartItem, ShoppingSession
-from e_commerce_app.serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer, SingleCategorySerializer, UserSerializer, LoginSerializer, RegistrationSerializer, ShoppingSessionSerializer, CartItemSerializer
-from rest_framework import generics, viewsets, filters, status
-from rest_framework.generics import GenericAPIView
-from rest_framework.views import APIView
+from e_commerce_app.models import CartItem, ShoppingSession
+from e_commerce_app.serializers import ShoppingSessionSerializer, CartItemSerializer
+from rest_framework import viewsets, filters, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from drf_multiple_model.mixins import FlatMultipleModelMixin
-import json
-from django.contrib.postgres.search import TrigramSimilarity
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http import QueryDict
-from rest_framework.decorators import action
 
 class ShoppingSessionViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)

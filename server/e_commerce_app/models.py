@@ -142,9 +142,15 @@ class OrderDetail(models.Model):
             ('ONLINE', 'Через интернет'),
             ]
 
+    PAYMENT_STATUS = [
+            ('SUCCESSFUL', 'Оплачено'),
+            ('PENDING', 'Ожидается'),
+            ('UNPAID', 'Не оплачено'),
+            ]
+
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
-    payment_status = models.BooleanField(default=False)
+    payment_status = models.CharField(max_length=30, choices=PAYMENT_STATUS, default='PENDING')
     payment_order = models.CharField(max_length=30, choices=PAYMENT_ORDER_OPTIONS, default='AT_PICKUP')
     completed_status = models.BooleanField(default=False)
     expected_date = models.DateTimeField(default=timezone.now)
@@ -156,7 +162,7 @@ class OrderDetail(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 class OrderItem(models.Model):
     quantity = models.IntegerField(default=0)
@@ -167,4 +173,4 @@ class OrderItem(models.Model):
     order = models.ForeignKey(OrderDetail, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.product
+        return str(self.product)

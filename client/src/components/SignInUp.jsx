@@ -132,8 +132,8 @@ export const SignInUp = (props) => {
 			<TextField className='w-full' color="success" error={warnings[firstNameAlias]} id="standard-basic" defaultValue={registrationInfo[firstNameAlias]}  label="Имя" variant="standard" onChange={handleRegistrationInputChange(firstNameAlias)}/>
 			<TextField className='w-full' color="success" error={warnings[lastNameAlias]} id="standard-basic" defaultValue={registrationInfo[lastNameAlias]}  label="Фамилия" variant="standard" onChange={handleRegistrationInputChange(lastNameAlias)}/>
 			<TextField className='w-full' color="success" error={warnings[phoneAlias]} id="standard-basic" defaultValue={registrationInfo[phoneAlias]}  label="Номер" variant="standard" onChange={handleRegistrationInputChange(phoneAlias)}/>
-			<TextField className='w-full' color="success" error={warnings[passwordAlias]} id="standard-basic" defaultValue={registrationInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleRegistrationInputChange(passwordAlias)}/>
-			<TextField className='w-full' color="success" error={warnings[passwordsMatchAlias]} {...(warnings[passwordsMatchAlias] ? {helperText: 'Пароли не совпадают'} : {})}id="standard-basic" defaultValue={registrationInfo[cpasswordAlias]}  label="Повторите пароль" variant="standard" onChange={handleRegistrationInputChange(cpasswordAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[passwordAlias]} id="standard-basic" type='password' defaultValue={registrationInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleRegistrationInputChange(passwordAlias)}/>
+			<TextField className='w-full' color="success" error={warnings[passwordsMatchAlias]} {...(warnings[passwordsMatchAlias] ? {helperText: 'Пароли не совпадают'} : {})}id="standard-basic" type='password' defaultValue={registrationInfo[cpasswordAlias]}  label="Повторите пароль" variant="standard" onChange={handleRegistrationInputChange(cpasswordAlias)}/>
 			<div>
 			    <FormGroup>
 				<FormControlLabel className='text-gray-600 text-sm' control={<Checkbox checked={checked} onChange={handleCheckboxChange} color="success"/>} label="Я согласен с условиями пользования" />
@@ -225,7 +225,7 @@ export const SignInUp = (props) => {
                 <div className='my-3'>
                     <form onSubmit={handleLogin} className='flex flex-col items-center px-10 space-y-3'>
 			<TextField className='w-full' color="success" error={Lwarnings[emailAlias]} id="standard-basic" defaultValue={loginInfo[emailAlias]}  label="Email" variant="standard" onChange={handleLoginInputChange(emailAlias)} />
-			<TextField className='w-full pb-5' color="success" error={Lwarnings[passwordAlias]} id="standard-basic" defaultValue={loginInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleLoginInputChange(passwordAlias)}/>
+			<TextField className='w-full pb-5' color="success" error={Lwarnings[passwordAlias]} id="standard-basic" type='password' defaultValue={loginInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleLoginInputChange(passwordAlias)}/>
 			<Button className='bg-green-600 w-full rounded-xl' type='submit' variant='contained' color='success'>Войти</Button>
                     </form>
                 </div>

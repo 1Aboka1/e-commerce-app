@@ -32,7 +32,6 @@ export const MakeOrder = () => {
 	address: '',
 	payment_order: null,
 	payment_option: null,
-	total: 0,
     })
 
     const handleSubmitClick = async () => {

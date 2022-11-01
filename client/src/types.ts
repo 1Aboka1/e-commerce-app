@@ -36,5 +36,4 @@ export interface rootDataType {
 	address: string | null,
 	payment_order: PAYMENT_ORDER_OPTIONS | null,
 	payment_option: PAYMENT_OPTIONS | null,
-	total: number,
 }
