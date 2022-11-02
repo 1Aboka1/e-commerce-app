@@ -35,7 +35,9 @@ function App() {
 			</Route>
 			<Route path='checkout'>
 			    <Route index element={<MakeOrder/>}/>
-			    <Route path='pdf' element={<InvoiceGenerator/>}/>
+			    <Route path='pdf'>
+				<Route path=':orderID/:userID' element={<InvoiceGenerator/>}></Route>
+			    </Route>
 			</Route>
 		    </Routes>
 		</BrowserRouter>

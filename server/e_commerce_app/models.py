@@ -162,14 +162,14 @@ class OrderDetail(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.user)
+        return str(self.id)
 
 class OrderItem(models.Model):
     quantity = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
 
-    product = models.OneToOneField(Product, primary_key=False, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, primary_key=False, on_delete=models.CASCADE)
     order = models.ForeignKey(OrderDetail, on_delete=models.CASCADE)
 
     def __str__(self):

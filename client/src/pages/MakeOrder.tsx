@@ -13,11 +13,15 @@ import { DeliveryInfo } from '../components/MakeOrder/DeliveryInfo'
 import { rootDataType, PAYMENT_OPTIONS, DELIVERY_TYPES } from '../types'
 import {Button} from '@mui/material'
 import axiosService from '../utils/axios'
-import store from '../store'
+import { useNavigate } from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import {RootState} from '../store'
 
 export const MakeOrder = () => {
     const [signWindowShown, setSignWindowShown] = useState(false)
     const [signType, setSignType] = useState('')
+    const navigate = useNavigate()
+    const user = useSelector((state: RootState) => state.auth.account)
     RefreshShoppingSession()
 
     const handleSignClick = (type: any) => () => {
@@ -41,6 +45,10 @@ export const MakeOrder = () => {
 		rootData,
 		{ headers: { 'Content-Type': 'application/json' } },
 	    )
+	    .then((response) => {
+		RefreshShoppingSession()	
+		navigate(`/checkout/pdf/${response.data}/${user.id!}/`)
+	    })
 	    .catch((error: any) => {
 		console.log(error)
 	    })

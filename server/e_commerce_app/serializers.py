@@ -94,6 +94,8 @@ class ShoppingSessionSerializer(serializers.ModelSerializer):
         fields = ['id', 'total', 'user', 'items']
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = OrderItem
         fields = ['quantity', 'created_at', 'modified_at', 'product', 'order']
