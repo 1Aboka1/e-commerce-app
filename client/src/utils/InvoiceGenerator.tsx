@@ -8,7 +8,11 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
+import html2canvas from 'html2canvas'
+import {Button} from '@mui/material'
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined'
+import { Link } from 'react-router-dom'
 
 const fetchOrder = async (orderID: string, userID: string, setOrder: CallableFunction, setOrderItems: CallableFunction, setUser: CallableFunction) => {
     await axiosService
@@ -74,9 +78,35 @@ export const InvoiceGenerator = () => {
 	    })
     }, [orderItems])
 
+    const screenshotInvoice = async () => {
+	const input = document.getElementById('divToPrint')
+	const canvas = await html2canvas(input!)
+	const imgData = canvas.toDataURL('image/png', 1.0)
+	downloadImage(imgData, 'image')
+    }
+
+    const downloadImage = (blob: any, fileName: any) => {
+	const fakeLink = window.document.createElement("a")
+	// @ts-ignore
+	fakeLink.style = "display:none;"
+	fakeLink.download = fileName
+
+	fakeLink.href = blob
+
+	document.body.appendChild(fakeLink)
+	fakeLink.click()
+	document.body.removeChild(fakeLink)
+
+	fakeLink.remove()
+    }
+
     return (
 	<div>
-	    <div className='flex flex-col max-w-[650px] divide-y space-y-7 bg-white shadow-lg shadow-gray-400 py-7 px-9 my-6 mx-auto'>
+	    <Button onClick={screenshotInvoice} variant='contained' className='bg-green-500 w-full' startIcon={<FileDownloadOutlinedIcon/>}>Сохранить чек</Button>
+	    <Link to={'/'}>
+		<Button variant='contained' className='bg-white w-full text-black' startIcon={<ExitToAppOutlinedIcon/>}>Вернуться на главную</Button>
+	    </Link>
+	    <div id='divToPrint' className='flex flex-col max-w-[650px] divide-y space-y-7 bg-white border border-gray-600 py-7 px-9 my-6 mx-auto'>
 		<div className='flex flex-row justify-between'>
 		    <div className='flex flex-col space-y-2'>
 			<img className='w-12 rounded-md' src={require('../assets/favicon.png')} alt='company icon'/>
@@ -111,7 +141,7 @@ export const InvoiceGenerator = () => {
 			</div>
 		    </div>
 		</div>
-		<TableContainer component={Paper}>
+		<TableContainer className='outline outline-gray-300'>
 		    <Table sx={{ minWidth: 500 }} aria-label="simple table">
 			<TableHead className='bg-gray-300'>
 			    <TableRow>
