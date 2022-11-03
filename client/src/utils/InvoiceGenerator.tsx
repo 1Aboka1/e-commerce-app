@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import axiosService from './axios'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -49,22 +50,33 @@ export const InvoiceGenerator = () => {
     // @ts-ignore
     document.body.style.zoom = "105%"
     const URLParam = useParams()
-    const [order, setOrder] = useState<any>(null)
-    const [orderItems, setOrderItems] = useState<any>(null)
-    const [componentDidMount, setComponentDidMount] = useState(false)
-    const [user, setUser] = useState<any>(null)
+    const [order, setOrder] = useState<any>({})
+    const [orderItems, setOrderItems] = useState<any>([])
+    const [user, setUser] = useState<any>({})
+    const [products, setProducts] = useState<any>([])
 
     useEffect(() => {
-	if(componentDidMount === false) {
-	    fetchOrder(URLParam.orderID!, URLParam.userID!, setOrder, setOrderItems, setUser) 
-	}
-	setComponentDidMount(true)
-    }, [componentDidMount, URLParam.orderID])
+	fetchOrder(URLParam.orderID!, URLParam.userID!, setOrder, setOrderItems, setUser) 
+    }, [URLParam.orderID, URLParam.userID])
 
+    useEffect(() => {
+	const itemsID = orderItems?.map((item: any) => { return item.product })
+	axios
+	    .get(
+		'/api/products/',
+		{ params: JSON.stringify(itemsID) },
+	    )
+	    .then((response) => {
+		setProducts(response.data)
+	    })
+	    .catch((error) => {
+		console.log(error)
+	    })
+    }, [orderItems])
 
     return (
 	<div>
-	    <div className='flex flex-col max-w-[650px] divide-y space-y-7 bg-white shadow-lg shadow-gray-400 p-3 px-9 my-6 mx-auto'>
+	    <div className='flex flex-col max-w-[650px] divide-y space-y-7 bg-white shadow-lg shadow-gray-400 py-7 px-9 my-6 mx-auto'>
 		<div className='flex flex-row justify-between'>
 		    <div className='flex flex-col space-y-2'>
 			<img className='w-12 rounded-md' src={require('../assets/favicon.png')} alt='company icon'/>
@@ -84,8 +96,8 @@ export const InvoiceGenerator = () => {
 			<h1 className='font-bold'>Покупатель:</h1>
 			<div>
 			    <p className='text-gray-700'>{user?.last_name + ' ' + user?.first_name}</p>
-			    <p className='text-gray-700'></p>
-			    <p className='text-gray-700'></p>
+			    <p className='text-gray-700'>{user?.email}</p>
+			    <p className='text-gray-700'>{user?.phone}</p>
 			</div>
 		    </div>
 		    <div className='flex flex-row space-x-3'>
@@ -95,36 +107,35 @@ export const InvoiceGenerator = () => {
 			</div>
 			<div className='flex flex-col'>
 			    <h1 className='text-gray-700'>{URLParam.orderID}</h1>
-			    <h1 className='text-gray-700'>{order.expected_date.slice(0, 10)}</h1>
+			    <h1 className='text-gray-700'>{order.expected_date?.slice(0, 10)}</h1>
 			</div>
 		    </div>
 		</div>
 		<TableContainer component={Paper}>
-		    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-			<TableHead>
+		    <Table sx={{ minWidth: 500 }} aria-label="simple table">
+			<TableHead className='bg-gray-300'>
 			    <TableRow>
-				<TableCell>Dessert (100g serving)</TableCell>
-				<TableCell align="right">Calories</TableCell>
-				<TableCell align="right">Fat&nbsp;(g)</TableCell>
-				<TableCell align="right">Carbs&nbsp;(g)</TableCell>
-				<TableCell align="right">Protein&nbsp;(g)</TableCell>
+				<TableCell className='font-semibold'>Название</TableCell>
+				<TableCell className='font-semibold' align="right">Количество</TableCell>
+				<TableCell className='font-semibold' align="right">Цена</TableCell>
 			    </TableRow>
 			</TableHead>
 			<TableBody>
-			    {orderItems.map((row: any) => (
-				<TableRow
-				    key={row.name}
-				    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-				>
-				    <TableCell component="th" scope="row">
-					{row.name}
-				    </TableCell>
-				    <TableCell align="right">{row.calories}</TableCell>
-				    <TableCell align="right">{row.fat}</TableCell>
-				    <TableCell align="right">{row.carbs}</TableCell>
-				    <TableCell align="right">{row.protein}</TableCell>
-				</TableRow>
-			))}
+			    {products.map((row: any) => {
+				const orderItem = orderItems.find((item: any) => item.product === row.id)
+				return (
+				    <TableRow
+					key={row.name}
+					sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+				    >
+					<TableCell component="th" scope="row">
+					    {row.name}
+					</TableCell>
+					<TableCell align="right">{orderItem.quantity}</TableCell>
+					<TableCell align="right">{(row.price * orderItem.quantity) + '₸'}</TableCell>
+				    </TableRow>
+				)
+			    })}
 		    	</TableBody>
 		    </Table>
 	    	</TableContainer>

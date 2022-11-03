@@ -47,7 +47,7 @@ export const MakeOrder = () => {
 	    )
 	    .then((response) => {
 		RefreshShoppingSession()	
-		navigate(`/checkout/pdf/${response.data}/${user.id!}/`)
+		navigate(`/checkout/pdf/${response.data}/${user!.id}/`)
 	    })
 	    .catch((error: any) => {
 		console.log(error)

@@ -44,7 +44,6 @@ const OrderDetails = (cartItems: any) => {
 
 export const Cart = () => {
     let shopping_session: any = useSelector((state: RootState) => state.shopping_session)
-    const [componentDidMount, setComponentDidMount] = useState(false)
     const [mainChecked, setMainChecked] = useState(true)
     const [cartItems, setCartItems] = useState<string[]>([])
     const dispatch = useDispatch()
