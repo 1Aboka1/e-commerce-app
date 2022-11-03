@@ -16,40 +16,10 @@ export class WelcomeSection extends Component {
     handleFocus = () => { this.setState({inputFocused: true}) }
     handleBlur = () => { this.setState({inputFocused: false}) }
 
-    fetchSearchResult = (inputText) => {
-        axios
-            .get(
-                '/api/get_search_results',
-                { params: { keywords: inputText } },
-                { headers: { 'Content-Type': 'application/json' } }
-            )
-            .then((response) => {
-                this.setState({searchResult: response.data})
-            })
-            .catch((error) => { console.log(error) })
-    }
-
-    handleChange = (e) => {
-        this.setState({inputText: e.target.value.toLowerCase()})
-        this.fetchSearchResult(this.state.inputText)
-    }
-
-    createSearchResultList = () => {
-        console.log(this.state.searchResult)
-        return (
-            <div className='absolute top-12 mx-auto left-0 right-0 bg-white rounded-md shadow-lg ring-1 ring-gray-500'>
-                {
-                    this.state.searchResult.map((searchResult) => {
-                        return (
-                            <div className='flex p-3 justify-between space-x-2'>
-                                <span className='truncate font-semibold'>{ searchResult.name }</span>
-                                <span className='font-semibold'>{ searchResult.price }</span>
-                            </div>
-                        )
-                    })
-                }
-            </div>
-        )
+    handleKeyDown = (event) => {
+	if(event.key === 'Enter') {
+	    this.props.history.push("/search")
+	}
     }
     
     render() {
@@ -58,11 +28,10 @@ export class WelcomeSection extends Component {
                 <div className='flex flex-col items-center gap-6 justify-center h-[75vh] '>
                     <h1 className='text-3xl text-center font-medium text-white'>Запчасти для бытовой техники с доставкой на дом <br/>в Усть-Каменогорске</h1>
                     <form className='w-[80vh] h-12 bg-white rounded-2xl justify-between outline-none p-2 pr-3 flex items-center ring-1 ring-gray-400 focus-within:ring-green-300 hover:scale-105 focus-within:scale-105 transition ease-in-out duration-200'>
-                        <input onFocus={this.handleFocus} onBlur={this.handleBlur} onChange={this.handleChange} type='search' placeholder='Поиск товаров...' required
+			<input onKeyDown={this.handleKeyDown} onFocus={this.handleFocus} onBlur={this.handleBlur} type='search' placeholder='Поиск товаров...' required
                             className='placeholder:text-gray-900 placeholder:text-lg pl-4 w-full focus:outline-none text-lg'
                         />
                         <SearchOutlinedIcon className='hover: cursor-pointer'/>
-                        { this.state.searchResult !== undefined && this.state.searchResult.length > 0 && this.state.inputFocused ? this.createSearchResultList() : null }
                     </form>
                     <div className='flex space-x-3 w-full justify-center'>
                         <Link to={'search'}>
