@@ -38,12 +38,18 @@ export const SignInUp = (props) => {
     warningObject[passwordsMatchAlias] = false
     const [warnings, setWarnings] = useState(warningObject)
 
-    const setNewWarnings = () => {
+    const setNewWarnings = (key) => {
 	let warningsObject = {}
-	for(let key in warnings) {
-	    try {
-	    	warningsObject[key] = registrationInfo[key].length === 0
-	    } catch(error) {}
+	if(key) {
+		try {
+	    		warningsObject[key] = registrationInfo[key].length === 0
+		} catch(error) {}
+	} else {
+		for(let key in warnings) {
+		    try {
+			warningsObject[key] = registrationInfo[key].length === 0
+		    } catch(error) {}
+		}
 	}
 	setWarnings(prevState => ({
 	    ...prevState,
@@ -51,18 +57,22 @@ export const SignInUp = (props) => {
 	}))
     }
 
+    const handleRegistrationBlur = (key) => (event) => {
+	setNewWarnings(key)
+    }
+
     const handleRegistrationInputChange = (inputType) => (event) => {
 	let tempRegistrationInfo = Object.assign({}, registrationInfo)
 	tempRegistrationInfo[inputType] = event.target.value
 	setRegistrationInfo(tempRegistrationInfo)
 	if(inputType === cpasswordAlias || inputType === passwordAlias) {
-	    if(registrationInfo[passwordAlias] !== registrationInfo[cpasswordAlias]) {
+	    if(registrationInfo[passwordAlias] !== registrationInfo[cpasswordAlias] || registrationInfo[cpasswordAlias].length === 0) {
 		setWarnings({ ...warnings, "passwordsMatch": true })
 	    } else {
 	    	setWarnings({ ...warnings, "passwordsMatch": false })
 	    }
 	}
-	setNewWarnings()
+	setNewWarnings(inputType)
     }
 
     const handleWindowChange = () => {
@@ -128,11 +138,11 @@ export const SignInUp = (props) => {
                 </div>
                 <div className='my-3'>
                     <form onSubmit={handleRegister} className='flex flex-col items-center px-10 space-y-3'>
-			<TextField className='w-full' color="success" error={warnings[emailAlias]} id="standard-basic" defaultValue={registrationInfo[emailAlias]}  label="Email" variant="standard" onChange={handleRegistrationInputChange(emailAlias)} />
-			<TextField className='w-full' color="success" error={warnings[firstNameAlias]} id="standard-basic" defaultValue={registrationInfo[firstNameAlias]}  label="Имя" variant="standard" onChange={handleRegistrationInputChange(firstNameAlias)}/>
-			<TextField className='w-full' color="success" error={warnings[lastNameAlias]} id="standard-basic" defaultValue={registrationInfo[lastNameAlias]}  label="Фамилия" variant="standard" onChange={handleRegistrationInputChange(lastNameAlias)}/>
-			<TextField className='w-full' color="success" error={warnings[phoneAlias]} id="standard-basic" defaultValue={registrationInfo[phoneAlias]}  label="Номер" variant="standard" onChange={handleRegistrationInputChange(phoneAlias)}/>
-			<TextField className='w-full' color="success" error={warnings[passwordAlias]} id="standard-basic" type='password' defaultValue={registrationInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleRegistrationInputChange(passwordAlias)}/>
+			<TextField onBlur={handleRegistrationBlur(emailAlias)} className='w-full' color="success" error={warnings[emailAlias]} id="standard-basic" defaultValue={registrationInfo[emailAlias]}  label="Email" variant="standard" onChange={handleRegistrationInputChange(emailAlias)} />
+			<TextField onBlur={handleRegistrationBlur(firstNameAlias)} className='w-full' color="success" error={warnings[firstNameAlias]} id="standard-basic" defaultValue={registrationInfo[firstNameAlias]}  label="Имя" variant="standard" onChange={handleRegistrationInputChange(firstNameAlias)}/>
+			<TextField onBlur={handleRegistrationBlur(lastNameAlias)} className='w-full' color="success" error={warnings[lastNameAlias]} id="standard-basic" defaultValue={registrationInfo[lastNameAlias]}  label="Фамилия" variant="standard" onChange={handleRegistrationInputChange(lastNameAlias)}/>
+			<TextField onBlur={handleRegistrationBlur(phoneAlias)} className='w-full' color="success" error={warnings[phoneAlias]} id="standard-basic" defaultValue={registrationInfo[phoneAlias]}  label="Номер" variant="standard" onChange={handleRegistrationInputChange(phoneAlias)}/>
+			<TextField onBlur={handleRegistrationBlur(passwordAlias)} className='w-full' color="success" error={warnings[passwordAlias]} id="standard-basic" type='password' defaultValue={registrationInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleRegistrationInputChange(passwordAlias)}/>
 			<TextField className='w-full' color="success" error={warnings[passwordsMatchAlias]} {...(warnings[passwordsMatchAlias] ? {helperText: 'Пароли не совпадают'} : {})}id="standard-basic" type='password' defaultValue={registrationInfo[cpasswordAlias]}  label="Повторите пароль" variant="standard" onChange={handleRegistrationInputChange(cpasswordAlias)}/>
 			<div>
 			    <FormGroup>
@@ -163,12 +173,18 @@ export const SignInUp = (props) => {
     for(let key in loginInfo) { LwarningObject[key] = false }
     const [Lwarnings, setLWarnings] = useState(LwarningObject)
 
-    const setNewLWarnings = () => {
+    const setNewLWarnings = (key) => {
 	let LwarningsObject = {}
-	for(let key in Lwarnings) {
-	    try {
-	    	LwarningsObject[key] = loginInfo[key].length === 0
-	    } catch(error) {}
+	if(key) {
+		try {
+	    		LwarningsObject[key] = loginInfo[key].length === 0
+		} catch(error) {}
+	} else {
+		for(let key in warnings) {
+		    try {
+			LwarningsObject[key] = loginInfo[key].length === 0
+		    } catch(error) {}
+		}
 	}
 	setLWarnings(prevState => ({
 	    ...prevState,
@@ -176,11 +192,14 @@ export const SignInUp = (props) => {
 	}))
     }
 
+    const handleLoginBlur = (key) => (event) => {
+	setNewLWarnings(key)
+    }
+
     const handleLoginInputChange = (inputType) => (event) => {
 	let tempLoginInfo = Object.assign({}, loginInfo)
 	tempLoginInfo[inputType] = event.target.value
 	setLoginInfo(tempLoginInfo)
-	setNewLWarnings()
     }
 
     const handleLogin = async (event) => {
@@ -224,8 +243,8 @@ export const SignInUp = (props) => {
                 </div>
                 <div className='my-3'>
                     <form onSubmit={handleLogin} className='flex flex-col items-center px-10 space-y-3'>
-			<TextField className='w-full' color="success" error={Lwarnings[emailAlias]} id="standard-basic" defaultValue={loginInfo[emailAlias]}  label="Email" variant="standard" onChange={handleLoginInputChange(emailAlias)} />
-			<TextField className='w-full pb-5' color="success" error={Lwarnings[passwordAlias]} id="standard-basic" type='password' defaultValue={loginInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleLoginInputChange(passwordAlias)}/>
+			<TextField onBlur={handleLoginBlur(emailAlias)} className='w-full' color="success" error={Lwarnings[emailAlias]} id="standard-basic" defaultValue={loginInfo[emailAlias]}  label="Email" variant="standard" onChange={handleLoginInputChange(emailAlias)} />
+			<TextField onBlur={handleLoginBlur(passwordAlias)} className='w-full pb-5' color="success" error={Lwarnings[passwordAlias]} id="standard-basic" type='password' defaultValue={loginInfo[passwordAlias]}  label="Пароль" variant="standard" onChange={handleLoginInputChange(passwordAlias)}/>
 			<Button className='bg-green-600 w-full rounded-xl' type='submit' variant='contained' color='success'>Войти</Button>
                     </form>
                 </div>
