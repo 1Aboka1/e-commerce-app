@@ -1,7 +1,5 @@
 from django.urls import path, include
-from rest_framework.routers import SimpleRouter 
-from e_commerce_app import views
-from e_commerce_app.views import catalog 
+from e_commerce_app.views import catalog, order
 
 urlpatterns = [
     path('product_categories', catalog.ProductCategoryView.as_view(), name='productCategory'),
@@ -11,4 +9,5 @@ urlpatterns = [
     path('get_single_product/<pk>', catalog.SingleProductView.as_view(), name='singleProduct'),
     path('get_single_products_categories', catalog.SingleProductCategoriesView.as_view(), name='singleProductCategory'),
     path('', include(('e_commerce_app.routers', 'core'), namespace='core-api')),
+    path(r'order/pdf', order.UploadInvoiceImage.as_view(), name='uploadInvoiceImage'),
 ]

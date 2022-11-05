@@ -1,6 +1,6 @@
 from django.db.models import Count
-from django.shortcuts import render
 from django.db.models import Q
+from rest_framework import views
 from e_commerce_app.models import Product, ProductCategory, DeviceBrandCategory, DeviceTypeCategory, PartTypeCategory, CustomUser, CartItem, ShoppingSession
 from e_commerce_app.serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer, SingleCategorySerializer, UserSerializer, LoginSerializer, RegistrationSerializer, ShoppingSessionSerializer, CartItemSerializer
 from rest_framework import generics, viewsets, filters, status
@@ -8,6 +8,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import FileUploadParser
 from drf_multiple_model.mixins import FlatMultipleModelMixin
 import json
 from django.contrib.postgres.search import TrigramSimilarity

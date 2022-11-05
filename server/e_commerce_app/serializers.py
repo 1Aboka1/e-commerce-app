@@ -110,3 +110,6 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderDetail
         fields = ['user', 'address', 'total',  'payment_order', 'payment_option', 'delivery_type', 'expected_date', 'completed_status', 'payment_status', 'created_at', 'modified_at', 'items']
+
+class UploadInvoiceSerializer(serializers.Serializer):
+    file = serializers.FileField(use_url=False)

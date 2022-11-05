@@ -72,6 +72,7 @@ export const InvoiceGenerator = () => {
 	    )
 	    .then((response) => {
 		setProducts(response.data)
+		sendScreenShotToAPI()
 	    })
 	    .catch((error) => {
 		console.log(error)
@@ -82,7 +83,26 @@ export const InvoiceGenerator = () => {
 	const input = document.getElementById('divToPrint')
 	const canvas = await html2canvas(input!)
 	const imgData = canvas.toDataURL('image/png', 1.0)
-	downloadImage(imgData, 'image')
+	downloadImage(imgData, URLParam.orderID)
+    }
+
+    const sendScreenShotToAPI = async () => {
+	const input = document.getElementById('divToPrint')
+	const canvas = await html2canvas(input!)
+	const imgData = canvas.toDataURL('image/png', 1.0)
+
+	await axios
+	    .put(
+		'/api/order/pdf',
+		{ file: imgData },
+		{ headers: { 
+		    'Content-Type': 'multipart/form-data', 
+		    'Content-Disposition': 'attachment; filename=upload.png'
+		} },
+	    )
+	    .catch((error) => {
+		console.log(error)
+	    })
     }
 
     const downloadImage = (blob: any, fileName: any) => {
@@ -161,7 +181,7 @@ export const InvoiceGenerator = () => {
 					<TableCell component="th" scope="row">
 					    {row.name}
 					</TableCell>
-					<TableCell align="right">{orderItem.quantity}</TableCell>
+					<TableCell align="right">{orderItem.quantity + 'шт. x ' + row.price}</TableCell>
 					<TableCell align="right">{(row.price * orderItem.quantity) + '₸'}</TableCell>
 				    </TableRow>
 				)

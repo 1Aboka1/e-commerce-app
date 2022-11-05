@@ -1,9 +1,13 @@
 from rest_framework import viewsets, filters, status
-from e_commerce_app.serializers import OrderSerializer, OrderItemSerializer
+from e_commerce_app.serializers import OrderSerializer, OrderItemSerializer, UploadInvoiceSerializer
 from e_commerce_app.models import CartItem, OrderDetail, OrderItem, ShoppingSession
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.parsers import FileUploadParser, MultiPartParser
+from rest_framework import views
 from django.http import QueryDict
+from django.core.files.storage import default_storage
+import base64
 
 class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
@@ -51,3 +55,12 @@ class OrderItemViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(qs, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UploadInvoiceImage(views.APIView):
+    parser_classes = (FileUploadParser,)
+
+    def put(self, request, format=None):
+        file = request.FILES['file']
+        file_name = default_storage.save(file.name, file)
+
+        return Response(status=status.HTTP_202_ACCEPTED)
