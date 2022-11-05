@@ -94,7 +94,7 @@ export const InvoiceGenerator = () => {
 	await axios
 	    .put(
 		'/api/order/pdf',
-		{ file: imgData },
+		imgData,
 		{ headers: { 
 		    'Content-Type': 'multipart/form-data', 
 		    'Content-Disposition': 'attachment; filename=upload.png'

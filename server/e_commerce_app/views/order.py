@@ -1,3 +1,4 @@
+from django.core.files.base import ContentFile
 from rest_framework import viewsets, filters, status
 from e_commerce_app.serializers import OrderSerializer, OrderItemSerializer, UploadInvoiceSerializer
 from e_commerce_app.models import CartItem, OrderDetail, OrderItem, ShoppingSession
@@ -61,6 +62,14 @@ class UploadInvoiceImage(views.APIView):
 
     def put(self, request, format=None):
         file = request.FILES['file']
-        file_name = default_storage.save(file.name, file)
+        bytes_obj = file.file.read()
+        format, imgstr = str(bytes_obj).split(';base64,')
+        ext = format.split('/')[-1]
+
+        data = ContentFile(base64.b64decode(imgstr))  
+        file_name = "myphoto." + ext
+        data = ContentFile(base64.b64decode(imgstr), name='upload.' + ext)
+
+        file_name = default_storage.save(file_name, data)
 
         return Response(status=status.HTTP_202_ACCEPTED)
