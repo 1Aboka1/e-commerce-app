@@ -2,13 +2,16 @@ from django.core.files.base import ContentFile
 from rest_framework import viewsets, filters, status
 from e_commerce_app.serializers import OrderSerializer, OrderItemSerializer, UploadInvoiceSerializer
 from e_commerce_app.models import CartItem, OrderDetail, OrderItem, ShoppingSession
+from core.settings import MEDIA_URL 
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework import views
 from django.http import QueryDict
 from django.core.files.storage import default_storage
+from django.core.files.storage import FileSystemStorage
 import base64
+import os
 
 class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
@@ -65,11 +68,10 @@ class UploadInvoiceImage(views.APIView):
         bytes_obj = file.file.read()
         format, imgstr = str(bytes_obj).split(';base64,')
         ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(imgstr), name=file.name)
 
-        data = ContentFile(base64.b64decode(imgstr))  
-        file_name = "myphoto." + ext
-        data = ContentFile(base64.b64decode(imgstr), name='upload.' + ext)
-
-        file_name = default_storage.save(file_name, data)
-
-        return Response(status=status.HTTP_202_ACCEPTED)
+        if (os.path.isfile(str(MEDIA_URL).replace('/', '') + '/' + file.name)) == False:
+            default_storage.save(file.name, data)
+            return Response(status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(status=status.HTTP_208_ALREADY_REPORTED)

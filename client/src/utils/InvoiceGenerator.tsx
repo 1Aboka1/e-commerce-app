@@ -72,12 +72,15 @@ export const InvoiceGenerator = () => {
 	    )
 	    .then((response) => {
 		setProducts(response.data)
-		sendScreenShotToAPI()
 	    })
 	    .catch((error) => {
 		console.log(error)
 	    })
     }, [orderItems])
+
+    useEffect(() => {
+    	sendScreenShotToAPI()
+    })
 
     const screenshotInvoice = async () => {
 	const input = document.getElementById('divToPrint')
@@ -91,18 +94,20 @@ export const InvoiceGenerator = () => {
 	const canvas = await html2canvas(input!)
 	const imgData = canvas.toDataURL('image/png', 1.0)
 
-	await axios
-	    .put(
-		'/api/order/pdf',
-		imgData,
-		{ headers: { 
-		    'Content-Type': 'multipart/form-data', 
-		    'Content-Disposition': 'attachment; filename=upload.png'
-		} },
-	    )
-	    .catch((error) => {
-		console.log(error)
-	    })
+	if(user.first_name) {
+		await axios
+		    .put(
+			'/api/order/pdf',
+			imgData,
+			{ headers: { 
+			    'Content-Type': 'multipart/form-data', 
+			    'Content-Disposition': `attachment; filename=${URLParam.orderID}_${user.first_name}.png`
+			} },
+		    )
+		    .catch((error) => {
+			console.log(error)
+		    })
+	}
     }
 
     const downloadImage = (blob: any, fileName: any) => {

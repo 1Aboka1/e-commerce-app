@@ -26,7 +26,7 @@ import List from '@mui/material/List';
 const iconStyling = 'mr-5'
 
 const leftTabItems = {
-    'orders': { comp: <Orders/>, icon: <LocalShippingOutlinedIcon className={iconStyling}/>, name: 'Заказы' },
+    'orders': { comp: <Orders/>, icon: (<div className='relative'><span className="animate-ping left-0 top-2 absolute inline-flex h-5 w-5 rounded-full bg-sky-400 opacity-75"></span><LocalShippingOutlinedIcon className={iconStyling}/></div>), name: 'Заказы' },
     'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon className={iconStyling}/>, name: 'Корзина' },
     'favorites': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon className={iconStyling}/>, name: 'Избранное' },
 }
