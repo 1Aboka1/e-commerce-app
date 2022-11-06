@@ -28,8 +28,7 @@ const fetchOrder = async (orderID: string, userID: string, setOrder: CallableFun
 
     await axiosService
 	.get(
-	    `/order/order_item/`,
-	    { params: orderID },
+	    `/order/order_item/${orderID}`,
 	)
 	.then((response) => {
 	    setOrderItems(response.data)

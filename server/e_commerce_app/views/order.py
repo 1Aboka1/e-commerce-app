@@ -54,8 +54,9 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
 
     def list(self, request, *args, **kwargs):
-        order_id = self.request.query_params['0']
-        qs = OrderItem.objects.filter(order__id=order_id)
+        order_ids = self.request.query_params
+        order_ids = list(order_ids.values())
+        qs = OrderItem.objects.filter(order__id__in=order_ids)
         serializer = self.get_serializer(qs, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
