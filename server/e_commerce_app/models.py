@@ -156,10 +156,17 @@ class OrderDetail(models.Model):
     expected_date = models.DateTimeField(default=timezone.now)
     delivery_type = models.CharField(max_length=30, choices=DELIVERY_TYPES, default='COURIER')
     payment_option = models.CharField(max_length=30, choices=PAYMENT_OPTIONS, default='CASH')
-    total = models.IntegerField(default=0)
     address = models.CharField(max_length=300, default='')
-
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def _get_total(self):
+        qs = self.orderitem_set.filter(order__id=self.id)
+        sum = 0
+        for query in qs:
+            sum += query.total
+        return sum
+
+    total = property(_get_total)
 
     def __str__(self):
         return str(self.id)
@@ -168,9 +175,12 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
-
     product = models.ForeignKey(Product, primary_key=False, on_delete=models.CASCADE)
     order = models.ForeignKey(OrderDetail, on_delete=models.CASCADE)
+
+    def _get_total(self):
+        return self.quantity * self.product.price
+    total = property(_get_total)
 
     def __str__(self):
         return str(self.product)

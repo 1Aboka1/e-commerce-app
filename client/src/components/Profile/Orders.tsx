@@ -8,6 +8,7 @@ import {RootState} from '../../store'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import axios from 'axios'
+import {DELIVERY_TYPES} from '../../types'
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
@@ -120,16 +121,87 @@ export const Orders = () => {
 	}
     }
 
-    const renderShrunk = (itemId: string) => {
-	const relOrderItems = orderItems
+    const renderShrunk = (orderId: string) => {
+	const relOrderItems: any = orderItems.reduce((result: any, item: any) => {
+	    if(item.order === orderId) {
+		result.push(item)
+	    }
+	    return result
+	}, [])
+
+	const relProducts: any = []
+	for(const orderItem of relOrderItems) {
+	    relProducts.push(
+		products.find((item: any) => item.id === orderItem.product)
+	    )
+	}
+
+	if(relProducts[0] === undefined) {
+	    return null
+	}
 
 	return (
-	    <div className='flex flex-row justify-between'>
-		<div>
-
+	    <div className='flex flex-row items-center justify-between pr-6 px-2'>
+		<div className='flex flex-row justify-start'>
+		    {
+		    relProducts.map((item: any) => {
+			    return (
+				    <img className='w-[120px] p-3 object-contain' src={'/mediafiles/' + item?.image} alt={item.name}/>
+				   )
+			    })
+		    }
 		</div>
 		<div className='flex flex-col items-center'>
-		    <span>Итого: <span>{itemId}</span></span>
+		    <span className='text-gray-700'>Итого: <span className='font-semibold text-black'>{orders.find((item: any) => item.id === orderId).total} ₸</span></span>
+		    <span className='text-gray-700'>Товаров: {relProducts.length} шт.</span>
+		</div>
+	    </div>
+	)
+    }
+
+    const renderExpanded = (orderId: string) => {
+	const order = orders.find((item: any) => orderId === item.id)
+	const relOrderItems: any = orderItems.reduce((result: any, item: any) => {
+	    if(item.order === orderId) {
+		result.push(item)
+	    }
+	    return result
+	}, [])
+
+	const relProducts: any = []
+	for(const orderItem of relOrderItems) {
+	    relProducts.push(
+		products.find((item: any) => item.id === orderItem.product)
+	    )
+	}
+
+	if(relProducts[0] === undefined || order === undefined) {
+	    return null
+	}
+
+	let deliveryType: string | null
+	switch(order.delivery_type) {
+	    case DELIVERY_TYPES.PICKUP:
+		deliveryType = 'Самовывоз'
+		break
+	    case DELIVERY_TYPES.COURIER:
+		deliveryType = 'Курьер'
+		break
+	    default:
+		deliveryType = null
+		break
+	}
+
+	return (
+	    <div className='flex flex-row items-center justify-between py-3 px-6'>
+		<div className='flex flex-col space-y-2'>
+		    <span className='text-gray-700'>Способ получения: <span className='text-black font-semibold'>{deliveryType}</span></span>
+		    <span className='text-gray-700'>Телефон получателя: <span className='text-black font-semibold'>{user?.phone}</span></span>
+		    <span className='text-gray-700'>Срок хранения: <span className='text-black font-semibold'>{'Неизвестно'}</span></span>
+		</div>
+		<div className='flex flex-col items-center space-y-2'>
+		    <span className='text-gray-700'>Итого: <span className='font-semibold text-black'>{orders.find((item: any) => item.id === orderId).total} ₸</span></span>
+		    <Button variant='contained' className='bg-gray-100 text-black outline outline-gray-800 rounded-xl'>Распечатать</Button>
 		</div>
 	    </div>
 	)
@@ -156,8 +228,8 @@ export const Orders = () => {
 			}
 
 			return (
-			    <div key={item.id} className='flex flex-col divide-y py-2 shadow-xl shadow-gray-300 rounded-xl bg-white'>
-				<div className='flex flex-row items-center justify-between px-3'>
+			    <div key={item.id} className='flex flex-col divide-y py-1 shadow-xl shadow-gray-300 rounded-xl bg-white'>
+				<div className='flex flex-row items-center justify-between py-1 px-3'>
 				    <div className='flex flex-row items-center space-x-2'>
 					<div className='flex flex-row items-center space-x-1 cursor-pointer' id={item.id} onClick={handleExpandClick}>
 					    { !open.includes(item.id) ? <ExpandMore fontSize={'large'}/> : <ExpandLess fontSize={'large'}/> }
@@ -174,9 +246,7 @@ export const Orders = () => {
 				    { renderShrunk(item.id) }
 				</Collapse>
 				<Collapse in={open.includes(item.id)} timeout="auto" unmountOnExit>
-				    <div>
-				    <h1>Somtehing</h1>
-				    </div>
+				    { renderExpanded(item.id) }
 				</Collapse>
 			    </div>
 			)
@@ -194,6 +264,7 @@ export const Orders = () => {
 		        <ToggleButton sx={{ boxShadow: 1 }} className='font-bold border-0 rounded-xl text-black' value='all'>Все</ToggleButton>
 		        <ToggleButton sx={{ boxShadow: 1 }} className='font-bold border-0 rounded-xl text-black' value='pending'>Открытые</ToggleButton>
 		        <ToggleButton sx={{ boxShadow: 1 }} className='font-bold border-0 rounded-xl text-black' value='payed'>Выкупленные</ToggleButton>
+		        <ToggleButton sx={{ boxShadow: 1 }} className='font-bold border-0 rounded-xl text-black' value='success'>Завершенные</ToggleButton>
 		    </StyledToggleButtonGroup>
 		</div>
 		<h1 className='font-bold text-xl px-2'>Личные заказы</h1>

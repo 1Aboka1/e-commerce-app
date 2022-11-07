@@ -98,7 +98,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['quantity', 'created_at', 'modified_at', 'product', 'order']
+        fields = ['total', 'quantity', 'created_at', 'modified_at', 'product', 'order']
 
 class OrderSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
