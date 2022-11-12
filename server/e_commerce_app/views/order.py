@@ -15,7 +15,7 @@ import os
 
 class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
-    http_method_names = ['get', 'post']
+    http_method_names = ['get', 'post', 'delete']
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['created_at']
     serializer_class = OrderSerializer

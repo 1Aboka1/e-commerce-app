@@ -23,10 +23,10 @@ import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 
-const iconStyling = 'mr-5'
+const iconStyling = 'mr-5 text-xl'
 
 const leftTabItems = {
-    'orders': { comp: <Orders/>, icon: (<div className='relative'><span className="animate-ping left-0 top-2 absolute inline-flex h-5 w-5 rounded-full bg-sky-400 opacity-75"></span><LocalShippingOutlinedIcon className={iconStyling}/></div>), name: 'Заказы' },
+    'orders': { comp: <Orders/>, icon: <LocalShippingOutlinedIcon className={iconStyling}/>, name: 'Заказы' },
     'cart': { comp: <Cart/>, icon: <ShoppingCartOutlinedIcon className={iconStyling}/>, name: 'Корзина' },
     'favorites': { comp: <Favorites/>, icon: <FavoriteBorderOutlinedIcon className={iconStyling}/>, name: 'Избранное' },
 }
@@ -42,6 +42,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     borderColor: 'primary.main',
     boxShadow: '100',
     borderBottomRightRadius: '16px',
+    backgroundColor: 'rgba(0, 155, 0, 0.76)',
     borderTopRightRadius: '16px',
     justifyContent: 'center',
   overflowX: 'hidden',
@@ -59,6 +60,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     borderBottomRightRadius: '16px',
     borderTopRightRadius: '16px',
     boxShadow: '3',
+    backgroundColor: 'rgba(0, 155, 0, 0.76)',
     justifyContent: 'center',
   overflowX: 'hidden',
     height: 'calc(100% / 3)',
@@ -108,11 +110,11 @@ const MiniDrawer = (props: any) => {
 			{keys.map((key) => {
 			    return (
 				<div className={key === props.windowType ? 'border-l-2 border-green-300' : 'border-l-2 border-white'}>
-				    <a href={'/profile/' + key}><Button className='text-black pl-6 py-2 w-full justify-start hover:text-green-400 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => props.setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
+				    <a href={'/profile/' + key}><Button className='text-white font-semibold pl-6 py-2 w-full justify-start hover:text-gray-200 transition ease-in-out duration-200' startIcon={leftTabItems[key]['icon']} onClick={() => props.setWindowType(key)}>{leftTabItems[key]['name']}</Button></a>
 				</div>	
 			    )	    
 			})}
-				    <Button className='justify-start w-full text-black border-l-2 border-white pl-7 py-2 hover:text-green-400 transition ease-in-out duration-200' onClick={props.handleLogout} startIcon={<LogoutOutlinedIcon className={iconStyling}/>}>Выйти</Button>
+				    <Button className='justify-start w-full text-white border-l-2 border-white pl-7 py-2 hover:text-green-200 transition ease-in-out duration-200' onClick={props.handleLogout} startIcon={<LogoutOutlinedIcon className={iconStyling}/>}>Выйти</Button>
 	</List>
     </Drawer>
     )

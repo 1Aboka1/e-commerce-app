@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { ToggleButtonGroup, ToggleButton, Button, Chip, Stack, Collapse } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import axiosService from '../../utils/axios'
@@ -193,18 +193,61 @@ export const Orders = () => {
 	}
 
 	return (
-	    <div className='flex flex-row items-center justify-between py-3 px-6'>
-		<div className='flex flex-col space-y-2'>
-		    <span className='text-gray-700'>Способ получения: <span className='text-black font-semibold'>{deliveryType}</span></span>
-		    <span className='text-gray-700'>Телефон получателя: <span className='text-black font-semibold'>{user?.phone}</span></span>
-		    <span className='text-gray-700'>Срок хранения: <span className='text-black font-semibold'>{'Неизвестно'}</span></span>
+	    <div className='divide-y'>
+		<div className='flex flex-row items-center justify-between py-3 px-6'>
+		    <div className='flex flex-col space-y-2'>
+			<span className='text-gray-700'>Способ получения: <span className='text-black font-semibold'>{deliveryType}</span></span>
+			<span className='text-gray-700'>Телефон получателя: <span className='text-black font-semibold'>{user?.phone}</span></span>
+			<span className='text-gray-700'>Срок хранения: <span className='text-black font-semibold'>{'Неизвестно'}</span></span>
+		    </div>
+		    <div className='flex flex-col items-center space-y-2'>
+			<span className='text-gray-700'>Итого: <span className='font-semibold text-black'>{orders.find((item: any) => item.id === orderId).total} ₸</span></span>
+			<Link to={`/checkout/pdf/${order.id}/${user?.id}/`}>
+			    <Button variant='contained' className='bg-gray-100 text-black outline outline-gray-800 rounded-xl'>Распечатать</Button>
+
+			</Link>
+		    </div>
 		</div>
-		<div className='flex flex-col items-center space-y-2'>
-		    <span className='text-gray-700'>Итого: <span className='font-semibold text-black'>{orders.find((item: any) => item.id === orderId).total} ₸</span></span>
-		    <Button variant='contained' className='bg-gray-100 text-black outline outline-gray-800 rounded-xl'>Распечатать</Button>
+		<div className='divide-y'>
+		    {
+			relProducts.map((product: any) => {
+			    const relOrder = relOrderItems.find((item: any) => item.product === product.id)
+			    return (
+				<div>
+				<Link to={`/product_item/${product.id}`} key={product.id}>
+				    <div className='flex justify-between items-center px-5 py-4 cursor-pointer transition ease-in-out duration-200 group'>
+					<div className='flex flex-row'>
+					    <img className='w-[180px] p-3 object-contain' src={'/mediafiles/' + product.image} alt={product.name}/>
+					    <div className='space-y-3 py-7 flex flex-col'>
+						<h1 className='font-medium text-black text-lg group-hover:text-green-600 transition ease-in-out duration-200'>{product.name}</h1>
+						<p className='text-sm text-gray-700'>{product.description}</p>
+						<p className='text-sm text-gray-700'>Код товара: {product.id}</p>
+					    </div>
+
+					</div>
+					<div>
+					    <h1 className='text-[16px] whitespace-nowrap text-end text-gray-800'>Цена: <span className='text-black text-[19px] font-semibold'>{order.total} ₸</span></h1>
+					    <h1 className='text-[16px] whitespace-nowrap text-end text-gray-800'>{relOrder.quantity} шт. x <span className='text-black text-[19px] font-semibold'>{product.price} ₸</span></h1>
+					</div>
+				    </div>
+				</Link>
+				</div>
+			    )
+			})
+		    }
 		</div>
 	    </div>
 	)
+    }
+
+    const handleRemove = (orderId: string) => () => {
+    	axiosService
+	    .delete(
+		`/order/order_instance/${orderId}/`
+	    )
+	    .catch((error) => {
+		console.log(error)
+	    })
     }
 
     const renderOrders = () => {
@@ -240,7 +283,7 @@ export const Orders = () => {
 					    { chips }
 					</Stack>
 				    </div>
-				    <Button color='error'>Отменить</Button>
+				    <Button color='error' onClick={handleRemove(item.id)}>Отменить</Button>
 				</div>
 				<Collapse in={!open.includes(item.id)} timeout="auto" unmountOnExit>
 				    { renderShrunk(item.id) }
