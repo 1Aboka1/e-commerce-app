@@ -21,9 +21,6 @@ export const NavBar = (props: any) => {
 						{/* <LogoDevIcon fontSize='large' className='ml-5 text-green-400 hover: cursor-pointer'/> */}
 						{ <img className='w-12 rounded-md' src={require('../assets/favicon.png')} alt='company icon'/> }
 					</Link>
-					<Link to={`/`}>
-						<button className="p-1 hover:text-green-300 transition ease-in-out duration-200">Главная</button>
-					</Link>
 					<Link to={'/search'}>
 						<button className="p-1 hover:text-green-300 transition ease-in-out duration-200">Каталог</button>
 					</Link>
