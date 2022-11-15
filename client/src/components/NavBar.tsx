@@ -5,6 +5,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import Button from '@mui/material/Button'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import Badge from '@mui/material/Badge'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 
 const loginAlias = 'login'
 const registerAlias = 'register'
@@ -17,25 +18,25 @@ export const NavBar = (props: any) => {
 		<div className='bg-black shadow-md shadow-gray-700 sticky top-0 z-50'>
 			<div className='text-white flex items-center max-w-[1240px] w-screen mx-auto h-[70px] justify-between font-medium'>
 				<div className='flex items-center space-x-4'>
-					<Link to={`/`}>
-						{/* <LogoDevIcon fontSize='large' className='ml-5 text-green-400 hover: cursor-pointer'/> */}
+					<Link to={`/`} className='shrink-0'>
 						{ <img className='w-12 rounded-md' src={require('../assets/favicon.png')} alt='company icon'/> }
 					</Link>
 					<Link to={'/search'}>
 						<button className="p-1 hover:text-green-300 transition ease-in-out duration-200">Каталог</button>
 					</Link>
+					<form className='w-full bg-gray-800 rounded-2xl outline-none p-2 flex items-center hover:scale-105 focus-within:scale-105 transition duration-200'>
+						<input type='search' placeholder='Поиск товаров...' required
+							className='w-80 bg-gray-800 placeholder:text-slate-200 placeholder:text-[13px] pl-4 focus:outline-none text-md'
+						/>
+						<SearchOutlinedIcon className='hover:cursor-pointer'/>
+					</form>
 				</div>
-				<form className='w-[350px] bg-gray-800 rounded-2xl outline-none p-2 flex items-center hover:scale-105 focus-within:scale-105 transition duration-200'>
-					<input type='search' placeholder='Поиск товаров...' required
-						className='w-80 bg-gray-800 placeholder:text-slate-200 placeholder:text-[13px] pl-4 focus:outline-none text-md'
-					/>
-					<SearchOutlinedIcon className='hover:cursor-pointer'/>
-				</form>
 				<div className='mr-7 space-x-3 flex items-center'>
 				    {user ?
 				    (
 					<div className='flex flex-row items-center space-x-3'>
-					    <a href={'/profile/cart'}><Button className='text-white normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<Badge badgeContent={shoppingSession?.total} color='primary'><ShoppingCartOutlinedIcon/></Badge>}>Корзина</Button></a>
+					    <a href={'/profile/orders'}><Button className='text-white text-[16px] normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<Badge badgeContent={null} color='primary'><LocalShippingOutlinedIcon/></Badge>}>Заказы</Button></a>
+					    <a href={'/profile/cart'}><Button className='text-white text-[16px] normal-case hover:text-green-300 transition ease-in-out duration-200' startIcon={<Badge badgeContent={shoppingSession?.total} color='primary'><ShoppingCartOutlinedIcon/></Badge>}>Корзина</Button></a>
 
 					    <a href={'/profile/favorites'}><span className='text-green-300 cursor-pointer'>{user.first_name}</span></a>
 				    	</div>
