@@ -1,8 +1,8 @@
 from django.db.models import Count
 from django.shortcuts import render
 from django.db.models import Q
-from e_commerce_app.models import Product, ProductCategory, DeviceBrandCategory, DeviceTypeCategory, PartTypeCategory, CustomUser, CartItem, ShoppingSession
-from e_commerce_app.serializers import ProductSerializer, ProductCategorySerializer, ProductCategoryCountSerializer, SingleCategorySerializer, UserSerializer, LoginSerializer, RegistrationSerializer, ShoppingSessionSerializer, CartItemSerializer
+from e_commerce_app.models import Product, Category, SubCategory, CustomUser, CartItem, ShoppingSession
+from e_commerce_app.serializers import ProductSerializer, UserSerializer, LoginSerializer, RegistrationSerializer, ShoppingSessionSerializer, CartItemSerializer
 from rest_framework import generics, viewsets, filters, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView

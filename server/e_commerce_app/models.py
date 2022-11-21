@@ -1,4 +1,3 @@
-from time import pthread_getcpuclockid
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -23,18 +22,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.first_name
 
-class UserAddress(models.Model):
-    address = models.CharField(max_length=150, blank=True)
-    city = models.CharField(max_length=150, blank=True)
-    postal_code = models.CharField(max_length=150, blank=True)
-    created_at = models.DateTimeField(default=timezone.now)
-    modified_at = models.DateTimeField(default=timezone.now)
-    
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user
-
 class Discount(models.Model):
     name = models.CharField(max_length=150, blank=True)
     description = models.TextField(blank=True)
@@ -46,7 +33,7 @@ class Discount(models.Model):
     def __str__(self):
         return self.name
 
-class ProductCategory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)
     
     created_at = models.DateTimeField(default=timezone.now)
@@ -55,33 +42,51 @@ class ProductCategory(models.Model):
     def __str__(self):
         return self.name
     
-class DeviceTypeCategory(models.Model):
-    name = models.CharField(max_length=150, unique=True)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_types")
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = _("Тип устройства")
-        verbose_name_plural = _("Типы устройства")
-        
+# class DeviceTypeCategory(models.Model):
+#     name = models.CharField(max_length=150, unique=True)
+#     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_types")
+#     def __str__(self):
+#         return self.name
+#     class Meta:
+#         verbose_name = _("Тип устройства")
+#         verbose_name_plural = _("Типы устройства")
+#         
+# 
+# class DeviceBrandCategory(models.Model):
+#     name = models.CharField(max_length=150, unique=True)
+#     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_brands")
+#     def __str__(self):
+#         return self.name
+#     class Meta:
+#         verbose_name = _("Марка устройства")
+#         verbose_name_plural = _("Марки устройства")
+# 
+# class PartTypeCategory(models.Model):
+#     name = models.CharField(max_length=150, unique=True)
+#     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="part_types")
+#     def __str__(self):
+#         return self.name
+#     class Meta:
+#         verbose_name = _("Тип запчасти")
+#         verbose_name_plural = _("Типы запчасти")
 
-class DeviceBrandCategory(models.Model):
+class ProductCategory(models.Model):
     name = models.CharField(max_length=150, unique=True)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="device_brands")
+    
+    created_at = models.DateTimeField(default=timezone.now)
+    modified_at = models.DateTimeField(default=timezone.now)
+    
     def __str__(self):
         return self.name
-    class Meta:
-        verbose_name = _("Марка устройства")
-        verbose_name_plural = _("Марки устройства")
 
-class PartTypeCategory(models.Model):
-    name = models.CharField(max_length=150, unique=True)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name="part_types")
+class SubCategory(models.Model):
+    name = models.CharField(max_length=150, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories')
+    created_at = models.DateTimeField(default=timezone.now)
+    modified_at = models.DateTimeField(default=timezone.now)
+    
     def __str__(self):
         return self.name
-    class Meta:
-        verbose_name = _("Тип запчасти")
-        verbose_name_plural = _("Типы запчасти")
 
 class Product(models.Model):
     name = models.CharField(max_length=150, blank=True)
@@ -91,12 +96,8 @@ class Product(models.Model):
     image = models.ImageField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     modified_at = models.DateTimeField(default=timezone.now)
-
-    device_type_category = models.ForeignKey(DeviceTypeCategory, on_delete=models.PROTECT, default=None, related_name='products')
-    device_brand_category = models.ForeignKey(DeviceBrandCategory, on_delete=models.PROTECT, default=None, related_name='products')
-    part_type_category = models.ForeignKey(PartTypeCategory, on_delete=models.PROTECT, default=None, related_name='products')
-
     discount = models.ForeignKey(Discount, on_delete=models.PROTECT, blank=True)    
+    subcategories = models.ManyToManyField(SubCategory)
 
     class Meta:
         ordering = ('-created_at',)

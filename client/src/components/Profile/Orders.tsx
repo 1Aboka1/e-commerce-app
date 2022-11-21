@@ -240,11 +240,16 @@ export const Orders = () => {
 	)
     }
 
+    const [shouldUpdate, setShouldUpdate] = useState(false)
+
     const handleRemove = (orderId: string) => () => {
     	axiosService
 	    .delete(
 		`/order/order_instance/${orderId}/`
 	    )
+	    .then((response) => {
+		setShouldUpdate(!shouldUpdate)
+	    })
 	    .catch((error) => {
 		console.log(error)
 	    })

@@ -42,7 +42,6 @@ axiosService.interceptors.response.use(
 // @ts-ignore
 const refreshAuthLogic = async (failedRequest) => {
     const refreshToken = store.getState().auth.account?.refresh
-    console.log(store.getState().auth)
     if(refreshToken !== null) {
 	return axios
 	    .post(

@@ -17,7 +17,7 @@ export const SingleProductGeneral = () => {
             window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
             axios
                 .get(
-                    '/api/get_single_product/' + productURLParams.productID,
+                    '/api/products/' + productURLParams.productID,
                 )
                 .then((response) => {
                     setproductDetails(response.data)

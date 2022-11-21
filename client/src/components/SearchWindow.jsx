@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined'
 import { Products } from './Products'
 import Accordion from '@mui/material/Accordion'
-import MuiAccordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AccordionDetails from '@mui/material/AccordionDetails'
-import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Checkbox from '@mui/material/Checkbox'
@@ -15,14 +13,13 @@ import axios from 'axios'
 
 export const SearchWindow = () => {
     const [listView, setListView] = useState(true)
-    const [checked, setchecked] = useState({})
+    const [checked, setchecked] = useState([])
     const [filterList, setfilterList] = useState([])
-    const [filterCountList, setfilterCountList] = useState([])
     const [filteredQuerySet, setfilteredQuerySet] = useState([])
     const [didSentToAPI, setdidSentToAPI] = useState(false)
-    const [productCount, setproductCount] = useState(0) 
-    const [componentDidMount, setcomponentDidMount] = useState(false)   
+    const [productCount, setProductCount] = useState(0)
     const [inputText, setinputText] = useState('')
+    const [subcategoryProductsCount, setSubcategoryProductsCount] = useState([])
 
     const handleListClick = () => {
         setListView(true)
@@ -34,119 +31,83 @@ export const SearchWindow = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        if(componentDidMount === false) {
-            axios
-                .get('/api/product_categories')
-                .then((response) => {
-                    setfilterList(response.data)
-                    const tempList = response.data.map((item) => { return item.name })
-                    let json_tempList = {}
-                    tempList.map((item) => { json_tempList[item] = ['Default']; return 0 })
-                    setchecked(json_tempList)
-                })
-                .catch((error) => { console.log(error) })
-            
-            axios
-                .get('/api/product_category_count')
-                .then((response) => {
-                    setfilterCountList(response.data)
-                    setcomponentDidMount(true)
-                })
-                .catch((error) => { console.log(error) })
-            axios
-                .get('/api/get_products_count')
-                .then((response) => {
-                    setproductCount(response.data)
-                })
-                .catch((error) => { console.log(error) })
-        }
-    })
+	axios
+	    .get('/api/product_categories/')
+	    .then((response) => {
+		setfilterList(response.data)
+	    })
+	    .catch((error) => { console.log(error) })
+	axios
+	    .get('/api/subcategories_products_count/')
+	    .then((response) => {
+		setSubcategoryProductsCount(response.data)
+	    })
+	    .catch((error) => {
+		console.log(error)
+	    })
+    }, [])
 
     useEffect(() => {
-        if(componentDidMount === true && didSentToAPI === false) {
-            if(!(checked && Object.keys(checked).length === 0 && Object.getPrototypeOf(checked) === Object.prototype && inputText.length === 0)) {
-                axios
-                    .get(
-                        '/api/get_filtered_products',
-                        { params: {
-                            filters: JSON.stringify(checked),
-                            keywords: inputText,
-                        } },
-                        { headers: { 'Content-Type': 'application/json', } },
-                    )
-                    .then((response) => {
-                        setfilteredQuerySet(response.data)
-                        setdidSentToAPI(true)
-                    })
-                    .catch((error) => { console.log(error) })
-            }
-        }
-    })
+	if(!(checked && Object.keys(checked).length === 0 && Object.getPrototypeOf(checked) === Object.prototype && inputText.length === 0)) {
+	    axios
+		.get(
+		    '/api/get_filtered_products',
+		    { params: {
+			filters: JSON.stringify(checked),
+			keywords: inputText,
+		    } },
+		)
+		.then((response) => {
+		    setfilteredQuerySet(response.data)
+		    setdidSentToAPI(true)
+		})
+		.catch((error) => { console.log(error) })
+	}
+    }, [checked, didSentToAPI, inputText])
 
-    const handleToggle = (value, type) => () => {
-        const currentIndex = checked[type].indexOf(value)
-        const newChecked = [...checked[type]]
+    const handleToggle = (event) => {
+        const newChecked = [...checked]
+	const searchKeyword = event.currentTarget.id
+	const currentIndex = newChecked.indexOf(searchKeyword) 
         
         if(currentIndex === -1) {
-            newChecked.push(value)
+            newChecked.push(searchKeyword)
         } else {
             newChecked.splice(currentIndex, 1)
         }
-        let prevChecked = checked
-        prevChecked[type] = newChecked
-        setchecked( prevChecked )
-        setdidSentToAPI(false)
+        setchecked(newChecked)
     }
 
     const renderList = (filters) => {
-        if(componentDidMount === true) {
             return (
                 <div>
                     {filters.map((filter) => {
                         const labelId = `checkbox-list-label-${filter}`
-                        const filterData = filterCountList.find((item) => item.name === filter)
-                        const productsCount = filterData.products_count
-                        const type = filterData.type
+
+			const productCount = subcategoryProductsCount.find((item) => item.name === filter)?.product__count
                         return (
                             <div 
                                 className='first:pt-1 last:pb-1 px-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition ease-in-out duration-200' 
-                                onClick={handleToggle(filter, type)}
+                                onClick={handleToggle}
+				id={filter}
                             >
                                 <div className='flex items-center'>
                                     <Checkbox
                                         edge="start"
-                                        checked={checked[type].indexOf(filter) !== -1}
+                                        checked={checked.indexOf(filter) !== -1}
                                         tabIndex={-1}
                                         disableRipple
                                         inputProps={{ 'aria-labelledby': labelId }}
                                     />
                                     <span>{filter}</span>
                                 </div>
-                                <span className=''>{productsCount}</span>
+                                <span className=''>{productCount}</span>
                             </div>
                         )
                     })}
                 </div>
             )
-        }
-        else {
-            return (null)
-        }
     }
-    
-	/*   const CustomAccordion = styled((props) => (
-	<Accordion elevation={2} disableGutters={true} {...props} className='rounded-t-xl rounded-b-xl'/>
-    ))(({ theme }) => ({
-	border: '1px solid rgba(0, 0, 0, .125)',
-	boxShadow: 'none',
-	borderRadius: '30px 0px 30px 0',
-	'&:not(:last-child)': {
-	    borderBottom: 0,
-	},
-	'&:before': {
-	    display: 'none',
-	},
-    }))*/
 
     const renderAccordion = (filter) => { 
         return (
@@ -160,7 +121,7 @@ export const SearchWindow = () => {
                 <Typography><h1 className='font-bold text-[16px]'>{filter.name}</h1></Typography>
                 </AccordionSummary>
                 <AccordionDetails className='p-0'>
-                    {renderList(filter.children)}
+                    {renderList(filter.subcategories)}
                 </AccordionDetails>
 	    </Accordion>
         )
@@ -172,7 +133,7 @@ export const SearchWindow = () => {
     }
     
     return (
-        <div className='h-screen bg-[#F5F5F5]'>
+        <div className='h-full mb-5 bg-[#F5F5F5]'>
             <div className='mx-auto max-w-[1100px] pt-4'>
 		<h1 className='font-bold text-3xl mb-1'>Поиск</h1>
                 <div className='flex justify-between items-center pb-4'>

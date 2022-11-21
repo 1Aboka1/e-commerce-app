@@ -1,19 +1,31 @@
 from rest_framework import serializers
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.password_validation import validate_password
-from .models import Product, ProductCategory, CustomUser, CartItem, ShoppingSession, OrderDetail, OrderItem
+from .models import Product, SubCategory, Category, CustomUser, CartItem, ShoppingSession, OrderDetail, OrderItem, ProductCategory
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
 
+class CategorySerializer(serializers.ModelSerializer):
+    subcategories = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Category
+        fields = ['name', 'created_at', 'modified_at', 'subcategories']
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    product__count = serializers.IntegerField()
+
+    class Meta:
+        model = SubCategory
+        fields = ['name', 'category', 'product__count', 'created_at', 'modified_at']
+
 class ProductSerializer(serializers.ModelSerializer):    
     image = serializers.CharField()
+    subcategory = SubCategorySerializer(read_only=True, many=True)
+
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'quantity', 'price', 'image', 'device_type_category', 'device_brand_category', 'part_type_category')
+        fields = ('id', 'name', 'description', 'quantity', 'price', 'image', 'subcategory')
 
 class ProductCategorySerializer(serializers.ModelSerializer):
     device_types = serializers.StringRelatedField(many=True)
@@ -33,13 +45,6 @@ class ProductCategorySerializer(serializers.ModelSerializer):
             if i != 'name':
                 res['children'] = res.pop(i)
         return res
-
-class ProductCategoryCountSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=100)
-    products_count = serializers.IntegerField()
-
-class SingleCategorySerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=100)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

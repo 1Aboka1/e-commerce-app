@@ -80,7 +80,7 @@ export const Products = (props: any) => {
     }
 
     return ( 
-    <div className='bg-white flex flex-col divide-y shadow-xl shadow-gray-300 basis-3/4 rounded-xl'>
+    <div className='bg-white flex flex-col divide-y shadow-lg shadow-gray-300 basis-3/4 rounded-xl'>
 	{ props.filteredQuerySet.length === 0 ? createEmptyQS() : props.filteredQuerySet.map((product: any) => {return props.listView ? createProductList(product) : createProductGrid(product)}) }
     </div>
 )
