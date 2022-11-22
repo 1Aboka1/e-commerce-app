@@ -1,23 +1,13 @@
 from django.db.models import Count
-from django.db.models import Q
-from rest_framework import views
-from e_commerce_app.models import Product, Category, ProductCategory, SubCategory, CustomUser, CartItem, ShoppingSession
-from e_commerce_app.serializers import CategorySerializer, ProductCategorySerializer, ProductSerializer, SubCategorySerializer, UserSerializer, LoginSerializer, RegistrationSerializer, ShoppingSessionSerializer, CartItemSerializer
-from rest_framework import generics, viewsets, filters, status
+from e_commerce_app.models import Product, Category, ProductCategory, SubCategory 
+from e_commerce_app.serializers import CategorySerializer, ProductCategorySerializer, ProductSerializer, SubCategorySerializer 
+from rest_framework import generics, viewsets, status
 from rest_framework.generics import GenericAPIView
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import FileUploadParser
 from drf_multiple_model.mixins import FlatMultipleModelMixin
 import json
 from django.contrib.postgres.search import TrigramSimilarity
-from rest_framework_simplejwt.tokens import RefreshToken 
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from django.http import QueryDict
-from rest_framework.decorators import action
 
 #Overriding FlatMultipleModelMixin
 class FlatMultipleModelMixinPatched(FlatMultipleModelMixin):
@@ -46,24 +36,34 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
     http_method_names = ['get']
     queryset = Product.objects.all()
-    
+
     def list(self, request):
-        request_query_params_str = self.request.query_params.get('filters')
-        if request_query_params_str == None:
+        request_dict = self.request.query_params
+        if '0' in request_dict.keys():
             request_query_params_str = self.request.query_params.get('0')
             filters = json.loads(request_query_params_str)
             response_data = Product.objects.all().filter(id__in=filters)
             serializer = self.get_serializer(response_data, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)
+        elif 'filters' in request_dict.keys() or 'keywords' in request_dict.keys():
+            filters = json.loads(request_dict['filters'])
+            keywords = request_dict['keywords']
 
-        filters = json.loads(request_query_params_str)
-        if len(filters) == 0:
-            return Response(self.get_serializer(self.get_queryset(), many=True).data, status=status.HTTP_200_OK)
-        response_data = Product.objects.all().filter(subcategories__name__in=filters).distinct()
-        serializer = self.get_serializer(response_data, many=True)
+            if len(filters) == 0 and len(keywords) == 0:
+                return Response(self.get_serializer(self.get_queryset(), many=True).data, status=status.HTTP_200_OK)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            response_qs = self.get_queryset()
+
+            if len(filters) != 0:
+                response_qs = response_qs.filter(subcategories__name__in=filters).distinct()
+            if len(keywords) != 0:
+                response_qs.annotate(similarity=TrigramSimilarity('name', keywords)).filter(similarity__gt=0.08).order_by('-similarity')
+            serializer = self.get_serializer(response_qs, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            raise Exception('no filters, keywords and \'0\'')
     
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer

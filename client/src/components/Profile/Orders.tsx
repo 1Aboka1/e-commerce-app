@@ -241,6 +241,9 @@ export const Orders = () => {
     }
 
     const [shouldUpdate, setShouldUpdate] = useState(false)
+    useEffect(() => {
+	setShouldUpdate(!shouldUpdate)
+    }, [shouldUpdate])
 
     const handleRemove = (orderId: string) => () => {
     	axiosService
