@@ -1,5 +1,5 @@
 import React from 'react'
-import { SocialIcon } from 'react-social-icons'
+i4port { SocialIcon } from 'react-social-icons'
 import MapsHomeWorkOutlinedIcon from '@mui/icons-material/MapsHomeWorkOutlined';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';

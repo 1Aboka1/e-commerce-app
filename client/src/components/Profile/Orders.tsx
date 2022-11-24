@@ -307,6 +307,14 @@ export const Orders = () => {
 	)
     }
 
+    const renderEmptyList = () => { return (
+	    <div className='bg-white p-5 rounded-xl'>
+                <h1 className='text-center text-2xl font-bold'>У вас нет заказов</h1>
+		<img className='mx-auto object-none' src={require('../../assets/carton-container-symbol-vector-i.jpg')} alt='Пустая коробка'/>
+            </div>
+        )
+    }
+
     return (
 	<div className='flex flex-row space-x-3 items-start grow'>
 	    <div className='flex flex-col space-y-4 grow'>
@@ -319,7 +327,12 @@ export const Orders = () => {
 		    </StyledToggleButtonGroup>
 		</div>
 		<h1 className='font-bold text-xl px-2'>Личные заказы</h1>
-		{ renderOrders() }
+		{ 
+		    orders.length !== 0 ?
+		    renderOrders()
+		    :
+		    renderEmptyList()
+		}
 	    </div>
 	</div>
     )
