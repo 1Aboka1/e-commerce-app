@@ -58,7 +58,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             if len(filters) != 0:
                 response_qs = response_qs.filter(subcategories__name__in=filters).distinct()
             if len(keywords) != 0:
-                response_qs.annotate(similarity=TrigramSimilarity('name', keywords)).filter(similarity__gt=0.08).order_by('-similarity')
+                response_qs.annotate(similarity=TrigramSimilarity('name', keywords)).filter(similarity__gt=0.01).order_by('-similarity')
             serializer = self.get_serializer(response_qs, many=True)
 
             return Response(serializer.data, status=status.HTTP_200_OK)

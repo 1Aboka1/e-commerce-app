@@ -260,7 +260,7 @@ export const Orders = () => {
 
     const renderOrders = () => {
 	return (
-	    <div className='space-y-3'>
+	    <div className='space-y-3 min-h-screen'>
 		{
 		    orders.map((item: any) => {
 			let chips = []
