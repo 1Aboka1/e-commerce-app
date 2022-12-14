@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
 import {RootState} from '../store'
 import { useDispatch, useSelector } from 'react-redux'
-import shoppingSessionSlice from '../store/slices/shopsession'
 import UpdateShoppingSession from '../utils/updateShoppingSession'
 import RefreshShoppingSession from '../utils/refreshShoppingSession'
 import { UpdateType } from '../utils/updateShoppingSession'
-import { fetcher } from '../utils/axios'
-import store from '../store'
 
 export const Products = (props: any) => {
     const [componentDidMount, setComponentDidMount] = useState(false)

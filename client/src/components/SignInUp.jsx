@@ -10,8 +10,6 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-
-
 const loginAlias = 'login'
 const registerAlias = 'register'
 const emailAlias = 'email'
